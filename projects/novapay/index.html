@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NovaPay — платёжный сервис</title>
+<meta name="description" content="NovaPay — переводы и платежи без лишних комиссий. Демо-проект для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --violet: #7b5cff;
+    --violet-2: #5a3ee0;
+    --deep: #2a1b7a;
+    --night: #120c33;
+    --ink: #0b0722;
+    --lime: #c6ff3d;
+    --lime-dim: rgba(198, 255, 61, .14);
+    --text: #f3f0ff;
+    --muted: #a9a2d1;
+    --line: rgba(190, 175, 255, .14);
+    --glass: rgba(30, 20, 80, .45);
+    --radius: 22px;
+    --ease: cubic-bezier(.2, .8, .2, 1);
+    --font: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --display: "Unbounded", "Manrope", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    font-family: var(--font);
+    color: var(--text);
+    background: var(--ink);
+    line-height: 1.55;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: "";
+    position: fixed; inset: 0; z-index: -1;
+    background:
+      radial-gradient(900px 600px at 85% -10%, rgba(123, 92, 255, .35), transparent 60%),
+      radial-gradient(700px 500px at -10% 30%, rgba(42, 27, 122, .7), transparent 65%),
+      linear-gradient(180deg, var(--night), var(--ink) 70%);
+  }
+  img, svg { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  button, input { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; border-radius: 8px; }
+
+  .container { width: min(1180px, 100% - 40px); margin-inline: auto; }
+  .section { padding: 110px 0; position: relative; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--lime);
+  }
+  .eyebrow::before { content: ""; width: 18px; height: 2px; background: currentColor; border-radius: 2px; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 600; line-height: 1.08; margin: 0; letter-spacing: -.02em; }
+  h2 { font-size: clamp(30px, 4.4vw, 52px); margin-top: 14px; }
+  .section-head { max-width: 680px; margin-bottom: 56px; }
+  .section-head p { color: var(--muted); font-size: 18px; margin: 18px 0 0; }
+  .lime { color: var(--lime); }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 15px 26px; border-radius: 999px; border: 1px solid transparent;
+    font-weight: 700; font-size: 16px; cursor: pointer; white-space: nowrap;
+    transition: transform .25s var(--ease), box-shadow .25s var(--ease), background .25s, border-color .25s;
+  }
+  .btn-primary { background: var(--lime); color: #11081f; box-shadow: 0 10px 30px -10px rgba(198, 255, 61, .6); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 40px -10px rgba(198, 255, 61, .75); }
+  .btn-ghost { background: rgba(255, 255, 255, .04); border-color: var(--line); }
+  .btn-ghost:hover { border-color: rgba(198, 255, 61, .5); transform: translateY(-2px); }
+  .btn-sm { padding: 10px 18px; font-size: 14px; }
+  .btn svg { width: 18px; height: 18px; transition: transform .25s var(--ease); }
+  .btn:hover svg { transform: translateX(3px); }
+
+  /* Demo pill */
+  .demo-pill {
+    position: fixed; top: 12px; left: 12px; z-index: 100;
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 8px 7px 14px; border-radius: 999px;
+    background: rgba(11, 7, 34, .78); border: 1px solid var(--line);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    font-size: 13px; font-weight: 600;
+    transition: border-color .2s;
+  }
+  .demo-pill:hover { border-color: rgba(198, 255, 61, .55); }
+  .demo-pill span {
+    font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+    padding: 4px 9px; border-radius: 999px; background: var(--lime-dim); color: var(--lime);
+  }
+
+  /* Header */
+  .header {
+    position: fixed; top: 56px; left: 0; right: 0; z-index: 90;
+    transition: top .35s var(--ease);
+  }
+  .header.scrolled { top: 52px; }
+  .header-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    padding: 10px 10px 10px 20px; border-radius: 999px;
+    background: rgba(18, 12, 51, .55); border: 1px solid var(--line);
+    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    transition: background .3s, box-shadow .3s;
+  }
+  .header.scrolled .header-bar { background: rgba(18, 12, 51, .85); box-shadow: 0 20px 50px -20px rgba(0, 0, 0, .6); }
+  .logo { display: inline-flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 700; font-size: 19px; }
+  .logo-mark {
+    width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--violet), var(--deep));
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .15), 0 6px 18px -6px var(--violet);
+  }
+  .logo-mark svg { width: 18px; height: 18px; }
+  .nav { display: flex; gap: 6px; }
+  .nav a { padding: 8px 14px; border-radius: 999px; font-size: 15px; color: var(--muted); transition: color .2s, background .2s; }
+  .nav a:hover { color: var(--text); background: rgba(255, 255, 255, .06); }
+  .header-actions { display: flex; align-items: center; gap: 8px; }
+  .burger {
+    display: none; width: 42px; height: 42px; border-radius: 50%;
+    border: 1px solid var(--line); background: transparent; cursor: pointer; position: relative;
+  }
+  .burger i { position: absolute; left: 12px; right: 12px; height: 2px; background: var(--text); border-radius: 2px; transition: transform .3s var(--ease), opacity .2s; }
+  .burger i:nth-child(1) { top: 15px; } .burger i:nth-child(2) { top: 20px; } .burger i:nth-child(3) { top: 25px; }
+  .burger[aria-expanded="true"] i:nth-child(1) { transform: translateY(5px) rotate(45deg); }
+  .burger[aria-expanded="true"] i:nth-child(2) { opacity: 0; }
+  .burger[aria-expanded="true"] i:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+
+  /* Hero */
+  .hero { padding: 190px 0 100px; position: relative; }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 40px; align-items: center; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 6px 14px 6px 6px; border-radius: 999px;
+    background: rgba(123, 92, 255, .14); border: 1px solid rgba(123, 92, 255, .35);
+    font-size: 14px; color: #d9d1ff;
+  }
+  .badge b { background: var(--lime); color: #11081f; padding: 3px 10px; border-radius: 999px; font-size: 12px; }
+  .hero h1 { font-size: clamp(38px, 6vw, 76px); margin: 24px 0 22px; }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(100deg, var(--lime), #e9ffb0 50%, var(--violet));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero-sub { font-size: clamp(17px, 1.6vw, 20px); color: var(--muted); max-width: 520px; margin: 0 0 34px; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; }
+  .hero-trust { display: flex; align-items: center; gap: 14px; margin-top: 36px; color: var(--muted); font-size: 14px; }
+  .avatars { display: flex; }
+  .avatars i {
+    width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--night); margin-left: -10px;
+    display: grid; place-items: center; font-style: normal; font-weight: 800; font-size: 13px; color: #11081f;
+  }
+  .avatars i:first-child { margin-left: 0; }
+  .stars { color: var(--lime); letter-spacing: 2px; }
+
+  /* 3D card */
+  .card-stage { position: relative; height: 440px; perspective: 1200px; display: grid; place-items: center; }
+  .card-glow {
+    position: absolute; width: 80%; aspect-ratio: 1; border-radius: 50%;
+    background: radial-gradient(circle, rgba(123, 92, 255, .55), transparent 65%);
+    filter: blur(30px); pointer-events: none;
+  }
+  .card-ring {
+    position: absolute; width: 92%; aspect-ratio: 1; border-radius: 50%;
+    border: 1px dashed rgba(198, 255, 61, .18); animation: spin 40s linear infinite; pointer-events: none;
+  }
+  .card-ring::after {
+    content: ""; position: absolute; top: 12%; left: 8%; width: 10px; height: 10px; border-radius: 50%;
+    background: var(--lime); box-shadow: 0 0 18px var(--lime);
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .card-float { animation: float 6s ease-in-out infinite; transform-style: preserve-3d; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotateZ(-2deg); }
+    50% { transform: translateY(-16px) rotateZ(1deg); }
+  }
+  .bank-card {
+    --rx: 8deg; --ry: -14deg; --mx: 30%; --my: 20%;
+    position: relative; width: min(400px, 82vw); aspect-ratio: 1.586; border-radius: 24px;
+    padding: 26px 28px; display: flex; flex-direction: column; justify-content: space-between;
+    background:
+      radial-gradient(120% 140% at 100% 0%, rgba(198, 255, 61, .35), transparent 45%),
+      linear-gradient(135deg, var(--violet) 0%, var(--deep) 55%, var(--night) 100%);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, .18),
+      0 40px 80px -20px rgba(18, 12, 51, .9),
+      0 0 60px -10px rgba(123, 92, 255, .6);
+    transform: rotateX(var(--rx)) rotateY(var(--ry));
+    transform-style: preserve-3d;
+    transition: transform .5s var(--ease);
+    overflow: hidden; will-change: transform;
+  }
+  .bank-card.tracking { transition: transform .08s linear; }
+  .bank-card::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(115deg, rgba(255, 255, 255, .035) 0 2px, transparent 2px 9px);
+  }
+  .card-shine {
+    position: absolute; inset: 0; pointer-events: none; mix-blend-mode: overlay;
+    background: radial-gradient(circle at var(--mx) var(--my), rgba(255, 255, 255, .75), rgba(255, 255, 255, .1) 25%, transparent 55%);
+  }
+  .card-waves { position: absolute; right: -40px; bottom: -50px; width: 260px; opacity: .45; pointer-events: none; }
+  .card-row { display: flex; align-items: center; justify-content: space-between; position: relative; transform: translateZ(30px); }
+  .card-brand { font-family: var(--display); font-weight: 700; font-size: 20px; display: flex; align-items: center; gap: 8px; }
+  .card-tag { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: rgba(198, 255, 61, .18); color: var(--lime); }
+  .chip {
+    width: 50px; height: 38px; border-radius: 8px; position: relative;
+    background: linear-gradient(135deg, #f4e7a8, #c9a94d 45%, #f6e9b5 70%, #b8932f);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .25);
+  }
+  .chip::before, .chip::after { content: ""; position: absolute; border: 1px solid rgba(80, 55, 0, .45); }
+  .chip::before { inset: 8px 16px; border-radius: 4px; }
+  .chip::after { left: 0; right: 0; top: 50%; border-width: 1px 0 0; }
+  .contactless { width: 28px; height: 28px; opacity: .85; }
+  .card-number { font-family: var(--mono); font-size: clamp(16px, 4.6vw, 22px); letter-spacing: .14em; position: relative; transform: translateZ(40px); text-shadow: 0 2px 6px rgba(0, 0, 0, .35); }
+  .card-meta { font-size: 10px; text-transform: uppercase; letter-spacing: .14em; color: rgba(255, 255, 255, .6); }
+  .card-val { font-weight: 700; font-size: 15px; letter-spacing: .06em; }
+  .mc { display: flex; }
+  .mc i { width: 32px; height: 32px; border-radius: 50%; }
+  .mc i:first-child { background: var(--lime); }
+  .mc i:last-child { background: rgba(255, 255, 255, .55); margin-left: -12px; mix-blend-mode: screen; }
+
+  .float-chip {
+    position: absolute; z-index: 2; display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px; border-radius: 16px; font-size: 13px;
+    background: rgba(18, 12, 51, .75); border: 1px solid var(--line);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, .7);
+    animation: float 7s ease-in-out infinite;
+  }
+  .float-chip b { display: block; font-size: 15px; }
+  .float-chip small { color: var(--muted); }
+  .float-chip .dot { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--lime-dim); color: var(--lime); }
+  .float-chip .dot svg { width: 18px; height: 18px; }
+  .fc-1 { top: 30px; left: 0; animation-delay: -2s; }
+  .fc-2 { bottom: 34px; right: 0; animation-delay: -4s; }
+
+  /* Logos strip */
+  .partners { padding: 10px 0 30px; }
+  .partners p { text-align: center; color: var(--muted); font-size: 14px; margin: 0 0 20px; }
+  .partners-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 44px; opacity: .55; font-family: var(--display); font-weight: 600; font-size: 18px; letter-spacing: .02em; }
+
+  /* Calculator */
+  .calc {
+    display: grid; grid-template-columns: 1.15fr .85fr; border-radius: 30px; overflow: hidden;
+    border: 1px solid var(--line); background: linear-gradient(160deg, rgba(42, 27, 122, .55), rgba(18, 12, 51, .7));
+    box-shadow: 0 40px 100px -40px rgba(0, 0, 0, .8);
+  }
+  .calc-main { padding: 40px; min-width: 0; }
+  .calc-side { padding: 40px; background: rgba(11, 7, 34, .55); border-left: 1px solid var(--line); display: flex; flex-direction: column; }
+  .tabs { display: flex; gap: 6px; padding: 6px; border-radius: 999px; background: rgba(11, 7, 34, .6); border: 1px solid var(--line); margin-bottom: 36px; overflow-x: auto; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    flex: 1; padding: 11px 16px; border-radius: 999px; border: 0; background: transparent; cursor: pointer;
+    color: var(--muted); font-weight: 700; font-size: 14px; white-space: nowrap; transition: background .25s, color .25s;
+  }
+  .tab[aria-selected="true"] { background: var(--violet); color: #fff; box-shadow: 0 8px 20px -8px var(--violet); }
+  .tab:not([aria-selected="true"]):hover { color: var(--text); }
+  .calc-label { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; color: var(--muted); font-size: 15px; }
+  .amount { font-family: var(--display); font-size: clamp(32px, 5vw, 52px); font-weight: 600; margin: 8px 0 22px; letter-spacing: -.02em; }
+  .range {
+    --p: 50%;
+    -webkit-appearance: none; appearance: none; width: 100%; height: 10px; border-radius: 99px; cursor: pointer;
+    background: linear-gradient(90deg, var(--violet), var(--lime)) 0 0 / var(--p) 100% no-repeat, rgba(255, 255, 255, .08);
+  }
+  .range::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 28px; height: 28px; border-radius: 50%; background: #fff;
+    border: 6px solid var(--lime); box-shadow: 0 0 0 6px rgba(198, 255, 61, .18), 0 6px 14px rgba(0, 0, 0, .4);
+    transition: transform .2s;
+  }
+  .range::-webkit-slider-thumb:hover { transform: scale(1.1); }
+  .range::-moz-range-thumb {
+    width: 16px; height: 16px; border-radius: 50%; background: #fff;
+    border: 6px solid var(--lime); box-shadow: 0 0 0 6px rgba(198, 255, 61, .18);
+  }
+  .range-scale { display: flex; justify-content: space-between; color: var(--muted); font-size: 13px; margin-top: 12px; }
+  .presets { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+  .preset { padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--muted); font-size: 13px; font-weight: 600; cursor: pointer; transition: all .2s; }
+  .preset:hover { color: var(--lime); border-color: rgba(198, 255, 61, .45); }
+  .calc-note { margin-top: 28px; padding: 16px 18px; border-radius: 16px; background: rgba(123, 92, 255, .1); border: 1px solid rgba(123, 92, 255, .25); font-size: 14px; color: #d4ccff; display: flex; gap: 12px; }
+  .calc-note svg { flex: none; width: 20px; height: 20px; color: var(--lime); margin-top: 1px; }
+
+  .result-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 14px 0; border-bottom: 1px dashed var(--line); }
+  .result-row span { color: var(--muted); font-size: 15px; }
+  .result-row b { font-size: 18px; font-variant-numeric: tabular-nums; }
+  .result-big { margin-top: 18px; }
+  .result-big span { color: var(--muted); font-size: 15px; }
+  .result-big b { display: block; font-family: var(--display); font-size: clamp(28px, 3.4vw, 40px); font-weight: 600; color: var(--lime); font-variant-numeric: tabular-nums; margin-top: 4px; }
+  .compare { margin-top: 26px; display: grid; gap: 12px; }
+  .bar-label { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+  .bar-label b { color: var(--text); font-variant-numeric: tabular-nums; }
+  .bar { height: 10px; border-radius: 99px; background: rgba(255, 255, 255, .06); overflow: hidden; }
+  .bar i { display: block; height: 100%; border-radius: inherit; transition: width .6s var(--ease); }
+  .bar-nova i { background: linear-gradient(90deg, var(--lime), #e6ff9c); }
+  .bar-bank i { background: linear-gradient(90deg, #ff7a8a, #ff4d6d); }
+  .saving {
+    margin-top: 24px; padding: 14px 16px; border-radius: 16px; display: flex; align-items: center; gap: 12px;
+    background: var(--lime-dim); border: 1px solid rgba(198, 255, 61, .35); font-size: 14px;
+  }
+  .saving b { color: var(--lime); font-size: 17px; font-variant-numeric: tabular-nums; }
+  .calc-side .btn { margin-top: auto; width: 100%; }
+  .calc-side .saving { margin-bottom: 22px; }
+
+  /* Features */
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .feature {
+    position: relative; padding: 30px; border-radius: var(--radius); overflow: hidden;
+    background: linear-gradient(180deg, rgba(42, 27, 122, .38), rgba(18, 12, 51, .4));
+    border: 1px solid var(--line);
+    transition: transform .35s var(--ease), border-color .35s;
+  }
+  .feature::after {
+    content: ""; position: absolute; inset: auto -30% -60% auto; width: 220px; height: 220px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(123, 92, 255, .35), transparent 70%); opacity: 0; transition: opacity .4s;
+  }
+  .feature:hover { transform: translateY(-6px); border-color: rgba(198, 255, 61, .35); }
+  .feature:hover::after { opacity: 1; }
+  .feature-icon {
+    width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; margin-bottom: 22px;
+    background: linear-gradient(135deg, rgba(123, 92, 255, .4), rgba(42, 27, 122, .6));
+    border: 1px solid rgba(123, 92, 255, .45); color: var(--lime);
+  }
+  .feature-icon svg { width: 26px; height: 26px; }
+  .feature h3 { font-size: 20px; margin-bottom: 10px; }
+  .feature p { color: var(--muted); margin: 0; font-size: 15px; }
+  .feature.wide { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: center; }
+  .mini-chart { height: 130px; display: flex; align-items: flex-end; gap: 8px; }
+  .mini-chart i { flex: 1; border-radius: 8px 8px 3px 3px; background: linear-gradient(180deg, var(--violet), rgba(123, 92, 255, .2)); }
+  .mini-chart i:last-child { background: linear-gradient(180deg, var(--lime), rgba(198, 255, 61, .2)); }
+
+  /* Stats */
+  .stats {
+    display: grid; grid-template-columns: repeat(4, 1fr); border-radius: 28px; overflow: hidden;
+    background: linear-gradient(110deg, var(--violet-2), var(--deep) 60%, var(--night));
+    border: 1px solid rgba(255, 255, 255, .12);
+  }
+  .stat { padding: 40px 30px; border-right: 1px solid rgba(255, 255, 255, .1); }
+  .stat:last-child { border-right: 0; }
+  .stat b { display: block; font-family: var(--display); font-size: clamp(30px, 3.6vw, 46px); font-weight: 600; letter-spacing: -.02em; }
+  .stat b em { font-style: normal; color: var(--lime); }
+  .stat span { color: #cfc6ff; font-size: 15px; }
+
+  /* Steps */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; counter-reset: step; }
+  .step { padding: 32px 30px; border-radius: var(--radius); border: 1px solid var(--line); background: rgba(18, 12, 51, .5); position: relative; }
+  .step-num {
+    width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; margin-bottom: 24px;
+    font-family: var(--display); font-weight: 700; color: #11081f; background: var(--lime);
+    box-shadow: 0 0 0 8px rgba(198, 255, 61, .1);
+  }
+  .step h3 { font-size: 20px; margin-bottom: 10px; }
+  .step p { color: var(--muted); margin: 0; font-size: 15px; }
+  .step-time { display: inline-block; margin-top: 18px; font-size: 13px; color: var(--lime); font-weight: 700; }
+  .step:not(:last-child)::after {
+    content: ""; position: absolute; top: 58px; right: -18px; width: 18px; height: 2px;
+    background: linear-gradient(90deg, var(--lime), transparent);
+  }
+
+  /* Pricing */
+  .pricing { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: stretch; }
+  .plan { padding: 34px 30px; border-radius: 26px; border: 1px solid var(--line); background: rgba(18, 12, 51, .55); display: flex; flex-direction: column; }
+  .plan h3 { font-size: 22px; }
+  .plan-desc { color: var(--muted); font-size: 15px; margin: 8px 0 24px; }
+  .price { font-family: var(--display); font-size: 44px; font-weight: 600; letter-spacing: -.02em; }
+  .price small { font-family: var(--font); font-size: 16px; color: var(--muted); font-weight: 500; }
+  .plan ul { list-style: none; padding: 0; margin: 26px 0 30px; display: grid; gap: 12px; }
+  .plan li { display: flex; gap: 10px; font-size: 15px; }
+  .plan li svg { flex: none; width: 20px; height: 20px; color: var(--lime); margin-top: 2px; }
+  .plan .btn { margin-top: auto; }
+  .plan.featured {
+    position: relative; transform: translateY(-14px);
+    background: linear-gradient(165deg, var(--violet) 0%, var(--deep) 55%, var(--night) 100%);
+    border-color: rgba(198, 255, 61, .45);
+    box-shadow: 0 40px 80px -30px rgba(123, 92, 255, .7);
+  }
+  .plan.featured .plan-desc, .plan.featured .price small { color: #d8d0ff; }
+  .plan-badge { position: absolute; top: 20px; right: 20px; padding: 5px 12px; border-radius: 999px; background: var(--lime); color: #11081f; font-size: 12px; font-weight: 800; }
+
+  /* FAQ */
+  .faq-wrap { display: grid; grid-template-columns: .8fr 1.2fr; gap: 60px; align-items: start; }
+  .faq { display: grid; gap: 12px; }
+  .faq-item { border-radius: 20px; border: 1px solid var(--line); background: rgba(18, 12, 51, .5); transition: border-color .3s, background .3s; }
+  .faq-item.open { border-color: rgba(198, 255, 61, .35); background: rgba(42, 27, 122, .4); }
+  .faq-q {
+    width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    padding: 22px 24px; border: 0; background: transparent; cursor: pointer; text-align: left; font-weight: 700; font-size: 17px;
+  }
+  .faq-icon { flex: none; width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--line); position: relative; transition: transform .35s var(--ease), background .3s; }
+  .faq-icon::before, .faq-icon::after { content: ""; position: absolute; left: 50%; top: 50%; width: 12px; height: 2px; background: currentColor; transform: translate(-50%, -50%); border-radius: 2px; }
+  .faq-icon::after { transform: translate(-50%, -50%) rotate(90deg); }
+  .faq-item.open .faq-icon { transform: rotate(45deg); background: var(--lime); color: #11081f; border-color: var(--lime); }
+  .faq-a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s var(--ease); }
+  .faq-item.open .faq-a { grid-template-rows: 1fr; }
+  .faq-a > div { overflow: hidden; }
+  .faq-a p { margin: 0; padding: 0 24px 22px; color: var(--muted); }
+
+  /* CTA */
+  .cta {
+    position: relative; overflow: hidden; border-radius: 34px; padding: 70px 60px;
+    background:
+      radial-gradient(600px 300px at 90% 0%, rgba(198, 255, 61, .22), transparent 60%),
+      linear-gradient(130deg, var(--violet), var(--deep) 55%, var(--night));
+    border: 1px solid rgba(255, 255, 255, .14);
+    display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center;
+  }
+  .cta h2 { margin: 0; }
+  .cta p { color: #d8d0ff; font-size: 18px; margin: 16px 0 0; }
+  .cta-orb { position: absolute; width: 380px; height: 380px; border-radius: 50%; right: -120px; bottom: -200px; border: 1px solid rgba(198, 255, 61, .25); pointer-events: none; }
+  .cta-orb::after { content: ""; position: absolute; inset: 50px; border-radius: 50%; border: 1px solid rgba(198, 255, 61, .15); }
+  .form { position: relative; z-index: 1; }
+  .form-row { display: flex; gap: 8px; padding: 8px; border-radius: 999px; background: rgba(11, 7, 34, .65); border: 1px solid rgba(255, 255, 255, .14); transition: border-color .2s; }
+  .form-row:focus-within { border-color: var(--lime); }
+  .form input { flex: 1; min-width: 0; border: 0; background: transparent; padding: 0 16px; font-size: 16px; outline: none; }
+  .form input::placeholder { color: #8e86b8; }
+  .form-hint { font-size: 13px; color: #bdb4ea; margin: 12px 0 0 16px; min-height: 20px; }
+  .form-hint.error { color: #ff8a9b; }
+  .form-success {
+    display: none; align-items: center; gap: 16px; padding: 20px 22px; border-radius: 22px;
+    background: rgba(198, 255, 61, .12); border: 1px solid rgba(198, 255, 61, .45);
+    animation: pop .5s var(--ease);
+  }
+  .form-success .check { flex: none; width: 46px; height: 46px; border-radius: 50%; background: var(--lime); color: #11081f; display: grid; place-items: center; }
+  .form-success .check svg { width: 24px; height: 24px; }
+  .form-success b { display: block; font-size: 17px; }
+  .form-success span { font-size: 14px; color: #d8d0ff; }
+  .form.done .form-row, .form.done .form-hint { display: none; }
+  .form.done .form-success { display: flex; }
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .spinner { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(17, 8, 31, .3); border-top-color: #11081f; animation: spin .7s linear infinite; }
+
+  /* Footer */
+  .footer { padding: 70px 0 40px; border-top: 1px solid var(--line); margin-top: 110px; }
+  .footer-grid { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 40px; }
+  .footer p { color: var(--muted); font-size: 14px; max-width: 300px; }
+  .footer h4 { margin: 0 0 16px; font-size: 14px; text-transform: uppercase; letter-spacing: .1em; color: #cfc6ff; }
+  .footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .footer ul a { color: var(--muted); font-size: 15px; transition: color .2s; }
+  .footer ul a:hover { color: var(--lime); }
+  .footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-top: 50px; padding-top: 26px; border-top: 1px solid var(--line); color: #7d76a8; font-size: 13px; }
+
+  /* Reveal */
+  .reveal { opacity: 0; transform: translateY(34px); transition: opacity .9s var(--ease), transform .9s var(--ease); transition-delay: var(--d, 0s); }
+  .reveal.in { opacity: 1; transform: none; }
+  .plan.featured.reveal.in { transform: translateY(-14px); }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-copy { text-align: center; }
+    .hero-sub { margin-inline: auto; }
+    .hero-cta, .hero-trust { justify-content: center; }
+    .calc { grid-template-columns: minmax(0, 1fr); }
+    .calc-side { border-left: 0; border-top: 1px solid var(--line); }
+    .features { grid-template-columns: repeat(2, 1fr); }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .stat:nth-child(2) { border-right: 0; }
+    .stat:nth-child(-n+2) { border-bottom: 1px solid rgba(255, 255, 255, .1); }
+    .pricing { grid-template-columns: 1fr; max-width: 520px; margin-inline: auto; }
+    .plan.featured, .plan.featured.reveal.in { transform: none; }
+    .faq-wrap { grid-template-columns: 1fr; gap: 10px; }
+    .cta { grid-template-columns: 1fr; padding: 54px 40px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 860px) {
+    .nav {
+      position: absolute; top: calc(100% + 10px); left: 0; right: 0; flex-direction: column; gap: 4px;
+      padding: 12px; border-radius: 24px; background: rgba(18, 12, 51, .96); border: 1px solid var(--line);
+      opacity: 0; visibility: hidden; transform: translateY(-8px); transition: all .3s var(--ease);
+    }
+    .nav.open { opacity: 1; visibility: visible; transform: none; }
+    .nav a { padding: 14px 16px; font-size: 16px; }
+    .header-bar { position: relative; }
+    .burger { display: block; }
+    .steps { grid-template-columns: 1fr; }
+    .step:not(:last-child)::after { display: none; }
+  }
+  @media (max-width: 640px) {
+    .container { width: calc(100% - 32px); }
+    .section { padding: 80px 0; }
+    .hero { padding: 160px 0 70px; }
+    .header-actions .btn { display: none; }
+    .header-bar { padding: 8px 8px 8px 16px; }
+    .card-stage { height: 320px; }
+    .float-chip { display: none; }
+    .calc-main, .calc-side { padding: 26px 20px; }
+    .features { grid-template-columns: 1fr; }
+    .feature.wide { grid-column: auto; grid-template-columns: 1fr; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .stat { padding: 26px 18px; }
+    .cta { padding: 40px 22px; border-radius: 26px; }
+    .form-row { flex-direction: column; border-radius: 22px; }
+    .form input { padding: 14px 12px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+    .section-head { margin-bottom: 40px; }
+    .bank-card { padding: 20px; border-radius: 18px; }
+    .chip { width: 40px; height: 30px; }
+  }
+  @media (max-width: 400px) {
+    .btn { padding: 14px 20px; font-size: 15px; }
+    .hero-cta .btn { width: 100%; }
+    .stat b { font-size: 26px; }
+    .stat span { font-size: 13px; }
+    .demo-pill { font-size: 12px; }
+    .faq-q { padding: 18px; font-size: 16px; }
+    .faq-a p { padding: 0 18px 18px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+    .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<a class="demo-pill" href="../../index.html#works">← Назад в портфолио <span>Демо-проект</span></a>
+
+<header class="header" id="header">
+  <div class="container">
+    <div class="header-bar">
+      <a href="#top" class="logo" aria-label="NovaPay — на главную">
+        <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M5 19V5l14 14V5" stroke="#c6ff3d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        NovaPay
+      </a>
+      <nav class="nav" id="nav" aria-label="Основная навигация">
+        <a href="#calc">Калькулятор</a>
+        <a href="#features">Возможности</a>
+        <a href="#pricing">Тарифы</a>
+        <a href="#faq">Вопросы</a>
+      </nav>
+      <div class="header-actions">
+        <a href="#start" class="btn btn-primary btn-sm">Открыть счёт</a>
+        <button class="burger" id="burger" aria-label="Меню" aria-expanded="false" aria-controls="nav"><i></i><i></i><i></i></button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="badge reveal"><b>Новое</b> Переводы в 140+ стран за 30 секунд</span>
+        <h1 class="reveal" style="--d:.08s">Платежи <em>без&nbsp;лишних</em> комиссий</h1>
+        <p class="hero-sub reveal" style="--d:.16s">NovaPay — платёжный сервис для людей и бизнеса. Переводите, принимайте оплату и платите картой там, где банки берут проценты, а мы — нет.</p>
+        <div class="hero-cta reveal" style="--d:.24s">
+          <a href="#start" class="btn btn-primary">Открыть счёт бесплатно
+            <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#calc" class="btn btn-ghost">Рассчитать комиссию</a>
+        </div>
+        <div class="hero-trust reveal" style="--d:.32s">
+          <div class="avatars" aria-hidden="true">
+            <i style="background:#c6ff3d">А</i><i style="background:#a48cff">М</i><i style="background:#ffd36e">К</i><i style="background:#7fe3ff">Д</i>
+          </div>
+          <div><span class="stars">★★★★★</span><br>4,9 — более 1,2 млн клиентов</div>
+        </div>
+      </div>
+
+      <div class="card-stage reveal" style="--d:.2s" id="cardStage">
+        <div class="card-glow" aria-hidden="true"></div>
+        <div class="card-ring" aria-hidden="true"></div>
+
+        <div class="float-chip fc-1" aria-hidden="true">
+          <span class="dot"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <div><b>+ 48 500 ₽</b><small>Перевод получен · 0 ₽</small></div>
+        </div>
+        <div class="float-chip fc-2" aria-hidden="true">
+          <span class="dot"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v18M17 7.5C17 5.6 14.8 4.5 12 4.5S7 5.8 7 8c0 4.8 10 2.6 10 7.6 0 2.2-2.2 3.4-5 3.4s-5.2-1.2-5.2-3.2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+          <div><b>5% кэшбэк</b><small>на кафе и такси</small></div>
+        </div>
+
+        <div class="card-float">
+          <div class="bank-card" id="bankCard" role="img" aria-label="Карта NovaPay">
+            <svg class="card-waves" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+              <circle cx="140" cy="140" r="40" stroke="#c6ff3d" stroke-width="1.5"/>
+              <circle cx="140" cy="140" r="70" stroke="#c6ff3d" stroke-width="1"/>
+              <circle cx="140" cy="140" r="100" stroke="#fff" stroke-width=".8"/>
+              <circle cx="140" cy="140" r="130" stroke="#fff" stroke-width=".6"/>
+            </svg>
+            <div class="card-shine"></div>
+            <div class="card-row">
+              <span class="card-brand">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 19V5l14 14V5" stroke="#c6ff3d" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                NovaPay
+              </span>
+              <span class="card-tag">Premium</span>
+            </div>
+            <div class="card-row">
+              <span class="chip"></span>
+              <svg class="contactless" viewBox="0 0 24 24" fill="none"><path d="M8 7.5a6 6 0 0 1 0 9M11.5 5a10 10 0 0 1 0 14M15 3a14 14 0 0 1 0 18" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </div>
+            <div class="card-number">5536 •••• •••• 2048</div>
+            <div class="card-row">
+              <div>
+                <div class="card-meta">Владелец</div>
+                <div class="card-val">ALEXANDRA NOVA</div>
+              </div>
+              <div>
+                <div class="card-meta">До</div>
+                <div class="card-val">09/31</div>
+              </div>
+              <div class="mc" aria-hidden="true"><i></i><i></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="partners container reveal">
+    <p>Нам доверяют компании и маркетплейсы</p>
+    <div class="partners-row" aria-hidden="true">
+      <span>Orbita</span><span>Kvant</span><span>Lumen</span><span>Северсталь&nbsp;Ритейл</span><span>Polar</span><span>Mosaic</span>
+    </div>
+  </div>
+
+  <!-- CALCULATOR -->
+  <section class="section" id="calc">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Калькулятор комиссий</span>
+        <h2>Посчитайте, сколько <span class="lime">сэкономите</span></h2>
+        <p>Двигайте ползунок и выбирайте тип перевода — сравним с тарифами обычного банка в реальном времени.</p>
+      </div>
+
+      <div class="calc reveal">
+        <div class="calc-main">
+          <div class="tabs" role="tablist" aria-label="Тип перевода" id="tabs">
+            <button class="tab" role="tab" aria-selected="true" data-type="card">На карту</button>
+            <button class="tab" role="tab" aria-selected="false" data-type="sbp">По СБП</button>
+            <button class="tab" role="tab" aria-selected="false" data-type="intl">За границу</button>
+            <button class="tab" role="tab" aria-selected="false" data-type="biz">Бизнесу</button>
+          </div>
+
+          <label class="calc-label" for="amount">Сумма перевода <span id="typeHint">Мгновенно, 24/7</span></label>
+          <div class="amount" id="amountOut" aria-live="polite">50 000 ₽</div>
+          <input class="range" id="amount" type="range" min="0" max="1000" step="1" value="566" aria-label="Сумма перевода">
+          <div class="range-scale"><span>1 000 ₽</span><span>1 000 000 ₽</span></div>
+
+          <div class="presets" id="presets">
+            <button class="preset" data-v="5000">5 000 ₽</button>
+            <button class="preset" data-v="25000">25 000 ₽</button>
+            <button class="preset" data-v="100000">100 000 ₽</button>
+            <button class="preset" data-v="500000">500 000 ₽</button>
+          </div>
+
+          <div class="calc-note">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 11v6M12 7.5v.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+            <span id="calcNote">Переводы на карты любых банков РФ. Комиссия NovaPay — 0,5%, но не более 1 500 ₽.</span>
+          </div>
+        </div>
+
+        <div class="calc-side">
+          <div class="result-row"><span>Комиссия NovaPay</span><b id="feeOut">0 ₽</b></div>
+          <div class="result-row"><span>Ставка</span><b id="rateOut">0,5%</b></div>
+          <div class="result-big"><span>Получатель получит</span><b id="receiveOut">0 ₽</b></div>
+
+          <div class="compare">
+            <div>
+              <div class="bar-label"><span>NovaPay</span><b id="barNovaVal">0 ₽</b></div>
+              <div class="bar bar-nova"><i id="barNova" style="width:10%"></i></div>
+            </div>
+            <div>
+              <div class="bar-label"><span>Обычный банк</span><b id="barBankVal">0 ₽</b></div>
+              <div class="bar bar-bank"><i id="barBank" style="width:100%"></i></div>
+            </div>
+          </div>
+
+          <div class="saving">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8M15 7h6v6" stroke="#c6ff3d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div>Экономия с NovaPay: <b id="saveOut">0 ₽</b></div>
+          </div>
+
+          <a href="#start" class="btn btn-primary">Перевести с выгодой</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Возможности</span>
+        <h2>Всё для денег — в одном приложении</h2>
+        <p>Карта, переводы, приём платежей и аналитика расходов. Без отделений, очередей и скрытых условий.</p>
+      </div>
+
+      <div class="features">
+        <article class="feature wide reveal">
+          <div>
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div>
+            <h3>Мгновенные переводы</h3>
+            <p>Деньги доходят за секунды — по номеру телефона, карты или через СБП. Работает круглосуточно, включая выходные и праздники.</p>
+          </div>
+          <div class="mini-chart" aria-hidden="true">
+            <i style="height:35%"></i><i style="height:52%"></i><i style="height:44%"></i><i style="height:68%"></i><i style="height:60%"></i><i style="height:82%"></i><i style="height:100%"></i>
+          </div>
+        </article>
+        <article class="feature reveal" style="--d:.08s">
+          <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6l-8-3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3>Защита 3D Secure 2.0</h3>
+          <p>Антифрод на базе ML блокирует подозрительные операции до списания.</p>
+        </article>
+        <article class="feature reveal">
+          <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9S14.5 18.3 12 21c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3Z" stroke="currentColor" stroke-width="2"/></svg></div>
+          <h3>Мультивалютность</h3>
+          <p>Счета в 12 валютах и обмен по биржевому курсу без наценки.</p>
+        </article>
+        <article class="feature reveal" style="--d:.08s">
+          <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="13" rx="3" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M7 15h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <h3>Виртуальные карты</h3>
+          <p>Выпуск за 10 секунд — отдельная карта для подписок и покупок онлайн.</p>
+        </article>
+        <article class="feature reveal" style="--d:.16s">
+          <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <h3>Умная аналитика</h3>
+          <p>Расходы по категориям, лимиты и подсказки, где можно сэкономить.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="container">
+    <div class="stats reveal">
+      <div class="stat"><b data-count="1.2" data-dec="1"><em>0</em> млн</b><span>активных клиентов</span></div>
+      <div class="stat"><b data-count="140"><em>0</em>+</b><span>стран для переводов</span></div>
+      <div class="stat"><b data-count="30"><em>0</em> сек</b><span>среднее время перевода</span></div>
+      <div class="stat"><b data-count="99.98" data-dec="2"><em>0</em>%</b><span>аптайм платёжной системы</span></div>
+    </div>
+  </section>
+
+  <!-- STEPS -->
+  <section class="section" id="steps">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Как начать</span>
+        <h2>Три шага — и счёт готов</h2>
+        <p>Никаких визитов в офис. Всё оформление занимает меньше пяти минут.</p>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="step-num">01</div>
+          <h3>Скачайте приложение</h3>
+          <p>Доступно для iOS и Android. Или зарегистрируйтесь прямо на сайте.</p>
+          <span class="step-time">≈ 1 минута</span>
+        </div>
+        <div class="step reveal" style="--d:.1s">
+          <div class="step-num">02</div>
+          <h3>Подтвердите личность</h3>
+          <p>Через Госуслуги или по фото паспорта — проверка проходит автоматически.</p>
+          <span class="step-time">≈ 2 минуты</span>
+        </div>
+        <div class="step reveal" style="--d:.2s">
+          <div class="step-num">03</div>
+          <h3>Пользуйтесь картой</h3>
+          <p>Виртуальная карта готова сразу, пластиковую привезём курьером бесплатно.</p>
+          <span class="step-time">Сразу</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="section" id="pricing">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Тарифы</span>
+        <h2>Честные цены без звёздочек</h2>
+        <p>Меняйте тариф в любой момент — без комиссии и звонков в поддержку.</p>
+      </div>
+      <div class="pricing">
+        <div class="plan reveal">
+          <h3>Старт</h3>
+          <p class="plan-desc">Для повседневных покупок и переводов</p>
+          <div class="price">0 ₽ <small>/ мес</small></div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Переводы до 100 000 ₽ без комиссии</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Кэшбэк 1% на всё</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>1 виртуальная карта</li>
+          </ul>
+          <a href="#start" class="btn btn-ghost">Выбрать Старт</a>
+        </div>
+        <div class="plan featured reveal" style="--d:.1s">
+          <span class="plan-badge">Популярный</span>
+          <h3>Про</h3>
+          <p class="plan-desc">Для тех, кто много платит и путешествует</p>
+          <div class="price">299 ₽ <small>/ мес</small></div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Переводы без лимита и комиссии</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Кэшбэк до 5% в категориях</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Обмен валют по биржевому курсу</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Металлическая карта Premium</li>
+          </ul>
+          <a href="#start" class="btn btn-primary">Подключить Про</a>
+        </div>
+        <div class="plan reveal" style="--d:.2s">
+          <h3>Бизнес</h3>
+          <p class="plan-desc">Для ИП и компаний любого размера</p>
+          <div class="price">990 ₽ <small>/ мес</small></div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Эквайринг от 0,9%</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>API и выплаты самозанятым</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Персональный менеджер 24/7</li>
+          </ul>
+          <a href="#start" class="btn btn-ghost">Выбрать Бизнес</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="container faq-wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Вопросы и ответы</span>
+        <h2>Частые вопросы</h2>
+        <p>Не нашли ответ? Поддержка в приложении отвечает в среднем за 47 секунд.</p>
+      </div>
+      <div class="faq" id="faqList">
+        <div class="faq-item open reveal">
+          <button class="faq-q" aria-expanded="true">Насколько безопасно хранить деньги в NovaPay?<span class="faq-icon" aria-hidden="true"></span></button>
+          <div class="faq-a"><div><p>Средства клиентов хранятся на отдельных счетах в банках-партнёрах и застрахованы в АСВ на сумму до 1,4 млн ₽. Все операции защищены шифрованием и 3D Secure 2.0.</p></div></div>
+        </div>
+        <div class="faq-item reveal" style="--d:.05s">
+          <button class="faq-q" aria-expanded="false">Есть ли скрытые комиссии?<span class="faq-icon" aria-hidden="true"></span></button>
+          <div class="faq-a"><div><p>Нет. Все условия указаны в тарифе и в калькуляторе выше. Перед каждым переводом приложение показывает итоговую сумму к списанию.</p></div></div>
+        </div>
+        <div class="faq-item reveal" style="--d:.1s">
+          <button class="faq-q" aria-expanded="false">Сколько идёт перевод за границу?<span class="faq-icon" aria-hidden="true"></span></button>
+          <div class="faq-a"><div><p>В большинство стран — от 30 секунд до нескольких минут. В редких случаях, при дополнительной проверке, — до одного рабочего дня.</p></div></div>
+        </div>
+        <div class="faq-item reveal" style="--d:.15s">
+          <button class="faq-q" aria-expanded="false">Можно ли открыть счёт для бизнеса?<span class="faq-icon" aria-hidden="true"></span></button>
+          <div class="faq-a"><div><p>Да, на тарифе «Бизнес» доступны расчётный счёт, эквайринг, API для интернет-магазинов и массовые выплаты.</p></div></div>
+        </div>
+        <div class="faq-item reveal" style="--d:.2s">
+          <button class="faq-q" aria-expanded="false">Как закрыть счёт?<span class="faq-icon" aria-hidden="true"></span></button>
+          <div class="faq-a"><div><p>В пару нажатий в приложении. Остаток можно бесплатно перевести на карту любого банка.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="container" id="start">
+    <div class="cta reveal">
+      <div class="cta-orb" aria-hidden="true"></div>
+      <div>
+        <span class="eyebrow">Ранний доступ</span>
+        <h2 style="margin-top:14px">Откройте счёт и получите <span class="lime">3 месяца Про</span> бесплатно</h2>
+        <p>Оставьте почту — пришлём ссылку на приложение и промокод.</p>
+      </div>
+      <form class="form" id="form" novalidate>
+        <div class="form-row">
+          <input type="email" id="email" name="email" placeholder="Ваш e-mail" autocomplete="email" aria-label="E-mail" required>
+          <button type="submit" class="btn btn-primary" id="submitBtn">Получить доступ</button>
+        </div>
+        <p class="form-hint" id="formHint">Без спама. Отписаться можно в один клик.</p>
+        <div class="form-success" role="status" aria-live="polite">
+          <span class="check"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <div><b>Готово! Проверьте почту</b><span id="successText">Мы отправили ссылку и промокод.</span></div>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="#top" class="logo">
+          <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M5 19V5l14 14V5" stroke="#c6ff3d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          NovaPay
+        </a>
+        <p>Платёжный сервис нового поколения. Концепт-проект, созданный для портфолио; компания и данные вымышлены.</p>
+      </div>
+      <div>
+        <h4>Продукт</h4>
+        <ul><li><a href="#calc">Калькулятор</a></li><li><a href="#features">Возможности</a></li><li><a href="#pricing">Тарифы</a></li></ul>
+      </div>
+      <div>
+        <h4>Компания</h4>
+        <ul><li><a href="#top">О нас</a></li><li><a href="#top">Карьера</a></li><li><a href="#top">Пресс-центр</a></li></ul>
+      </div>
+      <div>
+        <h4>Помощь</h4>
+        <ul><li><a href="#faq">Вопросы</a></li><li><a href="#top">Поддержка</a></li><li><a href="#top">Документы</a></li></ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 NovaPay. Демо-проект, не является финансовой организацией.</span>
+      <a href="../../index.html#works">← Вернуться в портфолио</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  'use strict';
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+  const rub = (n) => Math.round(n).toLocaleString('ru-RU').replace(/,/g, ' ') + ' ₽';
+
+  /* ---------- Header & mobile menu ---------- */
+  const header = $('#header');
+  const burger = $('#burger');
+  const nav = $('#nav');
+
+  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 20);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  const setMenu = (open) => {
+    burger.setAttribute('aria-expanded', String(open));
+    nav.classList.toggle('open', open);
+  };
+  burger.addEventListener('click', () => setMenu(burger.getAttribute('aria-expanded') !== 'true'));
+  $$('a', nav).forEach((a) => a.addEventListener('click', () => setMenu(false)));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+
+  /* ---------- Scroll reveal ---------- */
+  const revealEls = $$('.reveal');
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    revealEls.forEach((el) => el.classList.add('in'));
+  } else {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach((el) => io.observe(el));
+  }
+
+  /* ---------- Animated number tween ---------- */
+  const tweens = new WeakMap();
+  function animateNumber(el, to, format = rub, duration = 600) {
+    const from = tweens.get(el)?.value ?? to;
+    const state = { value: from, raf: 0 };
+    cancelAnimationFrame(tweens.get(el)?.raf);
+    tweens.set(el, state);
+    if (reduceMotion || from === to) {
+      state.value = to;
+      el.textContent = format(to);
+      return;
+    }
+    const start = performance.now();
+    const step = (now) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      state.value = from + (to - from) * eased;
+      el.textContent = format(state.value);
+      if (t < 1) state.raf = requestAnimationFrame(step);
+    };
+    state.raf = requestAnimationFrame(step);
+  }
+
+  /* ---------- 3D card tilt ---------- */
+  const stage = $('#cardStage');
+  const card = $('#bankCard');
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  if (!reduceMotion && finePointer) {
+    const zone = $('.hero');
+    let raf = 0;
+    zone.addEventListener('pointermove', (e) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const r = stage.getBoundingClientRect();
+        const x = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / (r.width / 1.2)));
+        const y = Math.max(-1, Math.min(1, (e.clientY - (r.top + r.height / 2)) / (r.height / 1.2)));
+        card.classList.add('tracking');
+        card.style.setProperty('--ry', (x * 22).toFixed(2) + 'deg');
+        card.style.setProperty('--rx', (-y * 18).toFixed(2) + 'deg');
+        card.style.setProperty('--mx', (50 + x * 45).toFixed(1) + '%');
+        card.style.setProperty('--my', (50 + y * 45).toFixed(1) + '%');
+      });
+    });
+    zone.addEventListener('pointerleave', () => {
+      cancelAnimationFrame(raf);
+      card.classList.remove('tracking');
+      ['--rx', '--ry', '--mx', '--my'].forEach((p) => card.style.removeProperty(p));
+    });
+  }
+
+  /* ---------- Fee calculator ---------- */
+  const MIN = 1000, MAX = 1000000;
+  const TYPES = {
+    card: {
+      hint: 'Мгновенно, 24/7',
+      note: 'Переводы на карты любых банков РФ. Комиссия NovaPay — 0,5%, но не более 1 500 ₽.',
+      nova: (a) => Math.min(a * 0.005, 1500), novaRate: '0,5%',
+      bank: (a) => Math.max(a * 0.015, 50)
+    },
+    sbp: {
+      hint: 'До 30 секунд',
+      note: 'Через СБП до 100 000 ₽ в месяц — бесплатно, свыше — 0,3%. Банки обычно берут 0,5% сверх лимита.',
+      nova: (a) => Math.max(0, a - 100000) * 0.003, novaRate: '0% / 0,3%',
+      bank: (a) => Math.min(Math.max(0, a - 100000) * 0.005 + a * 0.002, 1500)
+    },
+    intl: {
+      hint: '140+ стран',
+      note: 'Международные переводы по биржевому курсу. Комиссия 1%, банки берут 3% и наценку на курс.',
+      nova: (a) => a * 0.01, novaRate: '1%',
+      bank: (a) => Math.max(a * 0.03, 300) + a * 0.015
+    },
+    biz: {
+      hint: 'Для ИП и ООО',
+      note: 'Платежи контрагентам и выплаты физлицам. Комиссия 0,2%, минимум 15 ₽.',
+      nova: (a) => Math.max(a * 0.002, 15), novaRate: '0,2%',
+      bank: (a) => Math.max(a * 0.01, 100)
+    }
+  };
+
+  const range = $('#amount');
+  const els = {
+    amount: $('#amountOut'), fee: $('#feeOut'), rate: $('#rateOut'), receive: $('#receiveOut'),
+    novaVal: $('#barNovaVal'), bankVal: $('#barBankVal'), barNova: $('#barNova'), barBank: $('#barBank'),
+    save: $('#saveOut'), hint: $('#typeHint'), note: $('#calcNote')
+  };
+  let type = 'card';
+
+  // Logarithmic slider: finer control at small amounts
+  const posToAmount = (p) => {
+    const raw = MIN * Math.pow(MAX / MIN, p / 1000);
+    const step = raw < 10000 ? 100 : raw < 100000 ? 1000 : 5000;
+    return Math.min(MAX, Math.max(MIN, Math.round(raw / step) * step));
+  };
+  const amountToPos = (a) => Math.round(1000 * Math.log(a / MIN) / Math.log(MAX / MIN));
+
+  function update() {
+    const pos = Number(range.value);
+    const amount = posToAmount(pos);
+    const t = TYPES[type];
+    const fee = Math.round(t.nova(amount));
+    const bank = Math.round(t.bank(amount));
+    const max = Math.max(bank, fee, 1);
+
+    range.style.setProperty('--p', (pos / 10) + '%');
+    range.setAttribute('aria-valuetext', rub(amount));
+    animateNumber(els.amount, amount, rub, 250);
+    animateNumber(els.fee, fee);
+    animateNumber(els.receive, amount - fee);
+    animateNumber(els.novaVal, fee);
+    animateNumber(els.bankVal, bank);
+    animateNumber(els.save, Math.max(0, bank - fee));
+    els.barNova.style.width = Math.max(2, (fee / max) * 100) + '%';
+    els.barBank.style.width = Math.max(2, (bank / max) * 100) + '%';
+    els.rate.textContent = t.novaRate;
+    els.hint.textContent = t.hint;
+    els.note.textContent = t.note;
+  }
+
+  range.addEventListener('input', update);
+
+  $$('.preset').forEach((btn) => btn.addEventListener('click', () => {
+    range.value = amountToPos(Number(btn.dataset.v));
+    update();
+  }));
+
+  const tabs = $$('.tab');
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => {
+      type = tab.dataset.type;
+      tabs.forEach((t) => {
+        const on = t === tab;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+      });
+      update();
+    });
+    tab.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+      next.focus();
+      next.click();
+    });
+    tab.tabIndex = i === 0 ? 0 : -1;
+  });
+
+  range.value = amountToPos(50000);
+  update();
+
+  /* ---------- Stats counters ---------- */
+  const counters = $$('[data-count]');
+  const runCounter = (el) => {
+    const target = parseFloat(el.dataset.count);
+    const dec = Number(el.dataset.dec || 0);
+    const em = el.querySelector('em');
+    const fmt = (v) => v.toLocaleString('ru-RU', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+    tweens.set(em, { value: 0 });
+    animateNumber(em, target, fmt, 1600);
+  };
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    counters.forEach(runCounter);
+  } else {
+    const cio = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) { runCounter(entry.target); cio.unobserve(entry.target); }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach((el) => cio.observe(el));
+  }
+
+  /* ---------- FAQ accordion ---------- */
+  $$('.faq-item').forEach((item) => {
+    const btn = $('.faq-q', item);
+    btn.addEventListener('click', () => {
+      const open = !item.classList.contains('open');
+      $$('.faq-item.open').forEach((other) => {
+        if (other !== item) {
+          other.classList.remove('open');
+          $('.faq-q', other).setAttribute('aria-expanded', 'false');
+        }
+      });
+      item.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', String(open));
+    });
+  });
+
+  /* ---------- Email form (demo submit) ---------- */
+  const form = $('#form');
+  const email = $('#email');
+  const hint = $('#formHint');
+  const submitBtn = $('#submitBtn');
+  const defaultHint = hint.textContent;
+
+  email.addEventListener('input', () => {
+    hint.textContent = defaultHint;
+    hint.classList.remove('error');
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const value = email.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
+      hint.textContent = 'Похоже, в адресе ошибка — проверьте e-mail.';
+      hint.classList.add('error');
+      email.focus();
+      return;
+    }
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner" aria-hidden="true"></span>Отправляем';
+    setTimeout(() => {
+      $('#successText').textContent = 'Ссылка и промокод отправлены на ' + value + '.';
+      form.classList.add('done');
+    }, reduceMotion ? 0 : 1100);
+  });
+})();
+</script>
+</body>
+</html>
