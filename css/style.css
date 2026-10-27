@@ -442,6 +442,7 @@ body.is-ready .line__inner { transform: translateY(0); }
 .hero__word {
   position: relative;
   display: inline-block;
+  white-space: nowrap;  /* слово не переносится при смене — высота заголовка не прыгает */
   color: var(--accent);
   text-shadow: 0 0 40px rgba(198, 255, 61, 0.35);
 }
