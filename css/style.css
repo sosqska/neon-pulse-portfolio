@@ -1003,7 +1003,7 @@ body.is-ready .line__inner { transform: translateY(0); }
   text-align: left;
   border-bottom: 1px solid var(--line);
   color: var(--muted);
-  transition: color 0.35s, padding 0.45s var(--ease);
+  transition: color 0.35s;
 }
 
 .adv__item:first-child { border-top: 1px solid var(--line); }
@@ -1025,7 +1025,10 @@ body.is-ready .line__inner { transform: translateY(0); }
 }
 
 .adv__item:hover { color: var(--text); }
-.adv__item.is-active { color: var(--accent); padding-left: 14px; }
+.adv__item.is-active { color: var(--accent); }
+/* сдвиг активного пункта — только визуальный (transform), раскладка и переносы строк не меняются */
+.adv__num, .adv__name { transition: transform 0.45s var(--ease), color 0.35s; }
+.adv__item.is-active .adv__num, .adv__item.is-active .adv__name { transform: translateX(14px); }
 .adv__item.is-active .adv__num { color: var(--accent); }
 
 .adv__panel {

@@ -488,8 +488,38 @@ function toast(text) {
     if (finePointer) it.addEventListener("mouseenter", () => { if (i !== current) render(i, true); });
   });
 
+  /* Высота панели — по самому длинному пункту, чтобы при переключении
+     ничего ниже не прыгало. Меряем в невидимой копии панели. */
+  function lockHeight() {
+    const probe = inner.cloneNode(true);
+    probe.removeAttribute("id");
+    probe.querySelectorAll("[id]").forEach((el) => el.removeAttribute("id"));
+    probe.classList.remove("is-switching");
+    probe.style.cssText = `position:absolute;visibility:hidden;pointer-events:none;left:0;top:0;width:${inner.clientWidth}px;min-height:0`;
+    panel.appendChild(probe);
+    let max = 0;
+    items.forEach((it) => {
+      const i = +it.dataset.adv;
+      probe.querySelector(".adv__label").textContent = `${t(`adv${i}.t`)} (${i})`;
+      probe.querySelector(".adv__text").textContent = t(`adv${i}.p`);
+      probe.querySelector(".adv__bullets").innerHTML = t(`adv${i}.list`);
+      max = Math.max(max, probe.offsetHeight);
+    });
+    probe.remove();
+    inner.style.minHeight = max + "px";
+  }
+
+  let resizeTimer;
+  addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(lockHeight, 150); });
+
   render(1, false);
-  window.i18n.onChange(() => render(current, false));
+  lockHeight();
+  // после загрузки шрифтов строки становятся другой ширины — перемеряем
+  if (document.fonts) {
+    document.fonts.ready.then(lockHeight);
+    document.fonts.addEventListener("loadingdone", lockHeight);
+  }
+  window.i18n.onChange(() => { render(current, false); lockHeight(); });
 })();
 
 /* ---------- Год в подвале ---------- */
