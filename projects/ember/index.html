@@ -111,12 +111,35 @@ section{position:relative}
 .burger[aria-expanded="true"] i:nth-child(2){opacity:0}
 .burger[aria-expanded="true"] i:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
 /* Language switcher */
-.lang{display:flex;align-items:center;padding:3px;border-radius:999px;border:1px solid var(--line);background:rgba(20,9,4,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.lang button{position:relative;min-width:34px;height:30px;padding:0 8px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--muted);transition:background .3s, color .3s}
-.lang button:hover{color:var(--text)}
-.lang button + button::before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:1px;background:var(--line)}
-.lang button[aria-pressed="true"]{background:linear-gradient(135deg,var(--fire),var(--ember));color:#2b1203}
-.lang button[aria-pressed="true"]::before,.lang button[aria-pressed="true"] + button::before{display:none}
+.lang{position:relative;z-index:60;flex:none}
+.lang-toggle{display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 10px 0 11px;border-radius:999px;border:1px solid var(--line);background:rgba(20,9,4,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:var(--text);font-size:12px;font-weight:700;letter-spacing:.08em;transition:border-color .3s, background .3s}
+.lang-toggle:hover,.lang.open .lang-toggle{border-color:var(--fire);background:rgba(255,154,61,.1)}
+.lang-toggle:focus-visible,.lang-opt:focus-visible{outline:2px solid var(--fire);outline-offset:2px}
+.lang-toggle svg{flex:none;display:block}
+.lang-globe{color:var(--fire)}
+.lang-chev{color:var(--muted);transition:transform .3s var(--ease)}
+.lang.open .lang-chev{transform:rotate(180deg)}
+.lang-pop{
+  position:absolute;top:calc(100% + 10px);right:0;z-index:70;min-width:188px;max-width:calc(100vw - 32px);
+  margin:0;padding:6px;list-style:none;border-radius:16px;
+  background:rgba(24,11,5,.97);border:1px solid rgba(255,154,61,.28);
+  box-shadow:0 18px 44px -10px rgba(0,0,0,.7), 0 0 0 1px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,214,160,.06);
+  opacity:0;visibility:hidden;transform:translateY(-6px) scale(.97);transform-origin:top right;
+  transition:opacity .2s ease, transform .25s var(--ease), visibility 0s linear .25s;
+}
+.lang.open .lang-pop{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease, transform .25s var(--ease), visibility 0s}
+.lang-opt{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border-radius:11px;font-size:14px;font-weight:500;color:var(--muted);text-align:left;transition:background .2s, color .2s}
+.lang-opt:hover,.lang-opt:focus-visible{background:rgba(255,154,61,.1);color:var(--text)}
+.lang-opt .lang-name{flex:1}
+.lang-opt .lang-code{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--dim)}
+.lang-opt .lang-check{flex:none;width:16px;height:16px;color:var(--fire);opacity:0;transition:opacity .2s}
+.lang-opt[aria-checked="true"]{color:var(--text);background:linear-gradient(135deg,rgba(255,154,61,.18),rgba(226,96,27,.12))}
+.lang-opt[aria-checked="true"] .lang-code{color:var(--fire)}
+.lang-opt[aria-checked="true"] .lang-check{opacity:1}
+@media (prefers-reduced-motion:reduce){
+  .lang-pop,.lang.open .lang-pop{transform:none;transition:none}
+  .lang-chev{transition:none}
+}
 
 /* Hero */
 .hero{min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:150px 0 90px;overflow:hidden}
@@ -544,7 +567,7 @@ section{position:relative}
   .header .container{gap:10px}
   .header-actions{gap:8px}
   .logo{font-size:24px;gap:8px}
-  .lang button{min-width:30px;padding:0 6px}
+  .lang-toggle{gap:5px;padding:0 8px 0 9px}
   .demo-pill{font-size:11px}
 }
 @media (prefers-reduced-motion:reduce){
@@ -571,10 +594,17 @@ section{position:relative}
       <a href="#booking" class="btn btn-fire" data-i18n="btn_book_table">Забронировать стол</a>
     </nav>
     <div class="header-actions">
-      <div class="lang" id="lang" role="group" aria-label="Язык сайта" data-i18n-aria="lang_aria">
-        <button type="button" data-lang="ru" lang="ru" title="Русский" aria-pressed="true">RU</button>
-        <button type="button" data-lang="en" lang="en" title="English" aria-pressed="false">EN</button>
-        <button type="button" data-lang="es" lang="es" title="Español" aria-pressed="false">ES</button>
+      <div class="lang" id="lang">
+        <button type="button" class="lang-toggle" id="langToggle" aria-haspopup="true" aria-expanded="false" aria-controls="langPop" aria-label="Язык сайта: Русский">
+          <svg class="lang-globe" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>
+          <span class="lang-cur" id="langCur" aria-hidden="true">RU</span>
+          <svg class="lang-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg>
+        </button>
+        <ul class="lang-pop" id="langPop" role="menu" aria-label="Язык сайта" data-i18n-aria="lang_aria">
+          <li role="none"><button type="button" class="lang-opt" role="menuitemradio" data-lang="ru" lang="ru" aria-checked="true" tabindex="-1"><span class="lang-name">Русский</span><span class="lang-code" aria-hidden="true">RU</span><svg class="lang-check" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg></button></li>
+          <li role="none"><button type="button" class="lang-opt" role="menuitemradio" data-lang="en" lang="en" aria-checked="false" tabindex="-1"><span class="lang-name">English</span><span class="lang-code" aria-hidden="true">EN</span><svg class="lang-check" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg></button></li>
+          <li role="none"><button type="button" class="lang-opt" role="menuitemradio" data-lang="es" lang="es" aria-checked="false" tabindex="-1"><span class="lang-name">Español</span><span class="lang-code" aria-hidden="true">ES</span><svg class="lang-check" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg></button></li>
+        </ul>
       </div>
       <a href="#booking" class="btn btn-fire" data-i18n="btn_book">Забронировать</a>
       <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="nav"><i></i><i></i><i></i></button>
@@ -1518,7 +1548,46 @@ section{position:relative}
 
   /* ---------- Apply language ---------- */
   const metaDesc = document.querySelector('meta[name="description"]');
-  const langBtns = document.querySelectorAll('#lang [data-lang]');
+  const langBox = $('#lang');
+  const langToggle = $('#langToggle');
+  const langCur = $('#langCur');
+  const langBtns = Array.prototype.slice.call(document.querySelectorAll('#langPop [data-lang]'));
+  const LANG_NAME = { ru: 'Русский', en: 'English', es: 'Español' };
+  const isLangOpen = () => langBox.classList.contains('open');
+  const setLangOpen = (open, focusTarget) => {
+    langBox.classList.toggle('open', open);
+    langToggle.setAttribute('aria-expanded', String(open));
+    if (open) {
+      const active = langBtns.filter(b => b.dataset.lang === lang)[0] || langBtns[0];
+      if (focusTarget !== false) active.focus();
+    } else if (focusTarget) {
+      langToggle.focus();
+    }
+  };
+  langToggle.addEventListener('click', () => setLangOpen(!isLangOpen()));
+  langToggle.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); setLangOpen(true); }
+  });
+  $('#langPop').addEventListener('keydown', e => {
+    const i = langBtns.indexOf(document.activeElement);
+    let n = -1;
+    if (e.key === 'ArrowDown') n = (i + 1) % langBtns.length;
+    else if (e.key === 'ArrowUp') n = (i - 1 + langBtns.length) % langBtns.length;
+    else if (e.key === 'Home') n = 0;
+    else if (e.key === 'End') n = langBtns.length - 1;
+    else if (e.key === 'Tab') { setLangOpen(false); return; }
+    if (n > -1) { e.preventDefault(); langBtns[n].focus(); }
+  });
+  // Capture phase so Escape closes only the popover, not the mobile nav underneath
+  window.addEventListener('keydown', e => {
+    if ((e.key === 'Escape' || e.key === 'Esc') && isLangOpen()) {
+      e.stopPropagation();
+      setLangOpen(false, true);
+    }
+  }, true);
+  document.addEventListener('click', e => {
+    if (isLangOpen() && !langBox.contains(e.target)) setLangOpen(false);
+  });
   const applyLang = l => {
     lang = LANGS.includes(l) ? l : 'ru';
     document.documentElement.lang = lang;
@@ -1528,7 +1597,9 @@ section{position:relative}
     document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
     document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
     document.querySelectorAll('[data-i18n-placeholder]').forEach(el => { el.setAttribute('placeholder', t(el.dataset.i18nPlaceholder)); });
-    langBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    langBtns.forEach(b => b.setAttribute('aria-checked', String(b.dataset.lang === lang)));
+    langCur.textContent = lang.toUpperCase();
+    langToggle.setAttribute('aria-label', t('lang_aria') + ': ' + LANG_NAME[lang]);
     burger.setAttribute('aria-label', t(nav.classList.contains('open') ? 'burger_close' : 'burger_open'));
     // JS-rendered parts (booking selections in `state` are preserved)
     renderTabs(); renderMenu();
@@ -1537,9 +1608,11 @@ section{position:relative}
     renderMsg(); renderTicket(); renderOpen();
   };
   langBtns.forEach(b => b.addEventListener('click', () => {
-    if (b.dataset.lang === lang) return;
-    saveLang(b.dataset.lang);
-    applyLang(b.dataset.lang);
+    if (b.dataset.lang !== lang) {
+      saveLang(b.dataset.lang);
+      applyLang(b.dataset.lang);
+    }
+    setLangOpen(false, true);
   }));
 
   const initial = pickLang();

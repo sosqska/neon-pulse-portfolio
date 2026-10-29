@@ -106,11 +106,37 @@ body:not([data-role="admin"]) .nav-item[data-admin]{opacity:.6}
 .seg button{position:relative;z-index:1;height:32px;padding:0 13px;border:0;background:none;color:var(--muted);font:700 12.5px/1 var(--mono);border-radius:9px;transition:color .2s}
 .seg button.on{color:var(--deep)}
 .seg-ind{position:absolute;top:3px;left:0;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--lime),var(--em));box-shadow:0 6px 18px -6px rgba(198,255,61,.6);transition:transform .35s cubic-bezier(.3,.8,.3,1),width .35s}
-.lang-sw{display:inline-flex;flex:none;padding:3px;gap:2px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--line);margin-left:auto}
-.lang-sw button{height:32px;min-width:34px;padding:0 9px;border:0;border-radius:9px;background:none;color:var(--muted);font:700 11.5px/1 var(--mono);letter-spacing:.04em;transition:color .2s,background .2s}
-.lang-sw button:hover{color:var(--text)}
-.lang-sw button[aria-pressed="true"]{color:var(--deep);background:linear-gradient(135deg,var(--lime),var(--em));box-shadow:0 6px 18px -8px rgba(198,255,61,.6)}
-.lang-sw + .top-controls{margin-left:0}
+/* language dropdown */
+.topbar.lang-open{z-index:70}  /* lift the popover above the sidebar (60) and scrim (55) */
+.lang-dd{position:relative;flex:none;margin-left:auto}
+.lang-dd ~ .top-controls{margin-left:0}
+.lang-btn{display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 10px 0 11px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--muted);transition:color .2s,border-color .2s,background .2s}
+.lang-btn:hover,.lang-btn[aria-expanded="true"]{color:var(--text);border-color:var(--line2)}
+.lang-btn[aria-expanded="true"]{background:rgba(31,209,161,.06)}
+.lang-btn svg.i{width:17px;height:17px}
+.lang-btn .lb-globe{color:var(--em)}
+.lang-btn .lb-code{font:700 12px/1 var(--mono);letter-spacing:.04em;color:var(--text)}
+.lang-btn .lb-chev{width:14px;height:14px;transition:transform .25s cubic-bezier(.3,.8,.3,1)}
+.lang-btn[aria-expanded="true"] .lb-chev{transform:rotate(180deg)}
+.lang-pop{
+  position:absolute;top:calc(100% + 8px);right:0;z-index:5;min-width:196px;max-width:calc(100vw - 32px);
+  padding:6px;border-radius:14px;border:1px solid var(--line2);
+  background:linear-gradient(180deg,rgba(8,40,33,.97),rgba(4,22,18,.98));
+  box-shadow:0 22px 50px -14px rgba(0,0,0,.85),0 0 0 1px rgba(0,0,0,.25);
+  transform-origin:top right;opacity:0;visibility:hidden;transform:translateY(-6px) scale(.97);
+  transition:opacity .16s ease,transform .18s cubic-bezier(.3,.8,.3,1),visibility 0s linear .18s;
+}
+.lang-pop.open{opacity:1;visibility:visible;transform:none;transition:opacity .16s ease,transform .18s cubic-bezier(.3,.8,.3,1),visibility 0s}
+.lang-opt{display:flex;align-items:center;gap:10px;width:100%;height:40px;padding:0 10px;border:0;border-radius:10px;background:none;color:var(--muted);text-align:left;font-weight:600;font-size:13.5px;transition:color .15s,background .15s}
+.lang-opt + .lang-opt{margin-top:2px}
+.lang-opt:hover,.lang-opt:focus-visible{color:var(--text);background:rgba(31,209,161,.08)}
+.lang-opt:focus-visible{outline-offset:-2px}
+.lang-opt .lo-check{width:16px;height:16px;color:var(--lime);opacity:0;transition:opacity .15s}
+.lang-opt .lo-name{flex:1;min-width:0}
+.lang-opt .lo-code{font:700 10.5px/1 var(--mono);letter-spacing:.06em;color:var(--dim);padding:4px 6px;border-radius:6px;border:1px solid var(--line)}
+.lang-opt[aria-checked="true"]{color:var(--text);background:linear-gradient(90deg,rgba(198,255,61,.12),rgba(31,209,161,.04))}
+.lang-opt[aria-checked="true"] .lo-check{opacity:1}
+.lang-opt[aria-checked="true"] .lo-code{color:var(--lime);border-color:rgba(198,255,61,.35)}
 .role-select{position:relative;display:inline-flex;align-items:center;color:var(--muted)}
 .role-select select{appearance:none;-webkit-appearance:none;height:40px;padding:0 32px 0 36px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);font-weight:700;font-size:13px;cursor:pointer}
 .role-select select:focus-visible{outline:2px solid var(--lime)}
@@ -342,7 +368,8 @@ th.num button{flex-direction:row-reverse}
   .bars-wrap{height:220px}
   .search kbd{display:none}
   .topbar{gap:8px}
-  .lang-sw button{min-width:0;padding:0 7px;font-size:11px}
+  .lang-btn{gap:6px;padding:0 9px}
+  .lang-btn .lb-chev{display:none}
   .top-controls{gap:8px}
   .seg button{padding:0 10px}
   .role-select select{padding:0 28px 0 32px}
@@ -355,6 +382,7 @@ th.num button{flex-direction:row-reverse}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .lang-pop,.lang-pop.open{transform:none;transition:none!important}
 }
 </style>
 </head>
@@ -394,10 +422,17 @@ th.num button{flex-direction:row-reverse}
     <header class="topbar">
       <button class="icon-btn burger" id="burger" aria-label="Открыть меню" data-i18n-aria="top.menu" aria-expanded="false" aria-controls="sidebar"><span data-icon="menu"></span></button>
       <label class="search"><span data-icon="search"></span><input id="globalSearch" type="search" placeholder="Поиск заказов, клиентов…" data-i18n-placeholder="search.ph" autocomplete="off" aria-label="Поиск" data-i18n-aria="search.aria"><kbd>/</kbd></label>
-      <div class="lang-sw" id="langSw" role="group" aria-label="Язык интерфейса" data-i18n-aria="lang.aria">
-        <button type="button" data-lang="ru" lang="ru" aria-pressed="true" title="Русский">RU</button>
-        <button type="button" data-lang="en" lang="en" aria-pressed="false" title="English">EN</button>
-        <button type="button" data-lang="es" lang="es" aria-pressed="false" title="Español">ES</button>
+      <div class="lang-dd" id="langDd">
+        <button type="button" class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false" aria-controls="langPop" aria-label="Язык интерфейса: Русский">
+          <svg class="i lb-globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>
+          <span class="lb-code" id="langCode">RU</span>
+          <svg class="i lb-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="lang-pop" id="langPop" role="menu" aria-labelledby="langBtn">
+          <button type="button" class="lang-opt" role="menuitemradio" data-lang="ru" lang="ru" aria-checked="true" tabindex="-1"><svg class="i lo-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="lo-name">Русский</span><span class="lo-code" aria-hidden="true">RU</span></button>
+          <button type="button" class="lang-opt" role="menuitemradio" data-lang="en" lang="en" aria-checked="false" tabindex="-1"><svg class="i lo-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="lo-name">English</span><span class="lo-code" aria-hidden="true">EN</span></button>
+          <button type="button" class="lang-opt" role="menuitemradio" data-lang="es" lang="es" aria-checked="false" tabindex="-1"><svg class="i lo-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="lo-name">Español</span><span class="lo-code" aria-hidden="true">ES</span></button>
+        </div>
       </div>
       <div class="avatar m" id="avatarM" title="Анна Соколова">АС</div>
       <div class="top-controls">
@@ -1428,8 +1463,64 @@ function applyStatic() {
   $$('[data-i18n-placeholder]').forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); });
   $$('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.i18nAria)));
   $$('[data-i18n-title]').forEach(el => { el.title = t(el.dataset.i18nTitle); });
-  $$('#langSw button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+  paintLangBtn();
 }
+
+/* language dropdown */
+const LANG_NAMES = { ru: 'Русский', en: 'English', es: 'Español' };
+const langDd = $('#langDd'), langBtn = $('#langBtn'), langPop = $('#langPop');
+const langOpts = $$('.lang-opt', langPop);
+const topbarEl = $('.topbar');
+function paintLangBtn() {
+  $('#langCode').textContent = lang.toUpperCase();
+  langBtn.setAttribute('aria-label', t('lang.aria') + ': ' + LANG_NAMES[lang]);
+  langBtn.title = t('lang.aria');
+  langOpts.forEach(o => o.setAttribute('aria-checked', String(o.dataset.lang === lang)));
+}
+const langIsOpen = () => langBtn.getAttribute('aria-expanded') === 'true';
+function openLang(focusIdx) {
+  if (!langIsOpen()) {
+    topbarEl.classList.add('lang-open');
+    langPop.classList.add('open');
+    langBtn.setAttribute('aria-expanded', 'true');
+  }
+  let i = typeof focusIdx === 'number' ? focusIdx : langOpts.findIndex(o => o.dataset.lang === lang);
+  if (i < 0) i = 0;
+  langOpts[(i + langOpts.length) % langOpts.length].focus();
+}
+function closeLang(returnFocus) {
+  if (!langIsOpen()) return;
+  langPop.classList.remove('open');
+  langBtn.setAttribute('aria-expanded', 'false');
+  // keep the topbar lifted until the fade-out finishes
+  setTimeout(() => { if (!langIsOpen()) topbarEl.classList.remove('lang-open'); }, reduced ? 0 : 200);
+  if (returnFocus) langBtn.focus();
+}
+langBtn.addEventListener('click', () => { if (langIsOpen()) closeLang(false); else openLang(); });
+langBtn.addEventListener('keydown', e => {
+  if (e.key === 'ArrowDown') { e.preventDefault(); openLang(); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); openLang(langOpts.length - 1); }
+});
+langPop.addEventListener('click', e => {
+  const b = e.target.closest('button[data-lang]');
+  if (!b) return;
+  closeLang(true);
+  setLang(b.dataset.lang, { persist: true });
+});
+langPop.addEventListener('keydown', e => {
+  const i = langOpts.indexOf(document.activeElement);
+  if (e.key === 'ArrowDown') { e.preventDefault(); langOpts[(i + 1) % langOpts.length].focus(); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); langOpts[(i - 1 + langOpts.length) % langOpts.length].focus(); }
+  else if (e.key === 'Home') { e.preventDefault(); langOpts[0].focus(); }
+  else if (e.key === 'End') { e.preventDefault(); langOpts[langOpts.length - 1].focus(); }
+  else if (e.key === 'Tab') closeLang(false);
+});
+document.addEventListener('keydown', e => {
+  if ((e.key === 'Escape' || e.key === 'Esc') && langIsOpen()) closeLang(true);
+});
+document.addEventListener('click', e => {
+  if (langIsOpen() && !langDd.contains(e.target)) closeLang(false);
+});
 
 function setLang(l, opts = {}) {
   if (!LANGS.includes(l)) l = 'ru';
@@ -1458,10 +1549,6 @@ function setLang(l, opts = {}) {
   renderTable();
   placeInd();
 }
-$('#langSw').addEventListener('click', e => {
-  const b = e.target.closest('button[data-lang]');
-  if (b) setLang(b.dataset.lang, { persist: true });
-});
 
 /* ---------- resize ---------- */
 const ro = new ResizeObserver(() => { drawLive(); drawBars(); placeInd(); });

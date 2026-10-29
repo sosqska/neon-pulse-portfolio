@@ -143,7 +143,7 @@ const lerp = (a, b, t) => a + (b - a) * t;
 (function scrambleWord() {
   const el = $("#heroWord");
   if (!el) return;
-  const chars = "АБВГДЕЗИКЛМНОПРСТУЭЯABCDEFGHKLMNOPRSTUVZ#%&$@*!?<>";
+  // случайные символы берём из алфавита текущего языка
   let index = 0;
   let run = 0; // номер текущей анимации — смена языка обрывает старую
 
@@ -156,6 +156,7 @@ const lerp = (a, b, t) => a + (b - a) * t;
   function scrambleTo(word) {
     const from = el.textContent;
     const length = Math.max(from.length, word.length);
+    const chars = t("hero.chars");
     const queue = [];
     for (let i = 0; i < length; i++) {
       const start = Math.floor(Math.random() * 14);
@@ -170,7 +171,7 @@ const lerp = (a, b, t) => a + (b - a) * t;
       let done = 0;
       for (const q of queue) {
         if (frame >= q.end) { out += q.to; done++; }
-        else if (frame >= q.start) out += chars[Math.floor(Math.random() * chars.length)];
+        else if (frame >= q.start) out += chars[Math.floor(Math.random() * chars.length)].toLowerCase();
         else out += q.from;
       }
       el.textContent = out;

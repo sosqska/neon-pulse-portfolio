@@ -306,27 +306,71 @@ body.has-cursor .cursor, body.has-cursor .cursor-dot { opacity: 1; }
 .nav__link--mobile-cta { display: none; }
 
 /* Переключатель языка */
-.lang {
+.lang { position: relative; }
+
+.lang__toggle {
   display: flex;
-  gap: 2px;
-  padding: 3px;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 13px;
   border: 1px solid var(--line);
   border-radius: 100px;
   background: rgba(255, 255, 255, 0.03);
-}
-
-.lang__btn {
-  padding: 6px 10px;
-  border-radius: 100px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: var(--muted);
-  transition: color 0.3s, background 0.3s;
+  color: var(--text);
+  transition: border-color 0.3s, background 0.3s;
 }
 
-.lang__btn:hover { color: var(--text); }
-.lang__btn.is-active { background: var(--accent); color: var(--bg); }
+.lang__toggle:hover, .lang.is-open .lang__toggle { border-color: rgba(198, 255, 61, 0.5); background: rgba(198, 255, 61, 0.06); }
+.lang__toggle svg:first-child { color: var(--accent); }
+.lang__chevron { opacity: 0.6; transition: transform 0.3s var(--ease); }
+.lang.is-open .lang__chevron { transform: rotate(180deg); }
+
+.lang__menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 5;
+  min-width: 190px;
+  padding: 6px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(19, 19, 28, 0.96);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(198, 255, 61, 0.05);
+  display: grid;
+  gap: 2px;
+  opacity: 0;
+  transform: translateY(-6px) scale(0.97);
+  transform-origin: top right;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.25s var(--ease);
+}
+
+.lang.is-open .lang__menu { opacity: 1; transform: none; pointer-events: auto; }
+
+.lang__btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 11px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--muted);
+  text-align: left;
+  transition: color 0.2s, background 0.2s;
+}
+
+.lang__btn small { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; opacity: 0.7; }
+.lang__btn:hover, .lang__btn:focus-visible { color: var(--text); background: rgba(255, 255, 255, 0.05); outline: none; }
+.lang__btn.is-active { color: var(--accent); background: rgba(198, 255, 61, 0.08); }
+.lang__btn.is-active small::before { content: "✓ "; }
 
 .burger { display: none; width: 44px; height: 44px; position: relative; margin-left: auto; }
 

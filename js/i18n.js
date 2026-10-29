@@ -17,6 +17,7 @@
       "nav.works": "Работы", "nav.services": "Услуги", "nav.process": "Процесс", "nav.reviews": "Отзывы",
       "cta.discuss": "Обсудить проект",
       "aria.nav": "Основная навигация", "aria.menuOpen": "Открыть меню", "aria.menuClose": "Закрыть меню",
+      "aria.lang": "Выбрать язык", "hero.chars": "АБВГДЕЗИКЛМНОПРСТУЭЯ#%&$@*!?<>",
       "aria.scroll": "Прокрутить вниз", "aria.prev": "Предыдущий отзыв", "aria.next": "Следующий отзыв", "aria.review": "Отзыв",
       "hero.status": "Открыт для заказов — <b>2 свободных слота</b> в этом месяце",
       "hero.l1": "Создаю сайты,", "hero.l2": "которые",
@@ -65,6 +66,7 @@
       "nav.works": "Work", "nav.services": "Services", "nav.process": "Process", "nav.reviews": "Reviews",
       "cta.discuss": "Let's talk",
       "aria.nav": "Main navigation", "aria.menuOpen": "Open menu", "aria.menuClose": "Close menu",
+      "aria.lang": "Choose language", "hero.chars": "ABCDEFGHKLMNOPRSTUVWXYZ#%&$@*!?<>",
       "aria.scroll": "Scroll down", "aria.prev": "Previous review", "aria.next": "Next review", "aria.review": "Review",
       "hero.status": "Open for projects — <b>2 slots left</b> this month",
       "hero.l1": "I build sites", "hero.l2": "that",
@@ -113,6 +115,7 @@
       "nav.works": "Proyectos", "nav.services": "Servicios", "nav.process": "Proceso", "nav.reviews": "Opiniones",
       "cta.discuss": "Hablemos",
       "aria.nav": "Navegación principal", "aria.menuOpen": "Abrir menú", "aria.menuClose": "Cerrar menú",
+      "aria.lang": "Elegir idioma", "hero.chars": "ABCDEFGHIJLMNÑOPRSTUVZ#%&$@*!?<>",
       "aria.scroll": "Desplazarse hacia abajo", "aria.prev": "Opinión anterior", "aria.next": "Opinión siguiente", "aria.review": "Opinión",
       "hero.status": "Disponible — <b>quedan 2 plazas</b> este mes",
       "hero.l1": "Creo webs", "hero.l2": "que",
@@ -188,17 +191,71 @@
       btn.classList.toggle("is-active", active);
       btn.setAttribute("aria-pressed", String(active));
     });
+    const current = document.getElementById("langCurrent");
+    if (current) current.textContent = lang.toUpperCase();
+  }
+
+  function save() {
+    try { localStorage.setItem(KEY, lang); } catch (e) { /* без сохранения */ }
   }
 
   function set(next) {
     if (!LANGS.includes(next) || next === lang) return;
     lang = next;
-    try { localStorage.setItem(KEY, lang); } catch (e) { /* без сохранения */ }
+    save();
+    // убираем ?lang= из адреса, чтобы он не перебивал выбор при обновлении страницы
+    const url = new URL(location.href);
+    if (url.searchParams.has("lang")) {
+      url.searchParams.delete("lang");
+      history.replaceState(null, "", url);
+    }
     apply();
     listeners.forEach((fn) => fn(lang));
   }
 
-  document.querySelectorAll(".lang__btn").forEach((btn) => btn.addEventListener("click", () => set(btn.dataset.lang)));
+  /* ---------- Выпадающее окошко выбора языка ---------- */
+  const wrap = document.getElementById("lang");
+  const toggle = document.getElementById("langToggle");
+  const menu = document.getElementById("langMenu");
+
+  function openMenu(open) {
+    if (!menu) return;
+    toggle.setAttribute("aria-expanded", String(open));
+    wrap.classList.toggle("is-open", open);
+    if (open) {
+      menu.hidden = false;
+      const active = menu.querySelector(".is-active") || menu.querySelector(".lang__btn");
+      requestAnimationFrame(() => active.focus());
+    } else {
+      // ждём конца анимации закрытия, потом прячем
+      setTimeout(() => { if (!wrap.classList.contains("is-open")) menu.hidden = true; }, 200);
+    }
+  }
+
+  if (toggle && menu) {
+    toggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openMenu(!wrap.classList.contains("is-open"));
+    });
+    document.addEventListener("click", (e) => {
+      if (wrap.classList.contains("is-open") && !wrap.contains(e.target)) openMenu(false);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (!wrap.classList.contains("is-open")) return;
+      const items = Array.from(menu.querySelectorAll(".lang__btn"));
+      const i = items.indexOf(document.activeElement);
+      if (e.key === "Escape") { openMenu(false); toggle.focus(); }
+      if (e.key === "ArrowDown") { e.preventDefault(); items[(i + 1) % items.length].focus(); }
+      if (e.key === "ArrowUp") { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+    });
+  }
+
+  document.querySelectorAll(".lang__btn").forEach((btn) => btn.addEventListener("click", () => {
+    set(btn.dataset.lang);
+    if (menu) { openMenu(false); toggle.focus(); }
+  }));
+
+  if (new URLSearchParams(location.search).has("lang")) save();
   apply();
 
   window.i18n = {
