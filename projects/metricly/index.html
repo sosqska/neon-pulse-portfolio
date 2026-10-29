@@ -106,6 +106,11 @@ body:not([data-role="admin"]) .nav-item[data-admin]{opacity:.6}
 .seg button{position:relative;z-index:1;height:32px;padding:0 13px;border:0;background:none;color:var(--muted);font:700 12.5px/1 var(--mono);border-radius:9px;transition:color .2s}
 .seg button.on{color:var(--deep)}
 .seg-ind{position:absolute;top:3px;left:0;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--lime),var(--em));box-shadow:0 6px 18px -6px rgba(198,255,61,.6);transition:transform .35s cubic-bezier(.3,.8,.3,1),width .35s}
+.lang-sw{display:inline-flex;flex:none;padding:3px;gap:2px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--line);margin-left:auto}
+.lang-sw button{height:32px;min-width:34px;padding:0 9px;border:0;border-radius:9px;background:none;color:var(--muted);font:700 11.5px/1 var(--mono);letter-spacing:.04em;transition:color .2s,background .2s}
+.lang-sw button:hover{color:var(--text)}
+.lang-sw button[aria-pressed="true"]{color:var(--deep);background:linear-gradient(135deg,var(--lime),var(--em));box-shadow:0 6px 18px -8px rgba(198,255,61,.6)}
+.lang-sw + .top-controls{margin-left:0}
 .role-select{position:relative;display:inline-flex;align-items:center;color:var(--muted)}
 .role-select select{appearance:none;-webkit-appearance:none;height:40px;padding:0 32px 0 36px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);font-weight:700;font-size:13px;cursor:pointer}
 .role-select select:focus-visible{outline:2px solid var(--lime)}
@@ -324,7 +329,7 @@ th.num button{flex-direction:row-reverse}
   body.nav-open{overflow:hidden}
   .burger{display:grid}
   .topbar{flex-wrap:wrap;padding:12px 16px}
-  .search{max-width:none}
+  .search{max-width:none;flex-basis:0}
   .top-controls{order:3;width:100%;margin-left:0;justify-content:space-between}
   .top-controls .avatar,.top-controls .bell{display:none}
   .avatar.m{display:grid}
@@ -336,7 +341,10 @@ th.num button{flex-direction:row-reverse}
   .chart-wrap{height:240px}
   .bars-wrap{height:220px}
   .search kbd{display:none}
-  .seg button{padding:0 11px}
+  .topbar{gap:8px}
+  .lang-sw button{min-width:0;padding:0 7px;font-size:11px}
+  .top-controls{gap:8px}
+  .seg button{padding:0 10px}
   .role-select select{padding:0 28px 0 32px}
   .card{padding:16px}
   .table-scroll{margin:0 -16px -16px}
@@ -352,58 +360,63 @@ th.num button{flex-direction:row-reverse}
 </head>
 <body data-role="admin">
 
-<a class="back-pill" href="../../index.html#works" aria-label="Назад в портфолио">
-  <span data-icon="arrowLeft"></span><span>Назад в портфолио</span><em>Демо-проект</em>
+<a class="back-pill" href="../../index.html#works" aria-label="Назад в портфолио" data-i18n-aria="back.aria">
+  <span data-icon="arrowLeft"></span><span data-i18n="back.text">Назад в портфолио</span><em data-i18n="back.demo">Демо-проект</em>
 </a>
 
 <div class="app">
-  <aside class="sidebar" id="sidebar" aria-label="Главное меню">
+  <aside class="sidebar" id="sidebar" aria-label="Главное меню" data-i18n-aria="nav.aria">
     <div class="brand">
       <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#04201b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18V9l5 5 4-8 7 12"/></svg></span>
-      <span class="brand-text">Metricly<small>Sales analytics</small></span>
+      <span class="brand-text">Metricly<small data-i18n="brand.tag">Sales analytics</small></span>
     </div>
     <nav class="nav">
-      <div class="nav-label">Аналитика</div>
-      <button class="nav-item active" data-target="top" title="Обзор"><span data-icon="grid"></span><span>Обзор</span></button>
-      <button class="nav-item" data-target="secSales" title="Продажи"><span data-icon="trend"></span><span>Продажи</span><em class="tag">LIVE</em></button>
-      <button class="nav-item" data-target="secOrders" title="Клиенты"><span data-icon="users"></span><span>Клиенты</span></button>
-      <button class="nav-item" data-target="secProducts" title="Товары"><span data-icon="box"></span><span>Товары</span></button>
-      <div class="nav-label">Рабочее место</div>
-      <button class="nav-item" data-target="top" data-flash="#btnExport" title="Отчёты"><span data-icon="file"></span><span>Отчёты</span><em class="tag">Авто</em></button>
-      <button class="nav-item" data-target="settings" data-admin title="Настройки"><span data-icon="sliders"></span><span>Настройки</span><span class="lock" data-icon="lock"></span></button>
+      <div class="nav-label" data-i18n="nav.analytics">Аналитика</div>
+      <button class="nav-item active" data-target="top" title="Обзор" data-i18n-title="nav.overview"><span data-icon="grid"></span><span data-i18n="nav.overview">Обзор</span></button>
+      <button class="nav-item" data-target="secSales" title="Продажи" data-i18n-title="nav.sales"><span data-icon="trend"></span><span data-i18n="nav.sales">Продажи</span><em class="tag">LIVE</em></button>
+      <button class="nav-item" data-target="secOrders" title="Клиенты" data-i18n-title="nav.clients"><span data-icon="users"></span><span data-i18n="nav.clients">Клиенты</span></button>
+      <button class="nav-item" data-target="secProducts" title="Товары" data-i18n-title="nav.products"><span data-icon="box"></span><span data-i18n="nav.products">Товары</span></button>
+      <div class="nav-label" data-i18n="nav.workspace">Рабочее место</div>
+      <button class="nav-item" data-target="top" data-flash="#btnExport" title="Отчёты" data-i18n-title="nav.reports"><span data-icon="file"></span><span data-i18n="nav.reports">Отчёты</span><em class="tag" data-i18n="nav.auto">Авто</em></button>
+      <button class="nav-item" data-target="settings" data-admin title="Настройки" data-i18n-title="nav.settings"><span data-icon="sliders"></span><span data-i18n="nav.settings">Настройки</span><span class="lock" data-icon="lock"></span></button>
     </nav>
     <div class="side-card">
-      <b>Тариф Business</b>
-      <p>7 из 10 мест в команде</p>
+      <b data-i18n="plan.title">Тариф Business</b>
+      <p data-i18n="plan.seats">7 из 10 мест в команде</p>
       <div class="meter"><i></i></div>
-      <button class="btn only-admin" id="btnInvite"><span data-icon="users"></span>Пригласить</button>
+      <button class="btn only-admin" id="btnInvite"><span data-icon="users"></span><span data-i18n="plan.invite">Пригласить</span></button>
     </div>
-    <div class="sys"><i></i><span>Все системы в норме</span></div>
+    <div class="sys"><i></i><span data-i18n="sys.ok">Все системы в норме</span></div>
   </aside>
   <div class="scrim" id="scrim"></div>
 
   <div class="main">
     <header class="topbar">
-      <button class="icon-btn burger" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="sidebar"><span data-icon="menu"></span></button>
-      <label class="search"><span data-icon="search"></span><input id="globalSearch" type="search" placeholder="Поиск заказов, клиентов…" autocomplete="off" aria-label="Поиск"><kbd>/</kbd></label>
-      <div class="avatar m" title="Анна Соколова">АС</div>
+      <button class="icon-btn burger" id="burger" aria-label="Открыть меню" data-i18n-aria="top.menu" aria-expanded="false" aria-controls="sidebar"><span data-icon="menu"></span></button>
+      <label class="search"><span data-icon="search"></span><input id="globalSearch" type="search" placeholder="Поиск заказов, клиентов…" data-i18n-placeholder="search.ph" autocomplete="off" aria-label="Поиск" data-i18n-aria="search.aria"><kbd>/</kbd></label>
+      <div class="lang-sw" id="langSw" role="group" aria-label="Язык интерфейса" data-i18n-aria="lang.aria">
+        <button type="button" data-lang="ru" lang="ru" aria-pressed="true" title="Русский">RU</button>
+        <button type="button" data-lang="en" lang="en" aria-pressed="false" title="English">EN</button>
+        <button type="button" data-lang="es" lang="es" aria-pressed="false" title="Español">ES</button>
+      </div>
+      <div class="avatar m" id="avatarM" title="Анна Соколова">АС</div>
       <div class="top-controls">
-        <div class="seg" id="periodSeg" role="group" aria-label="Период">
+        <div class="seg" id="periodSeg" role="group" aria-label="Период" data-i18n-aria="period.aria">
           <span class="seg-ind" aria-hidden="true"></span>
-          <button data-p="7" aria-pressed="false">7д</button>
-          <button data-p="30" class="on" aria-pressed="true">30д</button>
-          <button data-p="90" aria-pressed="false">90д</button>
+          <button data-p="7" aria-pressed="false" data-i18n="p7">7д</button>
+          <button data-p="30" class="on" aria-pressed="true" data-i18n="p30">30д</button>
+          <button data-p="90" aria-pressed="false" data-i18n="p90">90д</button>
         </div>
-        <label class="role-select" title="Роль доступа">
+        <label class="role-select" title="Роль доступа" data-i18n-title="role.aria">
           <span class="ri-l" data-icon="shield"></span>
-          <select id="roleSel" aria-label="Роль доступа">
-            <option value="admin">Админ</option>
-            <option value="manager">Менеджер</option>
-            <option value="viewer">Наблюдатель</option>
+          <select id="roleSel" aria-label="Роль доступа" data-i18n-aria="role.aria">
+            <option value="admin" data-i18n="role.admin">Админ</option>
+            <option value="manager" data-i18n="role.manager">Менеджер</option>
+            <option value="viewer" data-i18n="role.viewer">Наблюдатель</option>
           </select>
           <span class="ri-r" data-icon="chevron"></span>
         </label>
-        <button class="icon-btn bell" id="bell" aria-label="Уведомления"><span data-icon="bell"></span><i class="dot"></i></button>
+        <button class="icon-btn bell" id="bell" aria-label="Уведомления" data-i18n-aria="bell.aria"><span data-icon="bell"></span><i class="dot"></i></button>
         <div class="avatar" id="avatar" title="Анна Соколова · Админ">АС</div>
       </div>
     </header>
@@ -411,37 +424,37 @@ th.num button{flex-direction:row-reverse}
     <main class="content" id="top">
       <div class="page-head">
         <div>
-          <div class="crumbs">Рабочее пространство · <b>ООО «Северный ветер»</b></div>
-          <h1>Обзор продаж <span class="viewer-chip"><span data-icon="eye"></span>Только просмотр</span></h1>
-          <p class="sub">Роль: <b id="roleName">Админ</b> · <span id="updatedAt">данные обновлены только что</span></p>
+          <div class="crumbs"><span data-i18n="crumbs.ws">Рабочее пространство</span> · <b data-i18n="crumbs.org">ООО «Северный ветер»</b></div>
+          <h1><span data-i18n="h1">Обзор продаж</span> <span class="viewer-chip"><span data-icon="eye"></span><span data-i18n="viewOnly">Только просмотр</span></span></h1>
+          <p class="sub"><span data-i18n="role.label">Роль:</span> <b id="roleName">Админ</b> · <span id="updatedAt">данные обновлены только что</span></p>
         </div>
         <div class="head-actions">
-          <button class="btn only-admin" id="btnCustomize"><span data-icon="edit"></span><span>Настроить</span></button>
+          <button class="btn only-admin" id="btnCustomize"><span data-icon="edit"></span><span data-i18n="btn.customize">Настроить</span></button>
           <button class="btn primary no-viewer" id="btnExport"><span data-icon="download"></span><span id="exportLabel">Экспорт отчёта</span></button>
         </div>
       </div>
 
-      <section class="kpis" id="kpis" aria-label="Ключевые показатели"></section>
+      <section class="kpis" id="kpis" aria-label="Ключевые показатели" data-i18n-aria="kpis.aria"></section>
 
       <section class="grid g-main">
         <article class="card" id="secSales">
           <header class="card-head">
             <div>
-              <h2>Выручка <span class="live" title="Поток данных в реальном времени"><i></i>LIVE</span></h2>
-              <p class="muted">Интервал 5 мин · сегодня: <b class="mono" id="todayTotal" style="color:var(--text)">0 ₽</b></p>
+              <h2><span data-i18n="live.title">Выручка</span> <span class="live" title="Поток данных в реальном времени" data-i18n-title="live.stream"><i></i>LIVE</span></h2>
+              <p class="muted"><span data-i18n="live.sub">Интервал 5 мин · сегодня:</span> <b class="mono" id="todayTotal" style="color:var(--text)">0 ₽</b></p>
             </div>
-            <div class="legend-inline"><span><i class="sw grad"></i>Выручка</span><span><i class="sw dash"></i>Среднее</span></div>
+            <div class="legend-inline"><span><i class="sw grad"></i><span data-i18n="legend.revenue">Выручка</span></span><span><i class="sw dash"></i><span data-i18n="legend.avg">Среднее</span></span></div>
           </header>
           <div class="chart-wrap" id="liveWrap">
-            <svg id="liveSvg" role="img" aria-label="График выручки в реальном времени"></svg>
+            <svg id="liveSvg" role="img" aria-label="График выручки в реальном времени" data-i18n-aria="live.aria"></svg>
             <div class="chart-tip" id="liveTip"></div>
           </div>
         </article>
 
         <article class="card" id="secProducts">
-          <header class="card-head"><div><h2>Категории товаров</h2><p class="muted">Доля выручки за период</p></div></header>
+          <header class="card-head"><div><h2 data-i18n="cats.title">Категории товаров</h2><p class="muted" data-i18n="cats.sub">Доля выручки за период</p></div></header>
           <div class="donut-wrap" id="donutWrap">
-            <svg id="donut" viewBox="0 0 200 200" role="img" aria-label="Распределение выручки по категориям"></svg>
+            <svg id="donut" viewBox="0 0 200 200" role="img" aria-label="Распределение выручки по категориям" data-i18n-aria="cats.aria"></svg>
             <div class="donut-center"><span id="donutLabel">Выручка</span><b id="donutValue">—</b></div>
           </div>
           <ul class="legend" id="donutLegend"></ul>
@@ -451,15 +464,15 @@ th.num button{flex-direction:row-reverse}
       <section class="grid g-two">
         <article class="card" id="secChannels">
           <header class="card-head">
-            <div><h2>Продажи по каналам</h2><p class="muted">Сравнение с прошлым периодом</p></div>
-            <div class="legend-inline"><span><i class="sw cur"></i>Текущий</span><span><i class="sw prev"></i>Прошлый</span></div>
+            <div><h2 data-i18n="ch.title">Продажи по каналам</h2><p class="muted" data-i18n="ch.sub">Сравнение с прошлым периодом</p></div>
+            <div class="legend-inline"><span><i class="sw cur"></i><span data-i18n="legend.cur">Текущий</span></span><span><i class="sw prev"></i><span data-i18n="legend.prev">Прошлый</span></span></div>
           </header>
-          <div class="chart-wrap bars-wrap" id="barsWrap"><svg id="barsSvg" role="img" aria-label="Столбчатая диаграмма продаж по каналам"></svg></div>
+          <div class="chart-wrap bars-wrap" id="barsWrap"><svg id="barsSvg" role="img" aria-label="Столбчатая диаграмма продаж по каналам" data-i18n-aria="ch.aria"></svg></div>
         </article>
 
         <article class="card" id="secTeam">
           <header class="card-head">
-            <div><h2>Топ менеджеров</h2><p class="muted">Выручка за период</p></div>
+            <div><h2 data-i18n="team.title">Топ менеджеров</h2><p class="muted" data-i18n="team.sub">Выручка за период</p></div>
           </header>
           <ul class="team" id="team"></ul>
         </article>
@@ -467,23 +480,23 @@ th.num button{flex-direction:row-reverse}
 
       <section class="card grid" id="secOrders" style="display:block">
         <header class="card-head">
-          <div><h2>Последние заказы</h2><p class="muted" id="ordersCount"></p></div>
+          <div><h2 data-i18n="orders.title">Последние заказы</h2><p class="muted" id="ordersCount"></p></div>
           <div class="table-tools">
-            <label class="search sm"><span data-icon="search"></span><input id="tableSearch" type="search" placeholder="Фильтр по заказам" autocomplete="off" aria-label="Фильтр заказов"></label>
+            <label class="search sm"><span data-icon="search"></span><input id="tableSearch" type="search" placeholder="Фильтр по заказам" data-i18n-placeholder="orders.filter" autocomplete="off" aria-label="Фильтр заказов" data-i18n-aria="orders.filterAria"></label>
           </div>
         </header>
         <div class="table-scroll">
           <table>
             <thead>
               <tr>
-                <th data-key="id" aria-sort="none"><button>Заказ<span data-icon="sortDown"></span></button></th>
-                <th data-key="client" aria-sort="none"><button>Клиент<span data-icon="sortDown"></span></button></th>
-                <th data-key="manager" aria-sort="none"><button>Менеджер<span data-icon="sortDown"></span></button></th>
-                <th data-key="channel" aria-sort="none"><button>Канал<span data-icon="sortDown"></span></button></th>
-                <th data-key="amount" class="num" aria-sort="none"><button>Сумма<span data-icon="sortDown"></span></button></th>
-                <th data-key="status" aria-sort="none"><button>Статус<span data-icon="sortDown"></span></button></th>
-                <th data-key="date" aria-sort="descending"><button>Дата<span data-icon="sortDown"></span></button></th>
-                <th class="no-viewer"><span class="sr" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Действия</span></th>
+                <th data-key="id" aria-sort="none"><button><span data-i18n="th.id">Заказ</span><span data-icon="sortDown"></span></button></th>
+                <th data-key="client" aria-sort="none"><button><span data-i18n="th.client">Клиент</span><span data-icon="sortDown"></span></button></th>
+                <th data-key="manager" aria-sort="none"><button><span data-i18n="th.manager">Менеджер</span><span data-icon="sortDown"></span></button></th>
+                <th data-key="channel" aria-sort="none"><button><span data-i18n="th.channel">Канал</span><span data-icon="sortDown"></span></button></th>
+                <th data-key="amount" class="num" aria-sort="none"><button><span data-i18n="th.amount">Сумма</span><span data-icon="sortDown"></span></button></th>
+                <th data-key="status" aria-sort="none"><button><span data-i18n="th.status">Статус</span><span data-icon="sortDown"></span></button></th>
+                <th data-key="date" aria-sort="descending"><button><span data-i18n="th.date">Дата</span><span data-icon="sortDown"></span></button></th>
+                <th class="no-viewer"><span class="sr" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)" data-i18n="th.actions">Действия</span></th>
               </tr>
             </thead>
             <tbody id="ordersBody"></tbody>
@@ -508,20 +521,220 @@ const rmq = matchMedia('(prefers-reduced-motion: reduce)');
 let reduced = rmq.matches;
 rmq.addEventListener && rmq.addEventListener('change', e => { reduced = e.matches; });
 
-const nf = new Intl.NumberFormat('ru-RU');
-const money = v => nf.format(Math.round(v)) + ' ₽';
+/* ---------- i18n ---------- */
+const LANGS = ['ru', 'en', 'es'];
+const LOCALES = { ru: 'ru-RU', en: 'en-US', es: 'es-ES' };
+const ruPl = (n, a, b, c) => { const m10 = n % 10, m100 = n % 100; return m10 === 1 && m100 !== 11 ? a : m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20) ? b : c; };
+
+const I18N = {
+  ru: {
+    'meta.title': 'Metricly — аналитика продаж',
+    'meta.desc': 'Демо-проект: SaaS-дашборд аналитики продаж с графиками в реальном времени и ролями доступа.',
+    'back.aria': 'Назад в портфолио', 'back.text': 'Назад в портфолио', 'back.demo': 'Демо-проект',
+    'brand.tag': 'Sales analytics',
+    'nav.aria': 'Главное меню', 'nav.analytics': 'Аналитика', 'nav.overview': 'Обзор', 'nav.sales': 'Продажи', 'nav.clients': 'Клиенты',
+    'nav.products': 'Товары', 'nav.workspace': 'Рабочее место', 'nav.reports': 'Отчёты', 'nav.auto': 'Авто', 'nav.settings': 'Настройки',
+    'plan.title': 'Тариф Business', 'plan.seats': '7 из 10 мест в команде', 'plan.invite': 'Пригласить', 'sys.ok': 'Все системы в норме',
+    'top.menu': 'Открыть меню', 'search.ph': 'Поиск заказов, клиентов…', 'search.aria': 'Поиск', 'lang.aria': 'Язык интерфейса',
+    'period.aria': 'Период', 'p7': '7д', 'p30': '30д', 'p90': '90д',
+    'role.aria': 'Роль доступа', 'role.admin': 'Админ', 'role.manager': 'Менеджер', 'role.viewer': 'Наблюдатель', 'bell.aria': 'Уведомления',
+    'crumbs.ws': 'Рабочее пространство', 'crumbs.org': 'ООО «Северный ветер»', 'h1': 'Обзор продаж', 'viewOnly': 'Только просмотр',
+    'role.label': 'Роль:', 'updated.now': 'данные обновлены только что', 'updated.at': 'обновлено в {t}',
+    'btn.customize': 'Настроить', 'export.label': 'Экспорт отчёта', 'export.busy': 'Формируем…',
+    'kpis.aria': 'Ключевые показатели', 'kpi.revenue': 'Выручка', 'kpi.orders': 'Заказы', 'kpi.avg': 'Средний чек', 'kpi.conv': 'Конверсия',
+    'kpi.cmp': 'к прошлым {p} дн.',
+    'live.title': 'Выручка', 'live.stream': 'Поток данных в реальном времени', 'live.sub': 'Интервал 5 мин · сегодня:',
+    'live.aria': 'График выручки в реальном времени', 'legend.revenue': 'Выручка', 'legend.avg': 'Среднее', 'tip.vsPrev': 'к пред. интервалу',
+    'cats.title': 'Категории товаров', 'cats.sub': 'Доля выручки за период', 'cats.aria': 'Распределение выручки по категориям', 'donut.total': 'Выручка',
+    'ch.title': 'Продажи по каналам', 'ch.sub': 'Сравнение с прошлым периодом', 'ch.aria': 'Столбчатая диаграмма продаж по каналам',
+    'legend.cur': 'Текущий', 'legend.prev': 'Прошлый', 'ch.tipPrev': 'прошлый:',
+    'team.title': 'Топ менеджеров', 'team.sub': 'Выручка за период', 'you': 'Вы', 'masked.title': 'Скрыто для роли «Наблюдатель»',
+    'orders.title': 'Последние заказы', 'orders.filter': 'Фильтр по заказам', 'orders.filterAria': 'Фильтр заказов',
+    'th.id': 'Заказ', 'th.client': 'Клиент', 'th.manager': 'Менеджер', 'th.channel': 'Канал', 'th.amount': 'Сумма', 'th.status': 'Статус',
+    'th.date': 'Дата', 'th.actions': 'Действия',
+    'orders.edit': 'Редактировать', 'orders.editAria': 'Редактировать заказ {id}', 'orders.empty': 'Ничего не найдено по запросу «{q}»',
+    'orders.found': 'Найдено {n} из {m}', 'orders.count': v => `${v.n} ${ruPl(v.n, 'заказ', 'заказа', 'заказов')} за последние ${v.p} дн.`,
+    'st.paid': 'Оплачен', 'st.ship': 'Доставлен', 'st.proc': 'В обработке', 'st.cancel': 'Отменён', 'st.refund': 'Возврат',
+    'toast.close': 'Закрыть уведомление', 'role.toast': 'Роль: {r}',
+    'role.admin.msg': 'Полный доступ: экспорт отчётов, настройка виджетов и все финансовые данные команды.',
+    'role.manager.msg': 'Экспорт доступен, настройки дашборда скрыты. Редактировать можно только свои заказы.',
+    'role.viewer.msg': 'Режим чтения: экспорт и редактирование скрыты, выручка других менеджеров замаскирована.',
+    'order.title': 'Заказ {id}', 'order.text': 'Карточка заказа открылась бы в боковой панели. В демо редактирование отключено.',
+    'export.title': 'Экспорт отчёта', 'export.s1': 'Собираем данные за период…', 'export.s2': 'Агрегируем продажи по каналам…',
+    'export.s3': 'Строим графики и таблицы…', 'export.s4': 'Упаковываем PDF…', 'export.doneTitle': 'Отчёт готов',
+    'export.file': 'metricly_prodazhi_{p}d.pdf',
+    'export.doneText': '{file} · {size} МБ. Сформирован за 3 секунды вместо пары часов ручной сборки.',
+    'customize.title': 'Настройка виджетов', 'customize.text': 'Здесь администратор перетаскивает и скрывает виджеты. В демо режим отключён.',
+    'invite.title': 'Приглашение', 'invite.text': 'Ссылка-приглашение скопирована бы в буфер обмена. Свободно 3 места.',
+    'bell.title': 'Уведомления', 'bell.text': 'Выручка за сегодня выше плана на 12%. Еженедельный отчёт отправлен руководителю.',
+    'denied.title': 'Нет доступа', 'denied.text': 'Раздел «Настройки» доступен только роли «{a}». Ваша роль — «{r}».',
+    'settings.title': 'Настройки', 'settings.text': 'Управление ролями, интеграциями и расписанием автоотчётов. В демо раздел свёрнут.',
+    'reports.title': 'Отчёты', 'reports.text': 'Экспорт недоступен для роли «{v}».',
+    'welcome.title': 'Добро пожаловать в Metricly', 'welcome.text': 'Это демо: смените роль и период в верхней панели, наведите на графики — данные живые.',
+    'u.m': ' млн', 'u.k': ' тыс',
+    managers: ['Анна Соколова', 'Игорь Петров', 'Мария Ким', 'Дмитрий Орлов', 'Елена Васнецова'],
+    channels: [['Сайт', 'Сайт'], ['Маркетплейсы', 'Маркет.'], ['Приложение', 'Прилож.'], ['Соцсети', 'Соцсети'], ['Офлайн', 'Офлайн']],
+    cats: ['Электроника', 'Дом и сад', 'Одежда', 'Красота', 'Спорт'],
+    clients: ['ООО «Альфа-Трейд»', 'ИП Кузнецов', 'Бэст Маркет', 'ООО «Лесная поляна»', 'Студия «Форма»', 'ТД «Восток»',
+      'Кофейня «Зерно»', 'ООО «Техносфера»', 'Магазин «Уют»', 'ИП Смирнова', 'Сеть «ГородОК»', 'ООО «Северстрой»',
+      'Пекарня «Хлебник»', 'Fitness Lab', 'ООО «МедЛайн»', 'Арт-пространство «Цех»']
+  },
+  en: {
+    'meta.title': 'Metricly — sales analytics',
+    'meta.desc': 'Demo project: a SaaS sales analytics dashboard with real-time charts and access roles.',
+    'back.aria': 'Back to portfolio', 'back.text': 'Back to portfolio', 'back.demo': 'Demo project',
+    'brand.tag': 'Sales analytics',
+    'nav.aria': 'Main menu', 'nav.analytics': 'Analytics', 'nav.overview': 'Overview', 'nav.sales': 'Sales', 'nav.clients': 'Customers',
+    'nav.products': 'Products', 'nav.workspace': 'Workspace', 'nav.reports': 'Reports', 'nav.auto': 'Auto', 'nav.settings': 'Settings',
+    'plan.title': 'Business plan', 'plan.seats': '7 of 10 team seats used', 'plan.invite': 'Invite', 'sys.ok': 'All systems operational',
+    'top.menu': 'Open menu', 'search.ph': 'Search orders, customers…', 'search.aria': 'Search', 'lang.aria': 'Interface language',
+    'period.aria': 'Period', 'p7': '7d', 'p30': '30d', 'p90': '90d',
+    'role.aria': 'Access role', 'role.admin': 'Admin', 'role.manager': 'Manager', 'role.viewer': 'Viewer', 'bell.aria': 'Notifications',
+    'crumbs.ws': 'Workspace', 'crumbs.org': 'North Wind LLC', 'h1': 'Sales overview', 'viewOnly': 'View only',
+    'role.label': 'Role:', 'updated.now': 'data updated just now', 'updated.at': 'updated at {t}',
+    'btn.customize': 'Customize', 'export.label': 'Export report', 'export.busy': 'Generating…',
+    'kpis.aria': 'Key metrics', 'kpi.revenue': 'Revenue', 'kpi.orders': 'Orders', 'kpi.avg': 'Avg. order', 'kpi.conv': 'Conversion',
+    'kpi.cmp': 'vs. previous {p} days',
+    'live.title': 'Revenue', 'live.stream': 'Real-time data stream', 'live.sub': '5-min interval · today:',
+    'live.aria': 'Real-time revenue chart', 'legend.revenue': 'Revenue', 'legend.avg': 'Average', 'tip.vsPrev': 'vs. prev. interval',
+    'cats.title': 'Product categories', 'cats.sub': 'Share of revenue for the period', 'cats.aria': 'Revenue breakdown by category', 'donut.total': 'Revenue',
+    'ch.title': 'Sales by channel', 'ch.sub': 'Compared with the previous period', 'ch.aria': 'Bar chart of sales by channel',
+    'legend.cur': 'Current', 'legend.prev': 'Previous', 'ch.tipPrev': 'previous:',
+    'team.title': 'Top managers', 'team.sub': 'Revenue for the period', 'you': 'You', 'masked.title': 'Hidden for the Viewer role',
+    'orders.title': 'Recent orders', 'orders.filter': 'Filter orders', 'orders.filterAria': 'Filter orders',
+    'th.id': 'Order', 'th.client': 'Customer', 'th.manager': 'Manager', 'th.channel': 'Channel', 'th.amount': 'Amount', 'th.status': 'Status',
+    'th.date': 'Date', 'th.actions': 'Actions',
+    'orders.edit': 'Edit', 'orders.editAria': 'Edit order {id}', 'orders.empty': 'Nothing found for “{q}”',
+    'orders.found': '{n} of {m} found', 'orders.count': v => `${v.n} ${v.n === 1 ? 'order' : 'orders'} in the last ${v.p} days`,
+    'st.paid': 'Paid', 'st.ship': 'Delivered', 'st.proc': 'Processing', 'st.cancel': 'Cancelled', 'st.refund': 'Refunded',
+    'toast.close': 'Dismiss notification', 'role.toast': 'Role: {r}',
+    'role.admin.msg': 'Full access: report export, widget settings and all of the team’s financial data.',
+    'role.manager.msg': 'Export is available, dashboard settings are hidden. You can edit only your own orders.',
+    'role.viewer.msg': 'Read-only mode: export and editing are hidden, other managers’ revenue is masked.',
+    'order.title': 'Order {id}', 'order.text': 'The order card would open in a side panel. Editing is disabled in the demo.',
+    'export.title': 'Report export', 'export.s1': 'Collecting data for the period…', 'export.s2': 'Aggregating sales by channel…',
+    'export.s3': 'Building charts and tables…', 'export.s4': 'Packaging the PDF…', 'export.doneTitle': 'Report ready',
+    'export.file': 'metricly_sales_{p}d.pdf',
+    'export.doneText': '{file} · {size} MB. Generated in 3 seconds instead of a couple of hours of manual work.',
+    'customize.title': 'Widget settings', 'customize.text': 'This is where an admin drags and hides widgets. Disabled in the demo.',
+    'invite.title': 'Invitation', 'invite.text': 'An invite link would be copied to your clipboard. 3 seats left.',
+    'bell.title': 'Notifications', 'bell.text': 'Today’s revenue is 12% above plan. The weekly report has been sent to your manager.',
+    'denied.title': 'Access denied', 'denied.text': 'The Settings section is available to the “{a}” role only. Your role is “{r}”.',
+    'settings.title': 'Settings', 'settings.text': 'Manage roles, integrations and the auto-report schedule. Collapsed in the demo.',
+    'reports.title': 'Reports', 'reports.text': 'Export is unavailable for the “{v}” role.',
+    'welcome.title': 'Welcome to Metricly', 'welcome.text': 'This is a demo: switch the role and period in the top bar and hover over the charts — the data is live.',
+    'u.m': 'M', 'u.k': 'K',
+    managers: ['Anna Sokolova', 'Igor Petrov', 'Maria Kim', 'Dmitry Orlov', 'Elena Vasnetsova'],
+    channels: [['Website', 'Web'], ['Marketplaces', 'Market.'], ['App', 'App'], ['Social media', 'Social'], ['Offline', 'Offline']],
+    cats: ['Electronics', 'Home & garden', 'Clothing', 'Beauty', 'Sports'],
+    clients: ['Alfa-Trade LLC', 'Kuznetsov (sole trader)', 'Best Market', 'Forest Glade LLC', 'Forma Studio', 'Vostok Trading House',
+      'Grain Coffee House', 'Technosphere LLC', 'Cozy Home Store', 'Smirnova (sole trader)', 'GorodOK Chain', 'Severstroy LLC',
+      'Khlebnik Bakery', 'Fitness Lab', 'MedLine LLC', 'Tsekh Art Space']
+  },
+  es: {
+    'meta.title': 'Metricly — analítica de ventas',
+    'meta.desc': 'Proyecto demo: panel SaaS de analítica de ventas con gráficos en tiempo real y roles de acceso.',
+    'back.aria': 'Volver al portafolio', 'back.text': 'Volver al portafolio', 'back.demo': 'Proyecto demo',
+    'brand.tag': 'Analítica de ventas',
+    'nav.aria': 'Menú principal', 'nav.analytics': 'Analítica', 'nav.overview': 'Resumen', 'nav.sales': 'Ventas', 'nav.clients': 'Clientes',
+    'nav.products': 'Productos', 'nav.workspace': 'Espacio de trabajo', 'nav.reports': 'Informes', 'nav.auto': 'Auto', 'nav.settings': 'Ajustes',
+    'plan.title': 'Plan Business', 'plan.seats': '7 de 10 plazas del equipo', 'plan.invite': 'Invitar', 'sys.ok': 'Todos los sistemas operativos',
+    'top.menu': 'Abrir menú', 'search.ph': 'Buscar pedidos, clientes…', 'search.aria': 'Buscar', 'lang.aria': 'Idioma de la interfaz',
+    'period.aria': 'Periodo', 'p7': '7d', 'p30': '30d', 'p90': '90d',
+    'role.aria': 'Rol de acceso', 'role.admin': 'Admin', 'role.manager': 'Gestor', 'role.viewer': 'Observador', 'bell.aria': 'Notificaciones',
+    'crumbs.ws': 'Espacio de trabajo', 'crumbs.org': 'Viento del Norte S.L.', 'h1': 'Resumen de ventas', 'viewOnly': 'Solo lectura',
+    'role.label': 'Rol:', 'updated.now': 'datos actualizados ahora mismo', 'updated.at': 'actualizado a las {t}',
+    'btn.customize': 'Personalizar', 'export.label': 'Exportar informe', 'export.busy': 'Generando…',
+    'kpis.aria': 'Indicadores clave', 'kpi.revenue': 'Ingresos', 'kpi.orders': 'Pedidos', 'kpi.avg': 'Ticket medio', 'kpi.conv': 'Conversión',
+    'kpi.cmp': 'vs. {p} días anteriores',
+    'live.title': 'Ingresos', 'live.stream': 'Flujo de datos en tiempo real', 'live.sub': 'Intervalo de 5 min · hoy:',
+    'live.aria': 'Gráfico de ingresos en tiempo real', 'legend.revenue': 'Ingresos', 'legend.avg': 'Media', 'tip.vsPrev': 'vs. intervalo anterior',
+    'cats.title': 'Categorías de productos', 'cats.sub': 'Cuota de ingresos del periodo', 'cats.aria': 'Distribución de ingresos por categoría', 'donut.total': 'Ingresos',
+    'ch.title': 'Ventas por canal', 'ch.sub': 'Comparación con el periodo anterior', 'ch.aria': 'Gráfico de barras de ventas por canal',
+    'legend.cur': 'Actual', 'legend.prev': 'Anterior', 'ch.tipPrev': 'anterior:',
+    'team.title': 'Mejores gestores', 'team.sub': 'Ingresos del periodo', 'you': 'Tú', 'masked.title': 'Oculto para el rol Observador',
+    'orders.title': 'Últimos pedidos', 'orders.filter': 'Filtrar pedidos', 'orders.filterAria': 'Filtrar pedidos',
+    'th.id': 'Pedido', 'th.client': 'Cliente', 'th.manager': 'Gestor', 'th.channel': 'Canal', 'th.amount': 'Importe', 'th.status': 'Estado',
+    'th.date': 'Fecha', 'th.actions': 'Acciones',
+    'orders.edit': 'Editar', 'orders.editAria': 'Editar pedido {id}', 'orders.empty': 'No hay resultados para «{q}»',
+    'orders.found': '{n} de {m} encontrados', 'orders.count': v => `${v.n} ${v.n === 1 ? 'pedido' : 'pedidos'} en los últimos ${v.p} días`,
+    'st.paid': 'Pagado', 'st.ship': 'Entregado', 'st.proc': 'En proceso', 'st.cancel': 'Cancelado', 'st.refund': 'Reembolsado',
+    'toast.close': 'Cerrar notificación', 'role.toast': 'Rol: {r}',
+    'role.admin.msg': 'Acceso total: exportación de informes, ajustes de widgets y todos los datos financieros del equipo.',
+    'role.manager.msg': 'La exportación está disponible y los ajustes del panel, ocultos. Solo puedes editar tus propios pedidos.',
+    'role.viewer.msg': 'Modo lectura: exportación y edición ocultas; los ingresos de otros gestores están enmascarados.',
+    'order.title': 'Pedido {id}', 'order.text': 'La ficha del pedido se abriría en un panel lateral. La edición está desactivada en la demo.',
+    'export.title': 'Exportar informe', 'export.s1': 'Recopilando datos del periodo…', 'export.s2': 'Agregando ventas por canal…',
+    'export.s3': 'Generando gráficos y tablas…', 'export.s4': 'Empaquetando el PDF…', 'export.doneTitle': 'Informe listo',
+    'export.file': 'metricly_ventas_{p}d.pdf',
+    'export.doneText': '{file} · {size} MB. Generado en 3 segundos en lugar de un par de horas de trabajo manual.',
+    'customize.title': 'Ajustes de widgets', 'customize.text': 'Aquí el administrador arrastra y oculta widgets. Desactivado en la demo.',
+    'invite.title': 'Invitación', 'invite.text': 'Se copiaría un enlace de invitación al portapapeles. Quedan 3 plazas libres.',
+    'bell.title': 'Notificaciones', 'bell.text': 'Los ingresos de hoy superan el plan en un 12 %. El informe semanal se ha enviado a tu responsable.',
+    'denied.title': 'Sin acceso', 'denied.text': 'La sección Ajustes solo está disponible para el rol «{a}». Tu rol es «{r}».',
+    'settings.title': 'Ajustes', 'settings.text': 'Gestión de roles, integraciones y programación de informes automáticos. Contraída en la demo.',
+    'reports.title': 'Informes', 'reports.text': 'La exportación no está disponible para el rol «{v}».',
+    'welcome.title': 'Bienvenido a Metricly', 'welcome.text': 'Esto es una demo: cambia el rol y el periodo en la barra superior y pasa el cursor por los gráficos: los datos son en vivo.',
+    'u.m': ' M', 'u.k': ' mil',
+    managers: ['Anna Sokolova', 'Igor Petrov', 'Maria Kim', 'Dmitri Orlov', 'Elena Vasnetsova'],
+    channels: [['Sitio web', 'Web'], ['Marketplaces', 'Market.'], ['Aplicación', 'App'], ['Redes sociales', 'Redes'], ['Tienda física', 'Tienda']],
+    cats: ['Electrónica', 'Hogar y jardín', 'Ropa', 'Belleza', 'Deportes'],
+    clients: ['Alfa-Trade S.L.', 'Kuznetsov (autónomo)', 'Best Market', 'Claro del Bosque S.L.', 'Estudio Forma', 'Casa Comercial Vostok',
+      'Cafetería Grano', 'Tecnosfera S.L.', 'Tienda Hogar Acogedor', 'Smirnova (autónoma)', 'Cadena GorodOK', 'Severstroy S.L.',
+      'Panadería Khlebnik', 'Fitness Lab', 'MedLine S.L.', 'Espacio de arte Tsekh']
+  }
+};
+
+let lang = 'ru';
+const loc = () => LOCALES[lang];
+function t(key, vars) {
+  let s = I18N[lang][key];
+  if (s == null) s = I18N.ru[key];
+  if (s == null) return key;
+  if (typeof s === 'function') return s(vars || {});
+  return vars ? s.replace(/\{(\w+)\}/g, (m, n) => (vars[n] != null ? vars[n] : m)) : s;
+}
+
+function detectLang() {
+  try {
+    const q = (new URLSearchParams(location.search).get('lang') || '').toLowerCase();
+    if (LANGS.includes(q)) return { l: q, url: true };
+  } catch (e) { /* ignore */ }
+  try {
+    const s = localStorage.getItem('kb-lang');
+    if (LANGS.includes(s)) return { l: s };
+  } catch (e) { /* ignore */ }
+  const n = String(navigator.language || '').toLowerCase();
+  if (n.startsWith('en')) return { l: 'en' };
+  if (n.startsWith('es')) return { l: 'es' };
+  return { l: 'ru' };
+}
+const saveLang = l => { try { localStorage.setItem('kb-lang', l); } catch (e) { /* ignore */ } };
+
+/* ---------- formatting (locale-aware) ---------- */
+let nf, pf1, pf2, cf0, cf1, cfK;
+function buildFormatters() {
+  const lc = loc();
+  nf = new Intl.NumberFormat(lc);
+  pf1 = new Intl.NumberFormat(lc, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  pf2 = new Intl.NumberFormat(lc, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  cf0 = new Intl.NumberFormat(lc, { maximumFractionDigits: 0 });
+  cf1 = new Intl.NumberFormat(lc, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  cfK = new Intl.NumberFormat(lc, { maximumFractionDigits: 1 });   // "1.5K" rather than a second "2K" tick
+}
+const money = v => nf.format(Math.round(v)) + ' ₽';
 const int = v => nf.format(Math.round(v));
-const pct = (v, d = 1) => v.toFixed(d).replace('.', ',') + '%';
-const compact = v => v >= 1e6 ? (v / 1e6).toFixed(v >= 1e7 ? 0 : 1).replace('.', ',') + ' млн'
-  : v >= 1e3 ? Math.round(v / 1e3) + ' тыс' : String(Math.round(v));
-const lerp = (a, b, t) => a + (b - a) * t;
+const pct = (v, d = 1) => (d === 2 ? pf2 : pf1).format(v) + '%';
+const compact = v => v >= 1e6 ? (v >= 1e7 ? cf0 : cf1).format(v / 1e6) + t('u.m')
+  : v >= 1e3 ? (v >= 1e4 ? cf0 : cfK).format(v / 1e3) + t('u.k') : String(Math.round(v));
+const lerp = (a, b, k) => a + (b - a) * k;
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const f1 = n => n.toFixed(1);
-const easeOut = t => 1 - Math.pow(1 - t, 3);
-const easeInOut = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const easeOut = k => 1 - Math.pow(1 - k, 3);
+const easeInOut = k => k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const timeFmt = ts => new Date(ts).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-const dateFmt = ts => new Date(ts).toLocaleString('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+const timeFmt = ts => new Date(ts).toLocaleTimeString(loc(), { hour: '2-digit', minute: '2-digit' });
+const dateFmt = ts => new Date(ts).toLocaleString(loc(), { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
 
 function tween(dur, fn, done, easing = easeOut) {
   if (reduced || dur <= 0) { fn(1); done && done(); return () => {}; }
@@ -529,9 +742,9 @@ function tween(dur, fn, done, easing = easeOut) {
   const step = ts => {
     if (stopped) return;
     if (start === null) start = ts;
-    const t = Math.min(1, (ts - start) / dur);
-    fn(easing(t));
-    if (t < 1) raf = requestAnimationFrame(step); else done && done();
+    const k = Math.min(1, (ts - start) / dur);
+    fn(easing(k));
+    if (k < 1) raf = requestAnimationFrame(step); else done && done();
   };
   raf = requestAnimationFrame(step);
   return () => { stopped = true; cancelAnimationFrame(raf); };
@@ -540,9 +753,9 @@ function tween(dur, fn, done, easing = easeOut) {
 function rng(seed) {
   return () => {
     seed |= 0; seed = seed + 0x6D2B79F5 | 0;
-    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
-    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    let x = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    x = x + Math.imul(x ^ x >>> 7, 61 | x) ^ x;
+    return ((x ^ x >>> 14) >>> 0) / 4294967296;
   };
 }
 
@@ -597,36 +810,28 @@ const hydrateIcons = (root = document) => $$('[data-icon]', root).forEach(el => 
   el.innerHTML = icon(el.dataset.icon); el.style.display = el.style.display || 'inline-flex';
 });
 
-/* ---------- domain ---------- */
-const ME = 'Анна Соколова';
-const MANAGERS = ['Анна Соколова', 'Игорь Петров', 'Мария Ким', 'Дмитрий Орлов', 'Елена Васнецова'];
+/* ---------- domain (language-neutral: indices into the dictionary) ---------- */
+const ME = 0;                              // index of the current user in `managers`
 const MCOLORS = ['#c6ff3d', '#1fd1a1', '#5ee7ff', '#ffc35a', '#9b8cff'];
-const CHANNELS = [['Сайт', 'Сайт'], ['Маркетплейсы', 'Маркет.'], ['Приложение', 'Прилож.'], ['Соцсети', 'Соцсети'], ['Офлайн', 'Офлайн']];
-const CATS = [
-  { n: 'Электроника', c: '#1fd1a1' }, { n: 'Дом и сад', c: '#c6ff3d' }, { n: 'Одежда', c: '#5ee7ff' },
-  { n: 'Красота', c: '#ffc35a' }, { n: 'Спорт', c: '#9b8cff' }
-];
-const CLIENTS = ['ООО «Альфа-Трейд»', 'ИП Кузнецов', 'Бэст Маркет', 'ООО «Лесная поляна»', 'Студия «Форма»', 'ТД «Восток»',
-  'Кофейня «Зерно»', 'ООО «Техносфера»', 'Магазин «Уют»', 'ИП Смирнова', 'Сеть «ГородОК»', 'ООО «Северстрой»',
-  'Пекарня «Хлебник»', 'Fitness Lab', 'ООО «МедЛайн»', 'Арт-пространство «Цех»'];
-const STATUS = {
-  paid: { n: 'Оплачен', w: .4 }, ship: { n: 'Доставлен', w: .25 }, proc: { n: 'В обработке', w: .19 },
-  cancel: { n: 'Отменён', w: .09 }, refund: { n: 'Возврат', w: .07 }
-};
-const ROLES = {
-  admin: { n: 'Админ', type: 'info', msg: 'Полный доступ: экспорт отчётов, настройка виджетов и все финансовые данные команды.' },
-  manager: { n: 'Менеджер', type: 'info', msg: 'Экспорт доступен, настройки дашборда скрыты. Редактировать можно только свои заказы.' },
-  viewer: { n: 'Наблюдатель', type: 'warn', msg: 'Режим чтения: экспорт и редактирование скрыты, выручка других менеджеров замаскирована.' }
-};
+const CAT_COLORS = ['#1fd1a1', '#c6ff3d', '#5ee7ff', '#ffc35a', '#9b8cff'];
+const N_MANAGERS = 5, N_CHANNELS = 5, N_CLIENTS = 16;
+const STATUS = { paid: .4, ship: .25, proc: .19, cancel: .09, refund: .07 };
+const ROLE_TYPE = { admin: 'info', manager: 'info', viewer: 'warn' };
+const mName = i => I18N[lang].managers[i];
+const chName = (i, short) => I18N[lang].channels[i][short ? 1 : 0];
+const catName = i => I18N[lang].cats[i];
+const clName = i => I18N[lang].clients[i];
+const stName = k => t('st.' + k);
+const roleName = r => t('role.' + r);
 const N = 36;             // visible points of live chart
 const STEP_MS = 300000;   // 5 min per point
 const NOW = Math.floor(Date.now() / STEP_MS) * STEP_MS;
 const initials = n => n.split(' ').map(s => s[0]).join('');
-const mColor = n => MCOLORS[MANAGERS.indexOf(n)] || '#1fd1a1';
+const mColor = i => MCOLORS[i] || '#1fd1a1';
 
 function pickStatus(r) {
   let x = r(), acc = 0;
-  for (const k in STATUS) { acc += STATUS[k].w; if (x <= acc) return k; }
+  for (const k in STATUS) { acc += STATUS[k]; if (x <= acc) return k; }
   return 'paid';
 }
 
@@ -634,9 +839,9 @@ let orderSeq = 48291;
 function makeOrder(r, ts, status) {
   return {
     id: 'MT-' + (orderSeq++),
-    client: CLIENTS[Math.floor(r() * CLIENTS.length)],
-    manager: MANAGERS[Math.floor(r() * MANAGERS.length)],
-    channel: CHANNELS[Math.floor(r() * CHANNELS.length)][0],
+    client: Math.floor(r() * N_CLIENTS),
+    manager: Math.floor(r() * N_MANAGERS),
+    channel: Math.floor(r() * N_CHANNELS),
     amount: Math.round((1200 + Math.pow(r(), 2.2) * 64000) / 10) * 10,
     status: status || pickStatus(r),
     date: ts
@@ -650,20 +855,20 @@ function genPeriod(p) {
   const conv = 2.6 + r() * 1.8;
   const spark = trend => Array.from({ length: 24 }, (_, i) => 1 + .22 * Math.sin(i / 2.6 + r() * 1.5) + r() * .25 + i * trend);
   const kpis = [
-    { id: 'revenue', label: 'Выручка', ic: 'wallet', value: revenue, fmt: money, delta: 8 + r() * 16, spark: spark(.03) },
-    { id: 'orders', label: 'Заказы', ic: 'cart', value: revenue / avg, fmt: int, delta: 3 + r() * 12, spark: spark(.02) },
-    { id: 'avg', label: 'Средний чек', ic: 'receipt', value: avg, fmt: money, delta: -5 + r() * 8, spark: spark(-.006) },
-    { id: 'conv', label: 'Конверсия', ic: 'target', value: conv, fmt: v => pct(v, 2), delta: -2 + r() * 7, spark: spark(.01) }
+    { id: 'revenue', ic: 'wallet', value: revenue, fmt: money, delta: 8 + r() * 16, spark: spark(.03) },
+    { id: 'orders', ic: 'cart', value: revenue / avg, fmt: int, delta: 3 + r() * 12, spark: spark(.02) },
+    { id: 'avg', ic: 'receipt', value: avg, fmt: money, delta: -5 + r() * 8, spark: spark(-.006) },
+    { id: 'conv', ic: 'target', value: conv, fmt: v => pct(v, 2), delta: -2 + r() * 7, spark: spark(.01) }
   ];
   const cw = [.34, .29, .17, .12, .08];
-  const channels = CHANNELS.map((c, i) => {
-    const cur = revenue * cw[i] * (.85 + r() * .3);
-    return { n: c[0], s: c[1], cur, prev: cur * (.72 + r() * .42) };
+  const channels = cw.map(w => {
+    const cur = revenue * w * (.85 + r() * .3);
+    return { cur, prev: cur * (.72 + r() * .42) };
   });
   const raw = [.31, .24, .2, .14, .11].map(w => w * (.75 + r() * .5));
   const sum = raw.reduce((a, b) => a + b, 0);
   const cats = raw.map(w => w / sum);
-  const managers = MANAGERS.map(n => ({ n, v: revenue * (.12 + r() * .16) })).sort((a, b) => b.v - a.v);
+  const managers = Array.from({ length: N_MANAGERS }, (_, i) => ({ i, v: revenue * (.12 + r() * .16) })).sort((a, b) => b.v - a.v);
   const span = p * 86400000;
   const orders = Array.from({ length: 28 }, (_, i) => makeOrder(r, NOW - Math.round((i + r() * .9) * span / 40)));
   const liveBase = revenue / p / 144;
@@ -673,7 +878,7 @@ function genPeriod(p) {
 }
 
 /* ---------- state ---------- */
-const state = { period: 30, role: 'admin', data: null, sort: { key: 'date', dir: -1 }, query: '' };
+const state = { period: 30, role: 'admin', data: null, sort: { key: 'date', dir: -1 }, query: '', updated: null };
 const kpiShown = {}, kpiStops = {}, sparkShown = {};
 
 /* ---------- toasts ---------- */
@@ -684,7 +889,7 @@ function toast({ title, text = '', type = 'info', timeout = 4800, progress = fal
   el.setAttribute('role', type === 'warn' ? 'alert' : 'status');
   el.innerHTML = `<span class="t-ic">${icon(ic || { info: 'info', success: 'check', warn: 'lock' }[type])}</span>
     <div class="t-body"><b>${title}</b><p>${text}</p>${progress ? '<div class="t-prog"><i></i></div>' : ''}</div>
-    <button class="t-x" aria-label="Закрыть уведомление">${icon('x')}</button>`;
+    <button class="t-x" aria-label="${esc(t('toast.close'))}">${icon('x')}</button>`;
   box.appendChild(el);
   while (box.children.length > 4) box.firstElementChild.remove();
   const close = () => {
@@ -696,10 +901,11 @@ function toast({ title, text = '', type = 'info', timeout = 4800, progress = fal
   if (timeout) setTimeout(close, timeout);
   return {
     close,
-    set(p, txt) {
+    set(p, txt, ttl) {
       const bar = el.querySelector('.t-prog i');
       if (bar) bar.style.width = p + '%';
       if (txt != null) el.querySelector('p').textContent = txt;
+      if (ttl != null) el.querySelector('.t-body b').textContent = ttl;
     }
   };
 }
@@ -722,23 +928,28 @@ function drawSpark(k, arr) {
     <circle cx="${f1(last[0])}" cy="${f1(last[1])}" r="2.6" fill="${col}"/>`;
 }
 
+function paintKpiText(k) {
+  const card = $(`.kpi[data-k="${k.id}"]`);
+  const up = k.delta >= 0;
+  const d = card.querySelector('.delta');
+  d.className = 'delta ' + (up ? 'up' : 'down');
+  d.innerHTML = `${icon(up ? 'up' : 'down')}${up ? '+' : '−'}${pct(Math.abs(k.delta))}`;
+  card.querySelector('.kpi-name').textContent = t('kpi.' + k.id);
+  card.querySelector('.cmp').textContent = t('kpi.cmp', { p: state.period });
+}
+
 function renderKpis() {
   const wrap = $('#kpis');
   const ks = state.data.kpis;
   if (!wrap.children.length) {
     wrap.innerHTML = ks.map(k => `<article class="card kpi" data-k="${k.id}">
-      <div class="kpi-top"><span class="kpi-label"><span class="kpi-ic">${icon(k.ic)}</span>${k.label}</span><span class="delta"></span></div>
+      <div class="kpi-top"><span class="kpi-label"><span class="kpi-ic">${icon(k.ic)}</span><span class="kpi-name"></span></span><span class="delta"></span></div>
       <div class="kpi-value mono" aria-live="off">0</div>
       <div class="kpi-foot"><span class="muted cmp"></span><svg class="spark" viewBox="0 0 110 36" preserveAspectRatio="none" aria-hidden="true"></svg></div>
     </article>`).join('');
   }
   ks.forEach(k => {
-    const card = $(`.kpi[data-k="${k.id}"]`);
-    const up = k.delta >= 0;
-    const d = card.querySelector('.delta');
-    d.className = 'delta ' + (up ? 'up' : 'down');
-    d.innerHTML = `${icon(up ? 'up' : 'down')}${up ? '+' : '−'}${pct(Math.abs(k.delta))}`;
-    card.querySelector('.cmp').textContent = `к прошлым ${state.period} дн.`;
+    paintKpiText(k);
     countUp(k);
     const from = sparkShown[k.id] || k.spark.map(() => k.spark[0] * .9 || 1);
     const to = k.spark;
@@ -790,7 +1001,8 @@ function drawLive() {
     const v = live.max * k / 4, y = f1(Y(v));
     grid += `<line class="gl" x1="${P.l}" x2="${w - P.r}" y1="${y}" y2="${y}"/><text class="ax" x="${P.l - 10}" y="${+y + 4}" text-anchor="end">${compact(v)}</text>`;
   }
-  const every = step < 12 ? 12 : 6;
+  // 12-hour clock labels ("10:05 PM") are wider, so space them further apart
+  const every = step < (lang === 'en' ? 16 : 12) ? 12 : 6;
   let xl = '';
   live.data.forEach((d, i) => {
     if ((d.ts / STEP_MS) % every === 0) xl += `<text class="ax" x="${f1(X(i))}" y="${h - 6}" text-anchor="middle">${timeFmt(d.ts)}</text>`;
@@ -832,8 +1044,8 @@ function drawLive() {
     const d = live.data[hi], prev = live.data[hi - 1];
     const ch = prev ? (d.v - prev.v) / prev.v * 100 : 0;
     liveTip.innerHTML = `<small>${timeFmt(d.ts)} – ${timeFmt(d.ts + STEP_MS)}</small><b>${money(d.v)}</b>
-      <small class="${ch >= 0 ? 'up-t' : 'down-t'}">${ch >= 0 ? '▲ +' : '▼ −'}${pct(Math.abs(ch))} к пред. интервалу</small>`;
-    liveTip.style.left = clamp(X(hi), 80, w - 80) + 'px';
+      <small class="${ch >= 0 ? 'up-t' : 'down-t'}">${ch >= 0 ? '▲ +' : '▼ −'}${pct(Math.abs(ch))} ${esc(t('tip.vsPrev'))}</small>`;
+    liveTip.style.left = clamp(X(hi), 90, w - 90) + 'px';
     liveTip.style.top = Y(d.v) + 'px';
     liveTip.classList.add('on');
   } else liveTip.classList.remove('on');
@@ -843,6 +1055,12 @@ function finishSlide() {
   if (live.stop) live.stop();
   if (live.t > 0 || live.data.length > N) { live.data = live.data.slice(-N); }
   live.t = 0; live.busy = false; live.stop = null;
+}
+
+function renderUpdated() {
+  $('#updatedAt').textContent = state.updated
+    ? t('updated.at', { t: new Date(state.updated).toLocaleTimeString(loc()) })
+    : t('updated.now');
 }
 
 function liveTick() {
@@ -863,7 +1081,8 @@ function liveTick() {
   live.today += v;
   $('#todayTotal').textContent = money(live.today);
   bumpKpi('revenue', v);
-  $('#updatedAt').textContent = 'обновлено в ' + new Date().toLocaleTimeString('ru-RU');
+  state.updated = Date.now();
+  renderUpdated();
   if (Math.random() < .35) addLiveOrder();
 }
 
@@ -875,7 +1094,7 @@ liveWrap.addEventListener('pointerleave', () => { live.mx = null; drawLive(); })
 
 /* ---------- bars ---------- */
 const barsWrap = $('#barsWrap'), barsSvg = $('#barsSvg'), tip = $('#tip');
-let barVals = CHANNELS.map(() => ({ cur: 0, prev: 0 }));
+let barVals = Array.from({ length: N_CHANNELS }, () => ({ cur: 0, prev: 0 }));
 let barHl = null;
 
 function drawBars() {
@@ -886,7 +1105,9 @@ function drawBars() {
   const ch = state.data.channels;
   const max = niceCeil(Math.max(...ch.flatMap(c => [c.cur, c.prev])) * 1.05);
   const band = iw / ch.length, bw = Math.min(26, band * .3), gap = 4;
-  const shortL = band < 82;
+  // use short labels when the longest full label would not fit its band (~6.6px per mono char at 10.5px)
+  const longest = Math.max(...I18N[lang].channels.map(c => c[0].length));
+  const shortL = band < Math.max(82, longest * 6.6 + 10);
   let s = `<defs><linearGradient id="bg-cur" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c6ff3d"/><stop offset="1" stop-color="#1fd1a1" stop-opacity=".85"/></linearGradient></defs>`;
   for (let k = 0; k <= 4; k++) {
     const y = f1(P.t + ih * (1 - k / 4));
@@ -899,7 +1120,7 @@ function drawBars() {
       <rect class="bar-hit" x="${f1(cx - band / 2)}" y="${P.t}" width="${f1(band)}" height="${ih}" rx="8"/>
       <rect class="bar-prev" x="${f1(cx - bw - gap / 2)}" y="${f1(P.t + ih - hp)}" width="${f1(bw)}" height="${f1(hp)}" rx="${Math.min(5, hp / 2).toFixed(1)}"/>
       <rect x="${f1(cx + gap / 2)}" y="${f1(P.t + ih - hc)}" width="${f1(bw)}" height="${f1(hc)}" rx="${Math.min(5, hc / 2).toFixed(1)}" fill="url(#bg-cur)"/>
-      <text class="ax" x="${f1(cx)}" y="${h - 7}" text-anchor="middle">${shortL ? ch[i].s : ch[i].n}</text></g>`;
+      <text class="ax" x="${f1(cx)}" y="${h - 7}" text-anchor="middle">${esc(chName(i, shortL))}</text></g>`;
   });
   barsSvg.innerHTML = s;
 }
@@ -929,13 +1150,13 @@ barsSvg.addEventListener('pointermove', e => {
   if (i == null) return hideTip();
   const c = state.data.channels[i];
   const d = (c.cur - c.prev) / c.prev * 100;
-  showTip(`<small>${c.n}</small><b>${money(c.cur)}</b><small>прошлый: ${money(c.prev)} · <span class="${d >= 0 ? 'up-t' : 'down-t'}">${d >= 0 ? '+' : '−'}${pct(Math.abs(d))}</span></small>`, e.clientX, e.clientY);
+  showTip(`<small>${esc(chName(i))}</small><b>${money(c.cur)}</b><small>${esc(t('ch.tipPrev'))} ${money(c.prev)} · <span class="${d >= 0 ? 'up-t' : 'down-t'}">${d >= 0 ? '+' : '−'}${pct(Math.abs(d))}</span></small>`, e.clientX, e.clientY);
 });
 barsSvg.addEventListener('pointerleave', () => { barHl = null; drawBars(); hideTip(); });
 
 /* ---------- donut ---------- */
 const donutSvg = $('#donut'), donutWrap = $('#donutWrap');
-let donutShares = CATS.map(() => 0);
+let donutShares = CAT_COLORS.map(() => 0);
 
 function drawDonut() {
   const r = 78, C = 2 * Math.PI * r;
@@ -943,7 +1164,7 @@ function drawDonut() {
   let s = `<circle class="donut-track" cx="100" cy="100" r="${r}"/>`;
   donutShares.forEach((sh, i) => {
     const len = sh * C, g = len > 6 ? 3 : 0;
-    s += `<circle class="seg-c" data-i="${i}" cx="100" cy="100" r="${r}" stroke="${CATS[i].c}"
+    s += `<circle class="seg-c" data-i="${i}" cx="100" cy="100" r="${r}" stroke="${CAT_COLORS[i]}"
       stroke-dasharray="${Math.max(0, len - g).toFixed(2)} ${C.toFixed(2)}" stroke-dashoffset="${(-acc).toFixed(2)}" transform="rotate(-90 100 100)"/>`;
     acc += len;
   });
@@ -953,7 +1174,7 @@ function drawDonut() {
 function renderLegend() {
   const total = state.data.revenue;
   $('#donutLegend').innerHTML = state.data.cats.map((sh, i) => `<li data-i="${i}">
-    <span class="dotc" style="background:${CATS[i].c}"></span><span class="nm">${CATS[i].n}</span>
+    <span class="dotc" style="background:${CAT_COLORS[i]}"></span><span class="nm">${esc(catName(i))}</span>
     <span class="pc">${pct(sh * 100)}</span><span class="vl">${compact(total * sh)} ₽</span></li>`).join('');
 }
 
@@ -962,10 +1183,10 @@ function setDonutHl(i) {
   $$('.seg-c', donutSvg).forEach(c => c.classList.toggle('hl', +c.dataset.i === i));
   $$('#donutLegend li').forEach(li => li.classList.toggle('hl', +li.dataset.i === i));
   if (i == null) {
-    $('#donutLabel').textContent = 'Выручка';
+    $('#donutLabel').textContent = t('donut.total');
     $('#donutValue').textContent = compact(state.data.revenue) + ' ₽';
   } else {
-    $('#donutLabel').textContent = CATS[i].n;
+    $('#donutLabel').textContent = catName(i);
     $('#donutValue').textContent = pct(state.data.cats[i] * 100);
   }
 }
@@ -983,17 +1204,18 @@ $('#donutLegend').addEventListener('pointerover', e => { const li = e.target.clo
 $('#donutLegend').addEventListener('pointerleave', () => setDonutHl(null));
 
 /* ---------- team ---------- */
-const maskedHtml = `<span class="masked" title="Скрыто для роли «Наблюдатель»">${icon('lock')}••• ••• ₽</span>`;
+const maskedHtml = () => `<span class="masked" title="${esc(t('masked.title'))}">${icon('lock')}••• ••• ₽</span>`;
+const youHtml = () => `<em class="you">${esc(t('you'))}</em>`;
 
 function renderTeam() {
   const list = state.data.managers, max = list[0].v;
   $('#team').innerHTML = list.map((m, i) => {
-    const mine = m.n === ME, hidden = state.role === 'viewer' && !mine;
+    const mine = m.i === ME, hidden = state.role === 'viewer' && !mine, nm = mName(m.i);
     return `<li class="${mine ? 'me' : ''}">
       <span class="rank mono">${i + 1}</span>
-      <span class="mini-av" style="background:${mColor(m.n)}">${initials(m.n)}</span>
+      <span class="mini-av" style="background:${mColor(m.i)}">${esc(initials(nm))}</span>
       <div class="m-info">
-        <div class="m-row"><span class="m-name">${m.n}${mine ? '<em class="you">Вы</em>' : ''}</span>${hidden ? maskedHtml : `<span class="mono amt">${money(m.v)}</span>`}</div>
+        <div class="m-row"><span class="m-name">${esc(nm)}${mine ? youHtml() : ''}</span>${hidden ? maskedHtml() : `<span class="mono amt">${money(m.v)}</span>`}</div>
         <div class="m-bar${hidden ? ' is-masked' : ''}"><i style="width:${hidden ? 100 : (m.v / max * 100).toFixed(1)}%"></i></div>
       </div></li>`;
   }).join('');
@@ -1003,31 +1225,32 @@ function renderTeam() {
 let newOrderId = null;
 const canEdit = o => state.role === 'admin' || (state.role === 'manager' && o.manager === ME);
 const isMasked = o => state.role === 'viewer' && o.manager !== ME;
+const cellText = (o, key) => key === 'client' ? clName(o.client) : key === 'manager' ? mName(o.manager)
+  : key === 'channel' ? chName(o.channel) : key === 'status' ? stName(o.status) : o[key];
 
 function renderTable() {
   const q = state.query.trim().toLowerCase();
   const all = state.data.orders;
   const rows = all.filter(o => !q ||
-    [o.id, o.client, o.manager, o.channel, STATUS[o.status].n].join(' ').toLowerCase().includes(q));
+    ['id', 'client', 'manager', 'channel', 'status'].map(k => cellText(o, k)).join(' ').toLowerCase().includes(q));
   const { key, dir } = state.sort;
   rows.sort((a, b) => {
-    let x = a[key], y = b[key];
+    let x = cellText(a, key), y = cellText(b, key);
     if (key === 'amount') { if (isMasked(a)) x = -1; if (isMasked(b)) y = -1; }
-    if (key === 'status') { x = STATUS[x].n; y = STATUS[y].n; }
-    return (typeof x === 'string' ? x.localeCompare(y, 'ru') : x - y) * dir;
+    return (typeof x === 'string' ? x.localeCompare(y, lang) : x - y) * dir;
   });
   $('#ordersBody').innerHTML = rows.length ? rows.map(o => `<tr class="${o.id === newOrderId ? 'row-new' : ''}">
       <td class="mono oid">${o.id}</td>
-      <td class="client">${o.client}</td>
-      <td><span class="mgr"><i style="background:${mColor(o.manager)}">${initials(o.manager)}</i>${o.manager}${o.manager === ME ? ' <em class="you">Вы</em>' : ''}</span></td>
-      <td class="muted">${o.channel}</td>
-      <td class="num mono">${isMasked(o) ? maskedHtml : money(o.amount)}</td>
-      <td><span class="pill p-${o.status}">${STATUS[o.status].n}</span></td>
-      <td class="muted mono" style="font-size:12px">${dateFmt(o.date)}</td>
-      <td class="no-viewer">${canEdit(o) ? `<button class="row-act" data-edit="${o.id}" aria-label="Редактировать заказ ${o.id}" title="Редактировать">${icon('edit')}</button>` : ''}</td>
+      <td class="client">${esc(clName(o.client))}</td>
+      <td><span class="mgr"><i style="background:${mColor(o.manager)}">${esc(initials(mName(o.manager)))}</i>${esc(mName(o.manager))}${o.manager === ME ? ' ' + youHtml() : ''}</span></td>
+      <td class="muted">${esc(chName(o.channel))}</td>
+      <td class="num mono">${isMasked(o) ? maskedHtml() : money(o.amount)}</td>
+      <td><span class="pill p-${o.status}">${esc(stName(o.status))}</span></td>
+      <td class="muted mono" style="font-size:12px">${esc(dateFmt(o.date))}</td>
+      <td class="no-viewer">${canEdit(o) ? `<button class="row-act" data-edit="${o.id}" aria-label="${esc(t('orders.editAria', { id: o.id }))}" title="${esc(t('orders.edit'))}">${icon('edit')}</button>` : ''}</td>
     </tr>`).join('')
-    : `<tr><td colspan="8" class="empty">Ничего не найдено по запросу «${esc(state.query)}»</td></tr>`;
-  $('#ordersCount').textContent = q ? `Найдено ${rows.length} из ${all.length}` : `${all.length} заказов за последние ${state.period} дн.`;
+    : `<tr><td colspan="8" class="empty">${esc(t('orders.empty', { q: state.query }))}</td></tr>`;
+  $('#ordersCount').textContent = q ? t('orders.found', { n: rows.length, m: all.length }) : t('orders.count', { n: all.length, p: state.period });
   $$('th[data-key]').forEach(th => th.setAttribute('aria-sort',
     th.dataset.key === key ? (dir > 0 ? 'ascending' : 'descending') : 'none'));
   newOrderId = null;
@@ -1050,7 +1273,7 @@ $$('th[data-key] button').forEach(b => b.addEventListener('click', () => {
 
 $('#ordersBody').addEventListener('click', e => {
   const b = e.target.closest('[data-edit]');
-  if (b) toast({ title: `Заказ ${b.dataset.edit}`, text: 'Карточка заказа открылась бы в боковой панели. В демо редактирование отключено.', ic: 'edit' });
+  if (b) toast({ title: esc(t('order.title', { id: b.dataset.edit })), text: t('order.text'), ic: 'edit' });
 });
 
 const gSearch = $('#globalSearch'), tSearch = $('#tableSearch');
@@ -1107,50 +1330,59 @@ function setPeriod(p) {
 seg.addEventListener('click', e => { const b = e.target.closest('button[data-p]'); if (b) setPeriod(+b.dataset.p); });
 
 /* ---------- roles ---------- */
+function paintRoleText() {
+  const me = mName(ME), ini = initials(me);
+  $('#roleName').textContent = roleName(state.role);
+  $('#avatar').textContent = ini;
+  $('#avatar').title = `${me} · ${roleName(state.role)}`;
+  $('#avatarM').textContent = ini;
+  $('#avatarM').title = me;
+}
 function setRole(r, silent) {
   state.role = r;
   document.body.dataset.role = r;
-  $('#roleName').textContent = ROLES[r].n;
-  $('#avatar').title = `${ME} · ${ROLES[r].n}`;
+  $('#roleSel').value = r;
+  paintRoleText();
   renderTeam();
   renderTable();
-  if (!silent) toast({ title: `Роль: ${ROLES[r].n}`, text: ROLES[r].msg, type: ROLES[r].type, ic: r === 'viewer' ? 'eye' : 'shield' });
+  if (!silent) toast({ title: esc(t('role.toast', { r: roleName(r) })), text: esc(t('role.' + r + '.msg')), type: ROLE_TYPE[r], ic: r === 'viewer' ? 'eye' : 'shield' });
 }
 $('#roleSel').addEventListener('change', e => setRole(e.target.value));
 
 /* ---------- export ---------- */
 let exporting = false;
+const paintExportLabel = () => { $('#exportLabel').textContent = t(exporting ? 'export.busy' : 'export.label'); };
 $('#btnExport').addEventListener('click', () => {
   if (exporting) return;
   exporting = true;
-  const btn = $('#btnExport'), label = $('#exportLabel');
-  btn.disabled = true; label.textContent = 'Формируем…';
-  const steps = [[0, 'Собираем данные за период…'], [28, 'Агрегируем продажи по каналам…'], [55, 'Строим графики и таблицы…'], [82, 'Упаковываем PDF…']];
-  const t = toast({ title: 'Экспорт отчёта', text: steps[0][1], timeout: 0, progress: true, ic: 'download' });
+  const btn = $('#btnExport');
+  btn.disabled = true; paintExportLabel();
+  const steps = [[0, 'export.s1'], [28, 'export.s2'], [55, 'export.s3'], [82, 'export.s4']];
+  const tt = toast({ title: esc(t('export.title')), text: esc(t(steps[0][1])), timeout: 0, progress: true, ic: 'download' });
   let p = 0;
   const iv = setInterval(() => {
     p = Math.min(100, p + 2 + Math.random() * 5);
     const st = steps.filter(s => p >= s[0]).pop();
-    t.set(p, st[1]);
+    tt.set(p, t(st[1]), t('export.title'));   // re-read every tick, so switching language mid-export updates the toast
     btn.style.setProperty('--p', p + '%');
     if (p >= 100) {
       clearInterval(iv);
       setTimeout(() => {
-        t.close();
-        btn.disabled = false; label.textContent = 'Экспорт отчёта'; btn.style.setProperty('--p', '0%');
-        exporting = false;
-        toast({ title: 'Отчёт готов', type: 'success', timeout: 6000,
-          text: `metricly_prodazhi_${state.period}d.pdf · ${(1.6 + Math.random()).toFixed(1).replace('.', ',')} МБ. Сформирован за 3 секунды вместо пары часов ручной сборки.` });
+        tt.close();
+        btn.disabled = false; btn.style.setProperty('--p', '0%');
+        exporting = false; paintExportLabel();
+        toast({ title: esc(t('export.doneTitle')), type: 'success', timeout: 6000,
+          text: esc(t('export.doneText', { file: t('export.file', { p: state.period }), size: pf1.format(1.6 + Math.random()) })) });
       }, 350);
     }
   }, 90);
 });
 
-$('#btnCustomize').addEventListener('click', () => toast({ title: 'Настройка виджетов', text: 'Здесь администратор перетаскивает и скрывает виджеты. В демо режим отключён.', ic: 'edit' }));
-$('#btnInvite').addEventListener('click', () => toast({ title: 'Приглашение', text: 'Ссылка-приглашение скопирована бы в буфер обмена. Свободно 3 места.', ic: 'users' }));
+$('#btnCustomize').addEventListener('click', () => toast({ title: esc(t('customize.title')), text: esc(t('customize.text')), ic: 'edit' }));
+$('#btnInvite').addEventListener('click', () => toast({ title: esc(t('invite.title')), text: esc(t('invite.text')), ic: 'users' }));
 $('#bell').addEventListener('click', () => {
   $('#bell .dot') && $('#bell .dot').remove();
-  toast({ title: 'Уведомления', text: 'Выручка за сегодня выше плана на 12%. Еженедельный отчёт отправлен руководителю.', ic: 'bell' });
+  toast({ title: esc(t('bell.title')), text: esc(t('bell.text')), ic: 'bell' });
 });
 
 /* ---------- navigation ---------- */
@@ -1164,8 +1396,8 @@ $('#scrim').addEventListener('click', () => setNav(false));
 
 $$('.nav-item').forEach(b => b.addEventListener('click', () => {
   if (b.hasAttribute('data-admin')) {
-    if (state.role !== 'admin') toast({ title: 'Нет доступа', text: `Раздел «Настройки» доступен только роли «Админ». Ваша роль — «${ROLES[state.role].n}».`, type: 'warn' });
-    else toast({ title: 'Настройки', text: 'Управление ролями, интеграциями и расписанием автоотчётов. В демо раздел свёрнут.', ic: 'sliders' });
+    if (state.role !== 'admin') toast({ title: esc(t('denied.title')), text: esc(t('denied.text', { a: roleName('admin'), r: roleName(state.role) })), type: 'warn' });
+    else toast({ title: esc(t('settings.title')), text: esc(t('settings.text')), ic: 'sliders' });
     setNav(false);
     return;
   }
@@ -1176,7 +1408,7 @@ $$('.nav-item').forEach(b => b.addEventListener('click', () => {
   if (b.dataset.flash) {
     const f = $(b.dataset.flash);
     if (f && f.offsetParent) { f.classList.remove('flash'); void f.offsetWidth; f.classList.add('flash'); }
-    else toast({ title: 'Отчёты', text: 'Экспорт недоступен для роли «Наблюдатель».', type: 'warn' });
+    else toast({ title: esc(t('reports.title')), text: esc(t('reports.text', { v: roleName('viewer') })), type: 'warn' });
   }
   setNav(false);
 }));
@@ -1186,18 +1418,67 @@ document.addEventListener('keydown', e => {
   if (e.key === '/' && !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); gSearch.focus(); }
 });
 
+/* ---------- language ---------- */
+function applyStatic() {
+  document.documentElement.lang = lang;
+  document.title = t('meta.title');
+  const md = $('meta[name="description"]');
+  if (md) md.setAttribute('content', t('meta.desc'));
+  $$('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+  $$('[data-i18n-placeholder]').forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); });
+  $$('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.i18nAria)));
+  $$('[data-i18n-title]').forEach(el => { el.title = t(el.dataset.i18nTitle); });
+  $$('#langSw button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+}
+
+function setLang(l, opts = {}) {
+  if (!LANGS.includes(l)) l = 'ru';
+  const changed = l !== lang;
+  lang = l;
+  if (opts.persist) saveLang(l);
+  buildFormatters();
+  applyStatic();
+  if (opts.init || !changed) return;
+  // Re-render everything JS-generated. The live chart keeps its data and any running slide tween;
+  // drawLive() just repaints the current frame with new axis/tooltip text.
+  state.data.kpis.forEach(k => {
+    paintKpiText(k);
+    if (kpiShown[k.id] != null) $(`.kpi[data-k="${k.id}"] .kpi-value`).textContent = k.fmt(kpiShown[k.id]);
+  });
+  $('#todayTotal').textContent = money(live.today);
+  renderUpdated();
+  paintRoleText();
+  paintExportLabel();
+  hideTip();
+  drawLive();
+  drawBars();
+  renderLegend();
+  setDonutHl(null);
+  renderTeam();
+  renderTable();
+  placeInd();
+}
+$('#langSw').addEventListener('click', e => {
+  const b = e.target.closest('button[data-lang]');
+  if (b) setLang(b.dataset.lang, { persist: true });
+});
+
 /* ---------- resize ---------- */
 const ro = new ResizeObserver(() => { drawLive(); drawBars(); placeInd(); });
 ro.observe(liveWrap); ro.observe(barsWrap);
 addEventListener('resize', () => { if (innerWidth > 900) setNav(false); });
 
 /* ---------- init ---------- */
+const initial = detectLang();
+setLang(initial.l, { init: true, persist: !!initial.url });
 hydrateIcons();
 state.data = genPeriod(state.period);
 live.data = state.data.history.map((v, i) => ({ v, ts: NOW - (N - 1 - i) * STEP_MS }));
 live.max = niceCeil(Math.max(...state.data.history) * 1.12);
 live.today = state.data.history.slice(-12).reduce((a, b) => a + b, 0) * 9;
 $('#todayTotal').textContent = money(live.today);
+renderUpdated();
+paintExportLabel();
 setRole('admin', true);
 renderKpis();
 drawLive();
@@ -1206,7 +1487,7 @@ animateDonut();
 placeInd();
 document.fonts && document.fonts.ready.then(placeInd);
 setInterval(liveTick, 2000);
-setTimeout(() => toast({ title: 'Добро пожаловать в Metricly', text: 'Это демо: смените роль и период в верхней панели, наведите на графики — данные живые.', ic: 'trend', timeout: 6500 }), 900);
+setTimeout(() => toast({ title: esc(t('welcome.title')), text: esc(t('welcome.text')), ic: 'trend', timeout: 6500 }), 900);
 })();
 </script>
 </body>

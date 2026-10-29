@@ -103,6 +103,14 @@ body::before{
 .badge-count.bump{animation:bump .5s var(--ease)}
 @keyframes bump{0%{transform:scale(1)}35%{transform:scale(1.55)}65%{transform:scale(.9)}100%{transform:scale(1)}}
 .cart-btn.shake{animation:shake .45s var(--ease)}
+.lang{display:inline-flex;align-items:center;flex:none;padding:3px;margin-right:4px;border-radius:999px;border:1px solid var(--line-2);background:var(--bg-2)}
+.lang-btn{
+  position:relative;height:30px;min-width:34px;padding:0 8px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.04em;
+  color:var(--muted);transition:background .2s,color .2s,box-shadow .2s;
+}
+.lang-btn:hover{color:var(--text)}
+.lang-btn[aria-pressed="true"]{background:var(--pink);color:#1a0610;box-shadow:0 4px 14px rgba(255,92,138,.35)}
+.lang-btn:not([aria-pressed="true"])+.lang-btn:not([aria-pressed="true"])::before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:1px;background:rgba(255,255,255,.14)}
 @keyframes shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-12deg)}55%{transform:rotate(9deg)}80%{transform:rotate(-4deg)}}
 
 .searchbar{
@@ -310,7 +318,9 @@ body::before{
 .add:hover{background:var(--pink)}
 .add:active{transform:scale(.97)}
 .add.done{background:var(--ok)}
-.add svg{width:16px;height:16px}
+.add svg{width:16px;height:16px;flex:none}
+.add{min-width:0}
+.add span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .empty-results{grid-column:1/-1;text-align:center;padding:60px 20px;border:1px dashed var(--line);border-radius:var(--radius);color:var(--muted)}
 .empty-results b{display:block;color:var(--text);font-size:18px;margin-bottom:6px}
 
@@ -389,7 +399,7 @@ body::before{
 .cart-open .drawer{transform:none;visibility:visible;transition:transform .45s var(--ease)}
 .drawer-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--line-2)}
 .drawer-head h2{margin:0;font-family:var(--display);font-size:20px;font-weight:800;text-transform:uppercase;letter-spacing:-.01em}
-.drawer-head h2 span{color:var(--pink);font-size:14px;margin-left:6px;vertical-align:middle}
+.drawer-head h2 #cartCountText{color:var(--pink);font-size:14px;margin-left:6px;vertical-align:middle}
 .ship{padding:16px 20px;border-bottom:1px solid var(--line-2)}
 .ship p{margin:0 0 10px;font-size:13.5px;color:var(--muted)}
 .ship p b{color:var(--text)}
@@ -485,6 +495,9 @@ body::before{
 .reveal.in{opacity:1;transform:none}
 
 /* ---------- responsive ---------- */
+@media (max-width:1180px){
+  .nav a{padding:8px 10px}
+}
 @media (max-width:1020px){
   .nav{display:none}
   .perks-grid{grid-template-columns:repeat(2,1fr)}
@@ -506,6 +519,7 @@ body::before{
   .logo{font-size:22px}
   .cd-cell{min-width:0;flex:1;padding:10px 4px 8px}
   .cd-num{font-size:24px}
+  .cd-unit{font-size:10px;letter-spacing:.05em;overflow-wrap:anywhere}
   .cd-sep{display:none}
   .countdown{gap:8px;flex-wrap:nowrap}
   .hero-ctas .btn{flex:1 1 100%}
@@ -527,6 +541,9 @@ body::before{
 }
 @media (max-width:380px){
   .demo-tag{display:none}
+  .head-actions{gap:2px}
+  .icon-btn{width:40px;height:40px}
+  .lang-btn{min-width:30px;padding:0 6px;font-size:11.5px}
   .card-actions .select{min-width:80px;padding-right:30px;background-position:right 11px center}
 }
 
@@ -544,26 +561,31 @@ body::before{
 <!-- Demo bar -->
 <div class="demobar">
   <div class="demo-left">
-    <a class="back-pill" href="../../index.html#works">← Назад в портфолио</a>
-    <span class="demo-tag">Демо-проект</span>
+    <a class="back-pill" href="../../index.html#works" data-i18n="back">← Назад в портфолио</a>
+    <span class="demo-tag" data-i18n="demoTag">Демо-проект</span>
   </div>
-  <div class="demo-note">Бесплатная доставка от <b>10 000 ₽</b> · Оплата в 1 клик</div>
+  <div class="demo-note" data-i18n="demoNote">Бесплатная доставка от <b>10 000 ₽</b> · Оплата в 1 клик</div>
 </div>
 
 <!-- Header -->
 <header class="header">
   <div class="wrap">
-    <a href="#top" class="logo" aria-label="URBN — на главную">URBN<i></i></a>
-    <nav class="nav" aria-label="Категории">
-      <a href="#catalog" class="hot" data-nav="all">Дроп 07</a>
-      <a href="#catalog" data-nav="hoodie">Худи</a>
-      <a href="#catalog" data-nav="tee">Футболки</a>
-      <a href="#catalog" data-nav="sneakers">Кроссовки</a>
-      <a href="#catalog" data-nav="acc">Аксессуары</a>
-      <a href="#lookbook">Лукбук</a>
+    <a href="#top" class="logo" aria-label="URBN — на главную" data-i18n-aria="logoAria">URBN<i></i></a>
+    <nav class="nav" aria-label="Категории" data-i18n-aria="navAria">
+      <a href="#catalog" class="hot" data-nav="all" data-i18n="navDrop">Дроп 07</a>
+      <a href="#catalog" data-nav="hoodie" data-i18n="cat.hoodie">Худи</a>
+      <a href="#catalog" data-nav="tee" data-i18n="cat.tee">Футболки</a>
+      <a href="#catalog" data-nav="sneakers" data-i18n="cat.sneakers">Кроссовки</a>
+      <a href="#catalog" data-nav="acc" data-i18n="cat.acc">Аксессуары</a>
+      <a href="#lookbook" data-i18n="lookbook">Лукбук</a>
     </nav>
     <div class="head-actions">
-      <button class="icon-btn" id="searchBtn" aria-label="Поиск" aria-expanded="false" aria-controls="searchbar">
+      <div class="lang" role="group" aria-label="Язык" data-i18n-aria="langAria">
+        <button class="lang-btn" type="button" data-lang="ru" lang="ru" aria-label="Русский" title="Русский" aria-pressed="true">RU</button>
+        <button class="lang-btn" type="button" data-lang="en" lang="en" aria-label="English" title="English" aria-pressed="false">EN</button>
+        <button class="lang-btn" type="button" data-lang="es" lang="es" aria-label="Español" title="Español" aria-pressed="false">ES</button>
+      </div>
+      <button class="icon-btn" id="searchBtn" aria-label="Поиск" data-i18n-aria="searchAria" aria-expanded="false" aria-controls="searchbar">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
       </button>
       <button class="icon-btn cart-btn" id="cartBtn" aria-label="Открыть корзину" aria-controls="drawer">
@@ -577,9 +599,9 @@ body::before{
 <div class="searchbar" id="searchbar">
   <div>
     <div class="wrap">
-      <label for="searchInput" class="sr-only">Поиск по каталогу</label>
-      <input id="searchInput" type="search" placeholder="Найти худи, кроссовки, кепку…" autocomplete="off">
-      <span class="hint">Esc — закрыть</span>
+      <label for="searchInput" class="sr-only" data-i18n="searchLabel">Поиск по каталогу</label>
+      <input id="searchInput" type="search" placeholder="Найти худи, кроссовки, кепку…" data-i18n-placeholder="searchPh" autocomplete="off">
+      <span class="hint" data-i18n="searchHint">Esc — закрыть</span>
     </div>
   </div>
 </div>
@@ -589,32 +611,32 @@ body::before{
   <section class="hero">
     <div class="wrap hero-grid">
       <div>
-        <span class="eyebrow"><span class="live-dot"></span>Новый дроп · тираж 300 штук</span>
-        <h1>Ночной<span class="num">07</span><span class="outline">город</span></h1>
-        <p class="lead">Капсула из <b>8 вещей</b> для тех, кто живёт после заката. Плотный футер, светоотражающие принты и кроссовки на пене нового поколения. Повтора не будет.</p>
+        <span class="eyebrow"><span class="live-dot"></span><span data-i18n="eyebrow">Новый дроп · тираж 300 штук</span></span>
+        <h1 data-i18n="heroTitle">Ночной<span class="num">07</span><span class="outline">город</span></h1>
+        <p class="lead" data-i18n="lead">Капсула из <b>8 вещей</b> для тех, кто живёт после заката. Плотный футер, светоотражающие принты и кроссовки на пене нового поколения. Повтора не будет.</p>
         <div class="countdown-label" id="dropLabel">До старта продаж</div>
-        <div class="countdown" role="timer" aria-live="off" aria-label="Таймер до старта дропа">
-          <div class="cd-cell"><div class="cd-num" id="cdD">00</div><div class="cd-unit">дней</div></div>
+        <div class="countdown" role="timer" aria-live="off" aria-label="Таймер до старта дропа" data-i18n-aria="cdAria">
+          <div class="cd-cell"><div class="cd-num" id="cdD">00</div><div class="cd-unit" data-unit="d">дней</div></div>
           <span class="cd-sep">:</span>
-          <div class="cd-cell"><div class="cd-num" id="cdH">00</div><div class="cd-unit">часов</div></div>
+          <div class="cd-cell"><div class="cd-num" id="cdH">00</div><div class="cd-unit" data-unit="h">часов</div></div>
           <span class="cd-sep">:</span>
-          <div class="cd-cell"><div class="cd-num" id="cdM">00</div><div class="cd-unit">минут</div></div>
+          <div class="cd-cell"><div class="cd-num" id="cdM">00</div><div class="cd-unit" data-unit="m">минут</div></div>
           <span class="cd-sep">:</span>
-          <div class="cd-cell"><div class="cd-num" id="cdS">00</div><div class="cd-unit">секунд</div></div>
+          <div class="cd-cell"><div class="cd-num" id="cdS">00</div><div class="cd-unit" data-unit="s">секунд</div></div>
         </div>
         <div class="hero-ctas">
-          <a href="#catalog" class="btn btn-primary">Смотреть дроп
+          <a href="#catalog" class="btn btn-primary"><span data-i18n="ctaDrop">Смотреть дроп</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
           <button class="btn btn-ghost" id="remindBtn" type="button">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
-            Напомнить о старте
+            <span id="remindLabel" data-i18n="remind">Напомнить о старте</span>
           </button>
         </div>
         <div class="hero-trust">
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Оплата в 1 клик</span>
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>Доставка 1–2 дня</span>
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Возврат 14 дней</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg><span data-i18n="trustPay">Оплата в 1 клик</span></span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg><span data-i18n="trustShip">Доставка 1–2 дня</span></span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg><span data-i18n="trustReturn">Возврат 14 дней</span></span>
         </div>
       </div>
 
@@ -628,8 +650,8 @@ body::before{
           </svg>
           <b>07</b>
         </div>
-        <div class="price-chip"><small>Худи «Afterglow»</small><strong>7 490 ₽</strong></div>
-        <div class="stock-chip">Осталось 64 шт.</div>
+        <div class="price-chip"><small id="heroName">Худи «Afterglow»</small><strong id="heroPrice">7 490 ₽</strong></div>
+        <div class="stock-chip" id="heroStock">Осталось 64 шт.</div>
       </div>
     </div>
   </section>
@@ -637,18 +659,18 @@ body::before{
   <!-- Marquee -->
   <div class="marquee" aria-hidden="true">
     <div class="marquee-track">
-      <span>Дроп 07 «Ночной город»<em>✦</em>Оплата в 1 клик<em>✦</em>Бесплатная доставка от 10 000 ₽<em>✦</em>Тираж 300 штук<em>✦</em>Примерка при получении<em>✦</em></span>
-      <span>Дроп 07 «Ночной город»<em>✦</em>Оплата в 1 клик<em>✦</em>Бесплатная доставка от 10 000 ₽<em>✦</em>Тираж 300 штук<em>✦</em>Примерка при получении<em>✦</em></span>
+      <span data-i18n="marquee">Дроп 07 «Ночной город»<em>✦</em>Оплата в 1 клик<em>✦</em>Бесплатная доставка от 10 000 ₽<em>✦</em>Тираж 300 штук<em>✦</em>Примерка при получении<em>✦</em></span>
+      <span data-i18n="marquee">Дроп 07 «Ночной город»<em>✦</em>Оплата в 1 клик<em>✦</em>Бесплатная доставка от 10 000 ₽<em>✦</em>Тираж 300 штук<em>✦</em>Примерка при получении<em>✦</em></span>
     </div>
   </div>
 
   <!-- Perks -->
-  <section class="perks" aria-label="Преимущества">
+  <section class="perks" aria-label="Преимущества" data-i18n-aria="perksAria">
     <div class="wrap perks-grid">
-      <div class="perk reveal"><div class="perk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div><div><b>Оплата в 1 клик</b><span>Apple Pay, Google Pay, СБП — без регистрации</span></div></div>
-      <div class="perk reveal"><div class="perk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg></div><div><b>Доставка 1–2 дня</b><span>Курьером по Москве и Петербургу</span></div></div>
-      <div class="perk reveal"><div class="perk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.4 14.5L16 10 4 20"/><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/></svg></div><div><b>Примерка дома</b><span>Оплачиваете только то, что подошло</span></div></div>
-      <div class="perk reveal"><div class="perk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><b>100% оригинал</b><span>Собственное производство, гарантия 1 год</span></div></div>
+      <div class="perk reveal"><div class="perk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div><div><b data-i18n="perk1t">Оплата в 1 клик</b><span data-i18n="perk1d">Apple Pay, Google Pay, СБП — без регистрации</span></div></div>
+      <div class="perk reveal"><div class="perk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg></div><div><b data-i18n="perk2t">Доставка 1–2 дня</b><span data-i18n="perk2d">Курьером по Москве и Петербургу</span></div></div>
+      <div class="perk reveal"><div class="perk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.4 14.5L16 10 4 20"/><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/></svg></div><div><b data-i18n="perk3t">Примерка дома</b><span data-i18n="perk3d">Оплачиваете только то, что подошло</span></div></div>
+      <div class="perk reveal"><div class="perk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><b data-i18n="perk4t">100% оригинал</b><span data-i18n="perk4d">Собственное производство, гарантия 1 год</span></div></div>
     </div>
   </section>
 
@@ -657,17 +679,17 @@ body::before{
     <div class="wrap">
       <div class="section-head reveal">
         <div>
-          <div class="kicker">Каталог дропа</div>
-          <h2 class="h2">Выбирай. Жми. Носи.</h2>
+          <div class="kicker" data-i18n="catKicker">Каталог дропа</div>
+          <h2 class="h2" data-i18n="catTitle">Выбирай. Жми. Носи.</h2>
         </div>
       </div>
       <div class="toolbar">
-        <div class="chips" id="chips" role="group" aria-label="Фильтр по категориям"></div>
-        <label class="sort">Сортировка
+        <div class="chips" id="chips" role="group" aria-label="Фильтр по категориям" data-i18n-aria="chipsAria"></div>
+        <label class="sort"><span data-i18n="sortLabel">Сортировка</span>
           <select class="select" id="sortSelect">
-            <option value="pop">Популярные</option>
-            <option value="asc">Сначала дешевле</option>
-            <option value="desc">Сначала дороже</option>
+            <option value="pop" data-i18n="sortPop">Популярные</option>
+            <option value="asc" data-i18n="sortAsc">Сначала дешевле</option>
+            <option value="desc" data-i18n="sortDesc">Сначала дороже</option>
           </select>
         </label>
       </div>
@@ -681,22 +703,22 @@ body::before{
     <div class="wrap">
       <div class="section-head reveal">
         <div>
-          <div class="kicker">Лукбук</div>
-          <h2 class="h2">Собери образ в 1 клик</h2>
+          <div class="kicker" data-i18n="lookbook">Лукбук</div>
+          <h2 class="h2" data-i18n="lookTitle">Собери образ в 1 клик</h2>
         </div>
-        <p style="color:var(--muted);max-width:360px;margin:0">Готовые сеты от стилистов URBN. Добавляем весь образ в корзину одним нажатием — размеры можно поменять там же.</p>
+        <p style="color:var(--muted);max-width:360px;margin:0" data-i18n="lookText">Готовые сеты от стилистов URBN. Добавляем весь образ в корзину одним нажатием — размеры можно поменять там же.</p>
       </div>
       <div class="look-grid" id="lookGrid"></div>
 
       <div class="brand">
         <div class="reveal">
-          <div class="kicker">О бренде</div>
-          <p class="manifesto">URBN — это одежда для города, который <em>не спит</em>. Мы выпускаем маленькие тиражи, шьём в России и никогда не повторяем дропы.</p>
+          <div class="kicker" data-i18n="aboutKicker">О бренде</div>
+          <p class="manifesto" data-i18n="manifesto">URBN — это одежда для города, который <em>не спит</em>. Мы выпускаем маленькие тиражи, шьём в России и никогда не повторяем дропы.</p>
         </div>
         <div class="stats reveal">
-          <div class="stat"><b>300</b><span>вещей в каждом дропе</span></div>
-          <div class="stat"><b>48 ч</b><span>от заказа до двери</span></div>
-          <div class="stat"><b>4,9★</b><span>средняя оценка покупателей</span></div>
+          <div class="stat"><b>300</b><span data-i18n="stat1">вещей в каждом дропе</span></div>
+          <div class="stat"><b data-i18n="stat2v">48 ч</b><span data-i18n="stat2">от заказа до двери</span></div>
+          <div class="stat"><b data-i18n="stat3v">4,9★</b><span data-i18n="stat3">средняя оценка покупателей</span></div>
         </div>
       </div>
     </div>
@@ -707,14 +729,14 @@ body::before{
     <section class="news reveal" aria-labelledby="newsTitle">
       <div class="news-grid">
         <div>
-          <h2 id="newsTitle">Узнавай о дропах первым</h2>
-          <p>Ранний доступ за 24 часа до старта и −10% на первый заказ. Без спама — одно письмо на дроп.</p>
+          <h2 id="newsTitle" data-i18n="newsTitle">Узнавай о дропах первым</h2>
+          <p data-i18n="newsText">Ранний доступ за 24 часа до старта и −10% на первый заказ. Без спама — одно письмо на дроп.</p>
         </div>
         <div>
           <form class="news-form" id="newsForm" novalidate>
-            <label for="newsEmail" class="sr-only">Электронная почта</label>
-            <input id="newsEmail" type="email" placeholder="твой@email.ru" autocomplete="email">
-            <button class="btn btn-primary" type="submit">Подписаться</button>
+            <label for="newsEmail" class="sr-only" data-i18n="emailLabel">Электронная почта</label>
+            <input id="newsEmail" type="email" placeholder="твой@email.ru" data-i18n-placeholder="emailPh" autocomplete="email">
+            <button class="btn btn-primary" type="submit" data-i18n="subscribe">Подписаться</button>
           </form>
           <div class="news-msg" id="newsMsg" aria-live="polite"></div>
         </div>
@@ -728,39 +750,39 @@ body::before{
     <div class="foot-grid">
       <div>
         <a href="#top" class="logo">URBN<i></i></a>
-        <p>Streetwear малыми тиражами. Москва, Санкт-Петербург и доставка по всей России.</p>
-        <div class="pay-row"><span>Apple Pay</span><span>Google Pay</span><span>СБП</span><span>МИР</span></div>
+        <p data-i18n="footText">Streetwear малыми тиражами. Москва, Санкт-Петербург и доставка по всей России.</p>
+        <div class="pay-row"><span>Apple Pay</span><span>Google Pay</span><span data-i18n="paySbp">СБП</span><span data-i18n="payMir">МИР</span></div>
       </div>
       <div>
-        <h4>Магазин</h4>
+        <h4 data-i18n="footShop">Магазин</h4>
         <ul>
-          <li><a href="#catalog" data-nav="hoodie">Худи</a></li>
-          <li><a href="#catalog" data-nav="tee">Футболки</a></li>
-          <li><a href="#catalog" data-nav="sneakers">Кроссовки</a></li>
-          <li><a href="#catalog" data-nav="acc">Аксессуары</a></li>
+          <li><a href="#catalog" data-nav="hoodie" data-i18n="cat.hoodie">Худи</a></li>
+          <li><a href="#catalog" data-nav="tee" data-i18n="cat.tee">Футболки</a></li>
+          <li><a href="#catalog" data-nav="sneakers" data-i18n="cat.sneakers">Кроссовки</a></li>
+          <li><a href="#catalog" data-nav="acc" data-i18n="cat.acc">Аксессуары</a></li>
         </ul>
       </div>
       <div>
-        <h4>Помощь</h4>
+        <h4 data-i18n="footHelp">Помощь</h4>
         <ul>
-          <li><a href="#top">Доставка и оплата</a></li>
-          <li><a href="#top">Возврат и обмен</a></li>
-          <li><a href="#top">Таблица размеров</a></li>
-          <li><a href="#top">Контакты</a></li>
+          <li><a href="#top" data-i18n="help1">Доставка и оплата</a></li>
+          <li><a href="#top" data-i18n="help2">Возврат и обмен</a></li>
+          <li><a href="#top" data-i18n="help3">Таблица размеров</a></li>
+          <li><a href="#top" data-i18n="help4">Контакты</a></li>
         </ul>
       </div>
       <div>
-        <h4>Соцсети</h4>
+        <h4 data-i18n="footSocial">Соцсети</h4>
         <ul>
           <li><a href="#top">Telegram</a></li>
-          <li><a href="#top">ВКонтакте</a></li>
+          <li><a href="#top" data-i18n="vk">ВКонтакте</a></li>
           <li><a href="#top">YouTube</a></li>
         </ul>
       </div>
     </div>
     <div class="foot-bottom">
-      <span>© 2026 URBN. Демо-проект для портфолио — товары и цены вымышлены.</span>
-      <a href="../../index.html#works" style="color:var(--pink)">← Вернуться в портфолио</a>
+      <span data-i18n="copyright">© 2026 URBN. Демо-проект для портфолио — товары и цены вымышлены.</span>
+      <a href="../../index.html#works" style="color:var(--pink)" data-i18n="backFoot">← Вернуться в портфолио</a>
     </div>
   </div>
 </footer>
@@ -769,8 +791,8 @@ body::before{
 <div class="scrim" data-close></div>
 <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
   <div class="drawer-head">
-    <h2 id="cartTitle">Корзина<span id="cartCountText"></span></h2>
-    <button class="icon-btn" data-close aria-label="Закрыть корзину">
+    <h2 id="cartTitle"><span data-i18n="cartTitle">Корзина</span><span id="cartCountText"></span></h2>
+    <button class="icon-btn" data-close aria-label="Закрыть корзину" data-i18n-aria="closeCart">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
   </div>
@@ -782,36 +804,36 @@ body::before{
     <ul class="cart-list" id="cartList"></ul>
     <div class="cart-empty" id="cartEmpty" hidden>
       <div class="bag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg></div>
-      <b>Корзина пока пуста</b>
-      <p>Дроп 07 разбирают быстро — успей забрать свой размер.</p>
-      <button class="btn btn-primary" data-close data-goto="catalog" type="button">Перейти в каталог</button>
+      <b data-i18n="cartEmpty">Корзина пока пуста</b>
+      <p data-i18n="cartEmptyText">Дроп 07 разбирают быстро — успей забрать свой размер.</p>
+      <button class="btn btn-primary" data-close data-goto="catalog" type="button" data-i18n="toCatalog">Перейти в каталог</button>
     </div>
     <div id="upsell"></div>
   </div>
   <div class="drawer-foot">
-    <div class="sum-row"><span>Товары</span><span id="subTotal">0 ₽</span></div>
-    <div class="sum-row"><span>Доставка</span><span id="shipCost">—</span></div>
-    <div class="sum-row total"><span>Итого</span><span id="grandTotal">0 ₽</span></div>
+    <div class="sum-row"><span data-i18n="sumItems">Товары</span><span id="subTotal">0 ₽</span></div>
+    <div class="sum-row"><span data-i18n="sumShip">Доставка</span><span id="shipCost">—</span></div>
+    <div class="sum-row total"><span data-i18n="sumTotal">Итого</span><span id="grandTotal">0 ₽</span></div>
     <button class="pay" id="payBtn" type="button" disabled>
       <svg class="bolt" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>
       <span class="spinner" aria-hidden="true"></span>
       <span id="payLabel">Оплатить в 1 клик</span>
     </button>
-    <div class="secure"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Безопасная оплата · данные карты сохранены</div>
+    <div class="secure"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span data-i18n="secure">Безопасная оплата · данные карты сохранены</span></div>
   </div>
   <div class="success" id="success" hidden>
     <svg class="check" viewBox="0 0 110 110" fill="none" aria-hidden="true">
       <circle cx="55" cy="55" r="50" stroke="#ff5c8a" stroke-width="5"/>
       <path d="M34 56l14 14 28-30" stroke="#5cffb0" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    <h3>Оплачено!</h3>
-    <p>Заказ принят. Курьер привезёт его за 1–2 дня, трек-номер придёт в SMS.</p>
+    <h3 data-i18n="paid">Оплачено!</h3>
+    <p data-i18n="paidText">Заказ принят. Курьер привезёт его за 1–2 дня, трек-номер придёт в SMS.</p>
     <div class="receipt">
-      <div><span>Заказ</span><b id="orderNo">—</b></div>
-      <div><span>Способ оплаты</span><b>Apple Pay ·· 4242</b></div>
-      <div><span>Списано</span><b id="orderSum">—</b></div>
+      <div><span data-i18n="rOrder">Заказ</span><b id="orderNo">—</b></div>
+      <div><span data-i18n="rMethod">Способ оплаты</span><b>Apple Pay ·· 4242</b></div>
+      <div><span data-i18n="rCharged">Списано</span><b id="orderSum">—</b></div>
     </div>
-    <button class="btn btn-primary" id="continueBtn" type="button">Продолжить покупки</button>
+    <button class="btn btn-primary" id="continueBtn" type="button" data-i18n="continue">Продолжить покупки</button>
   </div>
 </aside>
 
@@ -819,7 +841,7 @@ body::before{
 <div class="toast" id="toast" role="status" aria-live="polite">
   <div class="toast-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></div>
   <div class="toast-txt"><b id="toastTitle"></b><span id="toastSub"></span></div>
-  <button class="toast-btn" id="toastBtn" type="button">Корзина</button>
+  <button class="toast-btn" id="toastBtn" type="button" data-i18n="toastCart">Корзина</button>
 </div>
 
 <script>
@@ -831,23 +853,334 @@ body::before{
   const FREE_SHIP = 10000;
   const SHIP_COST = 490;
   const STORE_KEY = 'urbn-cart-v1';
+  const LANG_KEY = 'kb-lang';
+  const ONE_SIZE = 'Единый'; // internal size value (kept for stored carts)
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-  const fmt = n => n.toLocaleString('ru-RU') + ' ₽';
-  const plural = (n, [one, few, many]) => {
+
+  /* ---------- i18n ---------- */
+  const LANGS = ['ru', 'en', 'es'];
+  const LOCALES = { ru: 'ru-RU', en: 'en-US', es: 'es-ES' };
+  const I18N = {
+    ru: {
+      metaTitle: 'URBN — магазин streetwear',
+      metaDesc: 'URBN — магазин streetwear. Новый дроп «Ночной город», быстрая корзина и оплата в один клик.',
+      back: '← Назад в портфолио',
+      demoTag: 'Демо-проект',
+      demoNote: 'Бесплатная доставка от <b>{free}</b> · Оплата в 1 клик',
+      logoAria: 'URBN — на главную',
+      navAria: 'Категории',
+      navDrop: 'Дроп 07',
+      'cat.all': 'Все', 'cat.hoodie': 'Худи', 'cat.tee': 'Футболки', 'cat.sneakers': 'Кроссовки', 'cat.acc': 'Аксессуары',
+      lookbook: 'Лукбук',
+      langAria: 'Язык',
+      searchAria: 'Поиск',
+      cartAria: 'Открыть корзину, товаров: {n}',
+      searchLabel: 'Поиск по каталогу',
+      searchPh: 'Найти худи, кроссовки, кепку…',
+      searchHint: 'Esc — закрыть',
+      eyebrow: 'Новый дроп · тираж 300 штук',
+      heroTitle: 'Ночной<span class="num">07</span><span class="outline">город</span>',
+      lead: 'Капсула из <b>8 вещей</b> для тех, кто живёт после заката. Плотный футер, светоотражающие принты и кроссовки на пене нового поколения. Повтора не будет.',
+      dropLabel: 'До старта дропа · {date}',
+      cdAria: 'Таймер до старта дропа',
+      unitD: ['день', 'дня', 'дней'], unitH: ['час', 'часа', 'часов'], unitM: ['минута', 'минуты', 'минут'], unitS: ['секунда', 'секунды', 'секунд'],
+      ctaDrop: 'Смотреть дроп',
+      remind: 'Напомнить о старте',
+      reminded: 'Напомним за час',
+      remindToast: 'Напоминание включено',
+      remindSub: 'Пришлём push за час до старта дропа 07',
+      trustPay: 'Оплата в 1 клик', trustShip: 'Доставка 1–2 дня', trustReturn: 'Возврат 14 дней',
+      stock: 'Осталось {n} шт.',
+      marquee: 'Дроп 07 «Ночной город»<em>✦</em>Оплата в 1 клик<em>✦</em>Бесплатная доставка от {free}<em>✦</em>Тираж 300 штук<em>✦</em>Примерка при получении<em>✦</em>',
+      perksAria: 'Преимущества',
+      perk1t: 'Оплата в 1 клик', perk1d: 'Apple Pay, Google Pay, СБП — без регистрации',
+      perk2t: 'Доставка 1–2 дня', perk2d: 'Курьером по Москве и Петербургу',
+      perk3t: 'Примерка дома', perk3d: 'Оплачиваете только то, что подошло',
+      perk4t: '100% оригинал', perk4d: 'Собственное производство, гарантия 1 год',
+      catKicker: 'Каталог дропа',
+      catTitle: 'Выбирай. Жми. Носи.',
+      chipsAria: 'Фильтр по категориям',
+      sortLabel: 'Сортировка', sortPop: 'Популярные', sortAsc: 'Сначала дешевле', sortDesc: 'Сначала дороже',
+      resultNote: 'Показано {n} {items}', resultQuery: ' по запросу «{q}»',
+      pItems: ['товар', 'товара', 'товаров'],
+      emptyTitle: 'Ничего не нашли', emptyText: 'Попробуйте другой запрос или категорию.',
+      favAria: 'Добавить в избранное: {name}',
+      favOn: 'Добавлено в избранное', favOff: 'Убрано из избранного',
+      colorAria: 'Цвет', sizeLabel: 'Размер', oneSizeOpt: 'Единый',
+      addBtn: 'В корзину', added: 'Добавлено',
+      toastAdded: '{name} в корзине',
+      oneSize: 'единый размер', sizeN: 'размер {s}',
+      lookTitle: 'Собери образ в 1 клик',
+      lookText: 'Готовые сеты от стилистов URBN. Добавляем весь образ в корзину одним нажатием — размеры можно поменять там же.',
+      lookBuy: 'Купить образ · {sum}',
+      toastLook: 'Образ «{t}» в корзине', toastLookSub: '{n} {things} — размеры можно изменить',
+      pThings: ['вещь', 'вещи', 'вещей'],
+      aboutKicker: 'О бренде',
+      manifesto: 'URBN — это одежда для города, который <em>не спит</em>. Мы выпускаем маленькие тиражи, шьём в России и никогда не повторяем дропы.',
+      stat1: 'вещей в каждом дропе', stat2v: '48 ч', stat2: 'от заказа до двери', stat3v: '4,9★', stat3: 'средняя оценка покупателей',
+      newsTitle: 'Узнавай о дропах первым',
+      newsText: 'Ранний доступ за 24 часа до старта и −10% на первый заказ. Без спама — одно письмо на дроп.',
+      emailLabel: 'Электронная почта', emailPh: 'твой@email.ru', subscribe: 'Подписаться',
+      newsOk: 'Готово! Промокод DROP10 уже летит на почту.',
+      newsErr: 'Похоже, в адресе опечатка — проверьте email.',
+      footText: 'Streetwear малыми тиражами. Москва, Санкт-Петербург и доставка по всей России.',
+      paySbp: 'СБП', payMir: 'МИР',
+      footShop: 'Магазин', footHelp: 'Помощь', footSocial: 'Соцсети',
+      help1: 'Доставка и оплата', help2: 'Возврат и обмен', help3: 'Таблица размеров', help4: 'Контакты',
+      vk: 'ВКонтакте',
+      copyright: '© 2026 URBN. Демо-проект для портфолио — товары и цены вымышлены.',
+      backFoot: '← Вернуться в портфолио',
+      cartTitle: 'Корзина', closeCart: 'Закрыть корзину',
+      shipFrom: 'Бесплатная доставка от <b>{v}</b>',
+      shipLeft: 'Добавьте ещё <b>{v}</b> — и доставка будет бесплатной',
+      shipDone: '<b>Доставка бесплатная!</b> Отличный выбор.',
+      dec: 'Уменьшить количество', inc: 'Увеличить количество', remove: 'Удалить',
+      cartEmpty: 'Корзина пока пуста',
+      cartEmptyText: 'Дроп 07 разбирают быстро — успей забрать свой размер.',
+      toCatalog: 'Перейти в каталог',
+      upsellTitle: 'Дополните образ', upsellFree: 'и доставка станет бесплатной', upsellTogether: 'часто берут вместе', upsellAdd: '+ Добавить',
+      sumItems: 'Товары', sumShip: 'Доставка', sumTotal: 'Итого', free: 'Бесплатно',
+      payLabel: 'Оплатить в 1 клик', paying: 'Подтверждаем оплату…',
+      secure: 'Безопасная оплата · данные карты сохранены',
+      paid: 'Оплачено!',
+      paidText: 'Заказ принят. Курьер привезёт его за 1–2 дня, трек-номер придёт в SMS.',
+      rOrder: 'Заказ', rMethod: 'Способ оплаты', rCharged: 'Списано',
+      orderNo: '№ URBN-{n}',
+      continue: 'Продолжить покупки',
+      toastCart: 'Корзина'
+    },
+    en: {
+      metaTitle: 'URBN — streetwear store',
+      metaDesc: 'URBN — streetwear store. The new “Night City” drop, a fast cart and one-click checkout.',
+      back: '← Back to portfolio',
+      demoTag: 'Demo project',
+      demoNote: 'Free shipping over <b>{free}</b> · 1-click checkout',
+      logoAria: 'URBN — home',
+      navAria: 'Categories',
+      navDrop: 'Drop 07',
+      'cat.all': 'All', 'cat.hoodie': 'Hoodies', 'cat.tee': 'T-shirts', 'cat.sneakers': 'Sneakers', 'cat.acc': 'Accessories',
+      lookbook: 'Lookbook',
+      langAria: 'Language',
+      searchAria: 'Search',
+      cartAria: 'Open cart, items: {n}',
+      searchLabel: 'Search the catalog',
+      searchPh: 'Find a hoodie, sneakers, a cap…',
+      searchHint: 'Esc to close',
+      eyebrow: 'New drop · only 300 pieces',
+      heroTitle: 'Night<span class="num">07</span><span class="outline">City</span>',
+      lead: 'A capsule of <b>8 pieces</b> for those who come alive after dark. Heavyweight fleece, reflective prints and sneakers with next-gen foam. No restocks — ever.',
+      dropLabel: 'Drop starts · {date}',
+      cdAria: 'Countdown to the drop',
+      unitD: ['day', 'days'], unitH: ['hour', 'hours'], unitM: ['minute', 'minutes'], unitS: ['second', 'seconds'],
+      ctaDrop: 'Shop the drop',
+      remind: 'Remind me at launch',
+      reminded: 'We’ll remind you 1 h before',
+      remindToast: 'Reminder set',
+      remindSub: 'We’ll send a push an hour before Drop 07 goes live',
+      trustPay: '1-click checkout', trustShip: '1–2 day delivery', trustReturn: '14-day returns',
+      stock: 'Only {n} left',
+      marquee: 'Drop 07 “Night City”<em>✦</em>1-click checkout<em>✦</em>Free shipping over {free}<em>✦</em>Only 300 pieces<em>✦</em>Try on before you pay<em>✦</em>',
+      perksAria: 'Why URBN',
+      perk1t: '1-click checkout', perk1d: 'Apple Pay, Google Pay, SBP — no sign-up needed',
+      perk2t: '1–2 day delivery', perk2d: 'By courier in Moscow and St. Petersburg',
+      perk3t: 'Try on at home', perk3d: 'Pay only for what fits',
+      perk4t: '100% authentic', perk4d: 'Made in-house, 1-year warranty',
+      catKicker: 'Drop catalog',
+      catTitle: 'Pick. Tap. Wear.',
+      chipsAria: 'Filter by category',
+      sortLabel: 'Sort by', sortPop: 'Popular', sortAsc: 'Price: low to high', sortDesc: 'Price: high to low',
+      resultNote: 'Showing {n} {items}', resultQuery: ' for “{q}”',
+      pItems: ['item', 'items'],
+      emptyTitle: 'Nothing found', emptyText: 'Try a different search or category.',
+      favAria: 'Add to favorites: {name}',
+      favOn: 'Added to favorites', favOff: 'Removed from favorites',
+      colorAria: 'Color', sizeLabel: 'Size', oneSizeOpt: 'One size',
+      addBtn: 'Add to cart', added: 'Added',
+      toastAdded: '{name} added to cart',
+      oneSize: 'one size', sizeN: 'size {s}',
+      lookTitle: 'Get the look in 1 click',
+      lookText: 'Ready-made outfits from URBN stylists. Add the whole look to your cart in one tap — you can change sizes right there.',
+      lookBuy: 'Buy the look · {sum}',
+      toastLook: 'The “{t}” look is in your cart', toastLookSub: '{n} {things} — you can change sizes',
+      pThings: ['item', 'items'],
+      aboutKicker: 'About the brand',
+      manifesto: 'URBN is clothing for a city that <em>never sleeps</em>. We make small runs, produce in Russia and never repeat a drop.',
+      stat1: 'pieces in every drop', stat2v: '48 h', stat2: 'from order to your door', stat3v: '4.9★', stat3: 'average customer rating',
+      newsTitle: 'Hear about drops first',
+      newsText: 'Early access 24 hours before launch and 10% off your first order. No spam — one email per drop.',
+      emailLabel: 'Email', emailPh: 'you@email.com', subscribe: 'Subscribe',
+      newsOk: 'Done! Your DROP10 promo code is on its way.',
+      newsErr: 'Looks like there’s a typo — please check your email.',
+      footText: 'Small-batch streetwear. Moscow, St. Petersburg and delivery across Russia.',
+      paySbp: 'SBP', payMir: 'Mir',
+      footShop: 'Shop', footHelp: 'Help', footSocial: 'Social',
+      help1: 'Shipping & payment', help2: 'Returns & exchanges', help3: 'Size guide', help4: 'Contact us',
+      vk: 'VK',
+      copyright: '© 2026 URBN. Portfolio demo project — products and prices are fictional.',
+      backFoot: '← Back to portfolio',
+      cartTitle: 'Cart', closeCart: 'Close cart',
+      shipFrom: 'Free shipping on orders over <b>{v}</b>',
+      shipLeft: 'Add <b>{v}</b> more to get free shipping',
+      shipDone: '<b>Free shipping unlocked!</b> Great choice.',
+      dec: 'Decrease quantity', inc: 'Increase quantity', remove: 'Remove',
+      cartEmpty: 'Your cart is empty',
+      cartEmptyText: 'Drop 07 is selling fast — grab your size while you can.',
+      toCatalog: 'Go to catalog',
+      upsellTitle: 'Complete the look', upsellFree: 'unlocks free shipping', upsellTogether: 'often bought together', upsellAdd: '+ Add',
+      sumItems: 'Subtotal', sumShip: 'Shipping', sumTotal: 'Total', free: 'Free',
+      payLabel: 'Pay in 1 click', paying: 'Confirming payment…',
+      secure: 'Secure payment · card details saved',
+      paid: 'Paid!',
+      paidText: 'Order confirmed. A courier will deliver it in 1–2 days — tracking number via SMS.',
+      rOrder: 'Order', rMethod: 'Payment method', rCharged: 'Charged',
+      orderNo: '#URBN-{n}',
+      continue: 'Continue shopping',
+      toastCart: 'Cart'
+    },
+    es: {
+      metaTitle: 'URBN — tienda de streetwear',
+      metaDesc: 'URBN — tienda de streetwear. Nuevo drop «Ciudad nocturna», carrito rápido y pago en un clic.',
+      back: '← Volver al portafolio',
+      demoTag: 'Proyecto demo',
+      demoNote: 'Envío gratis desde <b>{free}</b> · Pago en 1 clic',
+      logoAria: 'URBN — inicio',
+      navAria: 'Categorías',
+      navDrop: 'Drop 07',
+      'cat.all': 'Todo', 'cat.hoodie': 'Sudaderas', 'cat.tee': 'Camisetas', 'cat.sneakers': 'Zapatillas', 'cat.acc': 'Accesorios',
+      lookbook: 'Lookbook',
+      langAria: 'Idioma',
+      searchAria: 'Buscar',
+      cartAria: 'Abrir carrito, artículos: {n}',
+      searchLabel: 'Buscar en el catálogo',
+      searchPh: 'Busca sudaderas, zapatillas, gorras…',
+      searchHint: 'Esc para cerrar',
+      eyebrow: 'Nuevo drop · solo 300 unidades',
+      heroTitle: 'Ciudad<span class="num">07</span><span class="outline">nocturna</span>',
+      lead: 'Una cápsula de <b>8 prendas</b> para quienes viven cuando cae el sol. Felpa gruesa, estampados reflectantes y zapatillas con espuma de nueva generación. No habrá reedición.',
+      dropLabel: 'El drop empieza · {date}',
+      cdAria: 'Cuenta atrás para el drop',
+      unitD: ['día', 'días'], unitH: ['hora', 'horas'], unitM: ['minuto', 'minutos'], unitS: ['segundo', 'segundos'],
+      ctaDrop: 'Ver el drop',
+      remind: 'Avísame del lanzamiento',
+      reminded: 'Te avisaremos 1 h antes',
+      remindToast: 'Recordatorio activado',
+      remindSub: 'Te enviaremos una notificación una hora antes del drop 07',
+      trustPay: 'Pago en 1 clic', trustShip: 'Entrega en 1–2 días', trustReturn: 'Devolución en 14 días',
+      stock: 'Quedan {n}',
+      marquee: 'Drop 07 «Ciudad nocturna»<em>✦</em>Pago en 1 clic<em>✦</em>Envío gratis desde {free}<em>✦</em>Solo 300 unidades<em>✦</em>Pruébatelo al recibirlo<em>✦</em>',
+      perksAria: 'Ventajas',
+      perk1t: 'Pago en 1 clic', perk1d: 'Apple Pay, Google Pay, SBP — sin registro',
+      perk2t: 'Entrega en 1–2 días', perk2d: 'Por mensajero en Moscú y San Petersburgo',
+      perk3t: 'Pruébatelo en casa', perk3d: 'Pagas solo lo que te queda bien',
+      perk4t: '100% original', perk4d: 'Producción propia, garantía de 1 año',
+      catKicker: 'Catálogo del drop',
+      catTitle: 'Elige. Pulsa. Viste.',
+      chipsAria: 'Filtrar por categoría',
+      sortLabel: 'Ordenar', sortPop: 'Populares', sortAsc: 'Precio: menor a mayor', sortDesc: 'Precio: mayor a menor',
+      resultNote: 'Mostrando {n} {items}', resultQuery: ' para «{q}»',
+      pItems: ['producto', 'productos'],
+      emptyTitle: 'No hemos encontrado nada', emptyText: 'Prueba con otra búsqueda o categoría.',
+      favAria: 'Añadir a favoritos: {name}',
+      favOn: 'Añadido a favoritos', favOff: 'Eliminado de favoritos',
+      colorAria: 'Color', sizeLabel: 'Talla', oneSizeOpt: 'Única',
+      addBtn: 'Al carrito', added: 'Añadido',
+      toastAdded: '{name} en el carrito',
+      oneSize: 'talla única', sizeN: 'talla {s}',
+      lookTitle: 'Consigue el look en 1 clic',
+      lookText: 'Conjuntos listos de los estilistas de URBN. Añade el look completo al carrito con un toque; puedes cambiar las tallas allí mismo.',
+      lookBuy: 'Comprar el look · {sum}',
+      toastLook: 'Look «{t}» en el carrito', toastLookSub: '{n} {things} — puedes cambiar las tallas',
+      pThings: ['prenda', 'prendas'],
+      aboutKicker: 'Sobre la marca',
+      manifesto: 'URBN es ropa para una ciudad que <em>nunca duerme</em>. Hacemos tiradas pequeñas, fabricamos en Rusia y nunca repetimos un drop.',
+      stat1: 'prendas en cada drop', stat2v: '48 h', stat2: 'del pedido a tu puerta', stat3v: '4,9★', stat3: 'valoración media de clientes',
+      newsTitle: 'Entérate de los drops antes que nadie',
+      newsText: 'Acceso anticipado 24 horas antes del lanzamiento y −10 % en tu primer pedido. Sin spam: un correo por drop.',
+      emailLabel: 'Correo electrónico', emailPh: 'tu@email.com', subscribe: 'Suscribirme',
+      newsOk: '¡Listo! Tu código DROP10 ya va de camino a tu correo.',
+      newsErr: 'Parece que hay un error en la dirección: revisa tu correo.',
+      footText: 'Streetwear en tiradas pequeñas. Moscú, San Petersburgo y envíos a toda Rusia.',
+      paySbp: 'SBP', payMir: 'Mir',
+      footShop: 'Tienda', footHelp: 'Ayuda', footSocial: 'Redes sociales',
+      help1: 'Envío y pago', help2: 'Devoluciones y cambios', help3: 'Guía de tallas', help4: 'Contacto',
+      vk: 'VK',
+      copyright: '© 2026 URBN. Proyecto demo para portafolio: los productos y precios son ficticios.',
+      backFoot: '← Volver al portafolio',
+      cartTitle: 'Carrito', closeCart: 'Cerrar carrito',
+      shipFrom: 'Envío gratis desde <b>{v}</b>',
+      shipLeft: 'Añade <b>{v}</b> más y el envío será gratis',
+      shipDone: '<b>¡Envío gratis!</b> Buena elección.',
+      dec: 'Reducir cantidad', inc: 'Aumentar cantidad', remove: 'Eliminar',
+      cartEmpty: 'Tu carrito está vacío',
+      cartEmptyText: 'El drop 07 vuela: consigue tu talla antes de que se agote.',
+      toCatalog: 'Ir al catálogo',
+      upsellTitle: 'Completa el look', upsellFree: 'y el envío será gratis', upsellTogether: 'se suelen comprar juntos', upsellAdd: '+ Añadir',
+      sumItems: 'Productos', sumShip: 'Envío', sumTotal: 'Total', free: 'Gratis',
+      payLabel: 'Pagar en 1 clic', paying: 'Confirmando el pago…',
+      secure: 'Pago seguro · datos de la tarjeta guardados',
+      paid: '¡Pagado!',
+      paidText: 'Pedido confirmado. Un mensajero lo entregará en 1–2 días y recibirás el número de seguimiento por SMS.',
+      rOrder: 'Pedido', rMethod: 'Método de pago', rCharged: 'Cobrado',
+      orderNo: 'N.º URBN-{n}',
+      continue: 'Seguir comprando',
+      toastCart: 'Carrito'
+    }
+  };
+
+  // product color names & badges (keyed by the Russian source string)
+  const COLOR_I18N = {
+    'Чёрный': ['Black', 'Negro'], 'Пыльная роза': ['Dusty rose', 'Rosa empolvado'], 'Бордо': ['Burgundy', 'Burdeos'],
+    'Белый': ['White', 'Blanco'], 'Алый': ['Scarlet', 'Escarlata'], 'Фуксия': ['Fuchsia', 'Fucsia'],
+    'Розовый неон': ['Neon pink', 'Rosa neón'], 'Молочный': ['Off-white', 'Crudo'], 'Графит': ['Graphite', 'Grafito'],
+    'Пепельный': ['Ash grey', 'Gris ceniza'], 'Чёрный/розовый': ['Black/pink', 'Negro/rosa'], 'Олива': ['Olive', 'Oliva']
+  };
+  const BADGE_I18N = { 'Дроп 07': ['Drop 07', 'Drop 07'], 'Хит': ['Bestseller', 'Top ventas'] };
+
+  function detectLang() {
+    try {
+      const q = new URLSearchParams(location.search).get('lang');
+      if (q && LANGS.includes(q.toLowerCase())) return q.toLowerCase();
+    } catch (e) { /* ignore */ }
+    try {
+      const s = localStorage.getItem(LANG_KEY);
+      if (s && LANGS.includes(s)) return s;
+    } catch (e) { /* storage unavailable */ }
+    const nav = String((navigator.languages && navigator.languages[0]) || navigator.language || '').toLowerCase();
+    if (nav.startsWith('en')) return 'en';
+    if (nav.startsWith('es')) return 'es';
+    return 'ru';
+  }
+  let lang = detectLang();
+
+  // "always" keeps es-ES grouping consistent for 4-digit prices (7.490 ₽ next to 12.990 ₽)
+  const fmt = n => {
+    let s;
+    try { s = n.toLocaleString(LOCALES[lang], { useGrouping: 'always' }); } catch (e) { s = n.toLocaleString(LOCALES[lang]); }
+    return s + ' ₽';
+  };
+  function t(key, vars) {
+    const dict = I18N[lang];
+    let s = key in dict ? dict[key] : (key in I18N.ru ? I18N.ru[key] : key);
+    if (typeof s !== 'string') return s;
+    return s.replace(/\{(\w+)\}/g, (m, k) => vars && k in vars ? vars[k] : k === 'free' ? fmt(FREE_SHIP) : m);
+  }
+  const pluralRu = (n, [one, few, many]) => {
     const m10 = n % 10, m100 = n % 100;
     if (m10 === 1 && m100 !== 11) return one;
     if (m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20)) return few;
     return many;
   };
+  const pl = (n, key) => {
+    const forms = t(key);
+    return lang === 'ru' ? pluralRu(n, forms) : (n === 1 ? forms[0] : forms[1]);
+  };
+  const tr = v => (v && typeof v === 'object') ? (v[lang] || v.ru) : v;
+  const colorName = n => lang === 'ru' || !COLOR_I18N[n] ? n : COLOR_I18N[n][lang === 'en' ? 0 : 1];
+  const badgeName = b => lang === 'ru' || !BADGE_I18N[b] ? b : BADGE_I18N[b][lang === 'en' ? 0 : 1];
+  const sizeText = s => s === ONE_SIZE ? t('oneSize') : t('sizeN', { s });
 
-  const CATS = [
-    { id: 'all', name: 'Все' },
-    { id: 'hoodie', name: 'Худи' },
-    { id: 'tee', name: 'Футболки' },
-    { id: 'sneakers', name: 'Кроссовки' },
-    { id: 'acc', name: 'Аксессуары' }
-  ];
+  const CATS = ['all', 'hoodie', 'tee', 'sneakers', 'acc'];
 
   /* ---------- product art (SVG) ---------- */
   function luminance(hex) {
@@ -911,46 +1244,80 @@ body::before{
 
   /* ---------- data ---------- */
   const PRODUCTS = [
-    { id: 'h1', cat: 'hoodie', shape: 'hoodie', name: 'Худи «Afterglow»', meta: 'Оверсайз · футер 480 г/м²', price: 7490, badge: 'Дроп 07', stock: 64,
+    { id: 'h1', cat: 'hoodie', shape: 'hoodie',
+      name: { ru: 'Худи «Afterglow»', en: 'Afterglow Hoodie', es: 'Sudadera «Afterglow»' },
+      meta: { ru: 'Оверсайз · футер 480 г/м²', en: 'Oversized · 480 gsm fleece', es: 'Oversize · felpa de 480 g/m²' },
+      price: 7490, badge: 'Дроп 07', stock: 64,
       bg: 'radial-gradient(120% 90% at 20% 10%, #ff9cbb 0%, #ff5c8a 30%, #7a1b3d 72%, #2a0a17 100%)',
       colors: [{ n: 'Чёрный', h: '#17121a' }, { n: 'Пыльная роза', h: '#e7a3b5' }, { n: 'Бордо', h: '#5c1029' }], sizes: ['XS', 'S', 'M', 'L', 'XL'] },
-    { id: 's1', cat: 'sneakers', shape: 'sneaker', name: 'Кроссовки «Runner 01»', meta: 'Пена ReBound · вес 290 г', price: 12990, badge: 'Limited', stock: 18,
+    { id: 's1', cat: 'sneakers', shape: 'sneaker',
+      name: { ru: 'Кроссовки «Runner 01»', en: 'Runner 01 Sneakers', es: 'Zapatillas «Runner 01»' },
+      meta: { ru: 'Пена ReBound · вес 290 г', en: 'ReBound foam · 290 g', es: 'Espuma ReBound · 290 g' },
+      price: 12990, badge: 'Limited', stock: 18,
       bg: 'linear-gradient(150deg, #2a0a17 0%, #7a1b3d 55%, #ff5c8a 120%)',
       colors: [{ n: 'Белый', h: '#f4f1ee' }, { n: 'Чёрный', h: '#1b171d' }, { n: 'Алый', h: '#c4183f' }], sizes: ['39', '40', '41', '42', '43', '44', '45'] },
-    { id: 't1', cat: 'tee', shape: 'tee', name: 'Футболка «Night Shift»', meta: 'Хлопок 240 г/м² · светоотражающий принт', price: 3290, badge: 'Хит', stock: 112,
+    { id: 't1', cat: 'tee', shape: 'tee',
+      name: { ru: 'Футболка «Night Shift»', en: 'Night Shift Tee', es: 'Camiseta «Night Shift»' },
+      meta: { ru: 'Хлопок 240 г/м² · светоотражающий принт', en: '240 gsm cotton · reflective print', es: 'Algodón de 240 g/m² · estampado reflectante' },
+      price: 3290, badge: 'Хит', stock: 112,
       bg: 'radial-gradient(100% 100% at 80% 0%, #ffb3c8 0%, #ff5c8a 40%, #a3264f 100%)',
       colors: [{ n: 'Белый', h: '#f4f1ee' }, { n: 'Чёрный', h: '#141014' }, { n: 'Фуксия', h: '#d63c6e' }], sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'] },
-    { id: 'a1', cat: 'acc', shape: 'cap', name: 'Кепка «URBN Core»', meta: 'Шестиклинка · регулируемая застёжка', price: 2490, stock: 80,
+    { id: 'a1', cat: 'acc', shape: 'cap',
+      name: { ru: 'Кепка «URBN Core»', en: 'URBN Core Cap', es: 'Gorra «URBN Core»' },
+      meta: { ru: 'Шестиклинка · регулируемая застёжка', en: 'Six-panel · adjustable strap', es: 'Seis paneles · cierre ajustable' },
+      price: 2490, stock: 80,
       bg: 'linear-gradient(200deg, #7a1b3d 0%, #2a0a17 70%)',
-      colors: [{ n: 'Розовый неон', h: '#ff5c8a' }, { n: 'Чёрный', h: '#1a161c' }, { n: 'Молочный', h: '#efe6e0' }], sizes: ['Единый'] },
-    { id: 'h2', cat: 'hoodie', shape: 'hoodie', name: 'Зип-худи «Static»', meta: 'Прямой крой · двусторонняя молния', price: 8990, old: 10990, badge: '−18%', stock: 37,
+      colors: [{ n: 'Розовый неон', h: '#ff5c8a' }, { n: 'Чёрный', h: '#1a161c' }, { n: 'Молочный', h: '#efe6e0' }], sizes: [ONE_SIZE] },
+    { id: 'h2', cat: 'hoodie', shape: 'hoodie',
+      name: { ru: 'Зип-худи «Static»', en: 'Static Zip Hoodie', es: 'Sudadera con cremallera «Static»' },
+      meta: { ru: 'Прямой крой · двусторонняя молния', en: 'Regular fit · two-way zip', es: 'Corte recto · cremallera de doble cursor' },
+      price: 8990, old: 10990, badge: '−18%', stock: 37,
       bg: 'linear-gradient(160deg, #2a0a17 0%, #7a1b3d 60%, #ff5c8a 130%)',
       colors: [{ n: 'Розовый неон', h: '#ff5c8a' }, { n: 'Графит', h: '#2f2c33' }, { n: 'Молочный', h: '#efe6e0' }], sizes: ['S', 'M', 'L', 'XL'] },
-    { id: 't2', cat: 'tee', shape: 'tee', name: 'Футболка «Concrete»', meta: 'Бокси-фит · варёный хлопок', price: 2890, stock: 140,
+    { id: 't2', cat: 'tee', shape: 'tee',
+      name: { ru: 'Футболка «Concrete»', en: 'Concrete Tee', es: 'Camiseta «Concrete»' },
+      meta: { ru: 'Бокси-фит · варёный хлопок', en: 'Boxy fit · washed cotton', es: 'Corte boxy · algodón lavado' },
+      price: 2890, stock: 140,
       bg: 'radial-gradient(110% 90% at 10% 100%, #ff5c8a 0%, #7a1b3d 45%, #2a0a17 100%)',
       colors: [{ n: 'Пепельный', h: '#a3979d' }, { n: 'Чёрный', h: '#141014' }, { n: 'Бордо', h: '#6e1734' }], sizes: ['S', 'M', 'L', 'XL'] },
-    { id: 's2', cat: 'sneakers', shape: 'sneaker', name: 'Кроссовки «Low Rider»', meta: 'Замша и сетка · литая подошва', price: 14490, old: 16990, badge: '−15%', stock: 22,
+    { id: 's2', cat: 'sneakers', shape: 'sneaker',
+      name: { ru: 'Кроссовки «Low Rider»', en: 'Low Rider Sneakers', es: 'Zapatillas «Low Rider»' },
+      meta: { ru: 'Замша и сетка · литая подошва', en: 'Suede and mesh · molded sole', es: 'Ante y malla · suela moldeada' },
+      price: 14490, old: 16990, badge: '−15%', stock: 22,
       bg: 'radial-gradient(120% 100% at 50% 0%, #ffd1dc 0%, #ff5c8a 35%, #7a1b3d 85%)',
       colors: [{ n: 'Чёрный/розовый', h: '#1b171d' }, { n: 'Бордо', h: '#6e1734' }, { n: 'Молочный', h: '#efe6e0' }], sizes: ['39', '40', '41', '42', '43', '44'] },
-    { id: 'a2', cat: 'acc', shape: 'bag', name: 'Сумка «Sling 3L»', meta: 'Водоотталкивающий нейлон · 3 л', price: 3990, badge: 'New', stock: 55,
+    { id: 'a2', cat: 'acc', shape: 'bag',
+      name: { ru: 'Сумка «Sling 3L»', en: 'Sling 3L Bag', es: 'Bandolera «Sling 3L»' },
+      meta: { ru: 'Водоотталкивающий нейлон · 3 л', en: 'Water-repellent nylon · 3 L', es: 'Nailon hidrófugo · 3 l' },
+      price: 3990, badge: 'New', stock: 55,
       bg: 'linear-gradient(135deg, #ff5c8a 0%, #7a1b3d 60%, #2a0a17 100%)',
-      colors: [{ n: 'Чёрный', h: '#17131a' }, { n: 'Розовый неон', h: '#ff5c8a' }, { n: 'Олива', h: '#5b5b3c' }], sizes: ['Единый'] }
+      colors: [{ n: 'Чёрный', h: '#17131a' }, { n: 'Розовый неон', h: '#ff5c8a' }, { n: 'Олива', h: '#5b5b3c' }], sizes: [ONE_SIZE] }
   ];
   const byId = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
   const defaultSize = p => p.sizes[Math.min(2, p.sizes.length - 1)];
+  const pName = p => tr(p.name);
 
   const LOOKS = [
-    { num: 'Look 01', title: 'Afterglow', text: 'Худи «Afterglow» + кроссовки «Runner 01». Базовый сет для ночных прогулок.',
+    { num: 'Look 01', title: 'Afterglow',
+      text: { ru: 'Худи «Afterglow» + кроссовки «Runner 01». Базовый сет для ночных прогулок.',
+              en: 'Afterglow Hoodie + Runner 01 Sneakers. The essential set for late-night walks.',
+              es: 'Sudadera «Afterglow» + zapatillas «Runner 01». El conjunto básico para tus paseos nocturnos.' },
       bg: 'radial-gradient(90% 70% at 30% 20%, #ff9cbb 0%, #ff5c8a 25%, #7a1b3d 65%, #2a0a17 100%)',
       items: [['h1', 0, 'M'], ['s1', 0, '42']],
       layout: [{ id: 'h1', c: 0, style: 'left:10%;top:6%;width:68%;aspect-ratio:1' }, { id: 's1', c: 0, style: 'right:4%;top:44%;width:46%;aspect-ratio:1;transform:rotate(-8deg)' }] },
-    { num: 'Look 02', title: 'Concrete', text: 'Футболка «Night Shift» + кепка «URBN Core».',
+    { num: 'Look 02', title: 'Concrete',
+      text: { ru: 'Футболка «Night Shift» + кепка «URBN Core».',
+              en: 'Night Shift Tee + URBN Core Cap.',
+              es: 'Camiseta «Night Shift» + gorra «URBN Core».' },
       bg: 'linear-gradient(160deg, #2a0a17 0%, #7a1b3d 70%, #ff5c8a 140%)',
-      items: [['t1', 1, 'L'], ['a1', 0, 'Единый']],
+      items: [['t1', 1, 'L'], ['a1', 0, ONE_SIZE]],
       layout: [{ id: 't1', c: 1, style: 'right:6%;top:6%;width:46%;aspect-ratio:1' }, { id: 'a1', c: 0, style: 'right:40%;top:10%;width:28%;aspect-ratio:1;transform:rotate(-10deg)' }] },
-    { num: 'Look 03', title: 'Static', text: 'Зип-худи «Static» + сумка «Sling 3L».',
+    { num: 'Look 03', title: 'Static',
+      text: { ru: 'Зип-худи «Static» + сумка «Sling 3L».',
+              en: 'Static Zip Hoodie + Sling 3L Bag.',
+              es: 'Sudadera con cremallera «Static» + bandolera «Sling 3L».' },
       bg: 'radial-gradient(100% 100% at 100% 0%, #ffb3c8 0%, #ff5c8a 35%, #a3264f 100%)',
-      items: [['h2', 1, 'L'], ['a2', 0, 'Единый']],
+      items: [['h2', 1, 'L'], ['a2', 0, ONE_SIZE]],
       layout: [{ id: 'h2', c: 1, style: 'right:4%;top:4%;width:48%;aspect-ratio:1' }, { id: 'a2', c: 0, style: 'right:42%;top:16%;width:30%;aspect-ratio:1;transform:rotate(8deg)' }] }
   ];
 
@@ -1006,42 +1373,43 @@ body::before{
   let query = '';
 
   function renderChips() {
-    chipsEl.innerHTML = CATS.map(c => {
-      const n = c.id === 'all' ? PRODUCTS.length : PRODUCTS.filter(p => p.cat === c.id).length;
-      return `<button class="chip" type="button" data-cat="${c.id}" aria-pressed="${c.id === activeCat}">${c.name}<small>${n}</small></button>`;
+    chipsEl.innerHTML = CATS.map(id => {
+      const n = id === 'all' ? PRODUCTS.length : PRODUCTS.filter(p => p.cat === id).length;
+      return `<button class="chip" type="button" data-cat="${id}" aria-pressed="${id === activeCat}">${t('cat.' + id)}<small>${n}</small></button>`;
     }).join('');
   }
 
   function cardHTML(p, i) {
-    const badge = p.badge ? `<span class="card-badge${p.old ? ' sale' : ''}">${p.badge}</span>` : '';
+    const name = pName(p);
+    const badge = p.badge ? `<span class="card-badge${p.old ? ' sale' : ''}">${badgeName(p.badge)}</span>` : '';
     const swatches = p.colors.map((c, idx) =>
-      `<button class="swatch" type="button" role="radio" style="--c:${c.h}" data-idx="${idx}" aria-checked="${idx === 0}" aria-label="${c.n}"></button>`).join('');
-    const sizes = p.sizes.map(s => `<option${s === defaultSize(p) ? ' selected' : ''}>${s}</option>`).join('');
+      `<button class="swatch" type="button" role="radio" style="--c:${c.h}" data-idx="${idx}" aria-checked="${idx === 0}" aria-label="${colorName(c.n)}"></button>`).join('');
+    const sizes = p.sizes.map(s => `<option value="${s}"${s === defaultSize(p) ? ' selected' : ''}>${s === ONE_SIZE ? t('oneSizeOpt') : s}</option>`).join('');
     return `
       <article class="card" data-id="${p.id}" data-cat="${p.cat}" data-color="0" style="animation-delay:${reduceMotion ? 0 : i * 60}ms">
         <div class="card-media" style="--bg-card:${p.bg}">
           ${badge}
-          <button class="fav" type="button" aria-pressed="false" aria-label="Добавить в избранное: ${p.name}">
+          <button class="fav" type="button" aria-pressed="false" aria-label="${t('favAria', { name })}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-7-4.4-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.6-9 9-9 9z"/></svg>
           </button>
           <div class="art">${art(p, 0)}</div>
-          <span class="card-stock">Осталось ${p.stock} шт.</span>
+          <span class="card-stock">${t('stock', { n: p.stock })}</span>
         </div>
         <div class="card-body">
           <div class="card-top">
-            <div><h3>${p.name}</h3><p class="card-meta">${p.meta}</p></div>
+            <div><h3>${name}</h3><p class="card-meta">${tr(p.meta)}</p></div>
             <div class="price">${fmt(p.price)}${p.old ? `<s>${fmt(p.old)}</s>` : ''}</div>
           </div>
           <div class="swatch-row">
-            <div class="swatches" role="radiogroup" aria-label="Цвет">${swatches}</div>
-            <span class="color-name">${p.colors[0].n}</span>
+            <div class="swatches" role="radiogroup" aria-label="${t('colorAria')}">${swatches}</div>
+            <span class="color-name">${colorName(p.colors[0].n)}</span>
           </div>
           <div class="card-actions">
-            <label class="sr-only" for="size-${p.id}">Размер</label>
-            <select class="select" id="size-${p.id}" aria-label="Размер">${sizes}</select>
+            <label class="sr-only" for="size-${p.id}">${t('sizeLabel')}</label>
+            <select class="select" id="size-${p.id}" aria-label="${t('sizeLabel')}">${sizes}</select>
             <button class="add" type="button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-              <span>В корзину</span>
+              <span>${t('addBtn')}</span>
             </button>
           </div>
         </div>
@@ -1050,7 +1418,34 @@ body::before{
 
   function renderGrid() {
     grid.innerHTML = PRODUCTS.map(cardHTML).join('') +
-      `<div class="empty-results" id="emptyResults" hidden><b>Ничего не нашли</b>Попробуйте другой запрос или категорию.</div>`;
+      `<div class="empty-results" id="emptyResults" hidden><b>${t('emptyTitle')}</b>${t('emptyText')}</div>`;
+  }
+
+  function setCardColor(card, idx) {
+    const p = byId[card.dataset.id];
+    card.dataset.color = idx;
+    $$('.swatch', card).forEach(s => s.setAttribute('aria-checked', String(Number(s.dataset.idx) === idx)));
+    $('.art', card).innerHTML = art(p, idx);
+    $('.color-name', card).textContent = colorName(p.colors[idx].n);
+  }
+
+  // re-render the grid in the current language, keeping each card's color / size / favorite state
+  function rerenderGrid() {
+    const state = {};
+    $$('.card', grid).forEach(c => {
+      state[c.dataset.id] = { color: Number(c.dataset.color), size: $('select', c).value, fav: $('.fav', c).getAttribute('aria-pressed') };
+    });
+    renderGrid();
+    $$('.card', grid).forEach(c => {
+      c.style.animation = 'none';
+      const s = state[c.dataset.id];
+      if (!s) return;
+      if (s.color) setCardColor(c, s.color);
+      $('select', c).value = s.size;
+      $('.fav', c).setAttribute('aria-pressed', s.fav);
+    });
+    applySort($('#sortSelect').value);
+    applyFilters();
   }
 
   function applyFilters() {
@@ -1058,12 +1453,13 @@ body::before{
     let shown = 0;
     $$('.card', grid).forEach(card => {
       const p = byId[card.dataset.id];
-      const ok = (activeCat === 'all' || p.cat === activeCat) && (!q || p.name.toLowerCase().includes(q) || p.meta.toLowerCase().includes(q));
+      const hay = [pName(p), tr(p.meta), p.name.ru, p.meta.ru].join(' ').toLowerCase();
+      const ok = (activeCat === 'all' || p.cat === activeCat) && (!q || hay.includes(q));
       card.classList.toggle('is-hidden', !ok);
       if (ok) shown++;
     });
     $('#emptyResults').hidden = shown > 0;
-    $('#resultNote').textContent = `Показано ${shown} ${plural(shown, ['товар', 'товара', 'товаров'])}` + (q ? ` по запросу «${query.trim()}»` : '');
+    $('#resultNote').textContent = t('resultNote', { n: shown, items: pl(shown, 'pItems') }) + (q ? t('resultQuery', { q: query.trim() }) : '');
     $$('.chip', chipsEl).forEach(ch => ch.setAttribute('aria-pressed', String(ch.dataset.cat === activeCat)));
   }
 
@@ -1100,11 +1496,7 @@ body::before{
 
     const sw = e.target.closest('.swatch');
     if (sw) {
-      const idx = Number(sw.dataset.idx);
-      card.dataset.color = idx;
-      $$('.swatch', card).forEach(s => s.setAttribute('aria-checked', String(s === sw)));
-      $('.art', card).innerHTML = art(p, idx);
-      $('.color-name', card).textContent = p.colors[idx].n;
+      setCardColor(card, Number(sw.dataset.idx));
       return;
     }
 
@@ -1112,7 +1504,7 @@ body::before{
     if (fav) {
       const on = fav.getAttribute('aria-pressed') !== 'true';
       fav.setAttribute('aria-pressed', String(on));
-      showToast(on ? 'Добавлено в избранное' : 'Убрано из избранного', p.name, false);
+      showToast(t(on ? 'favOn' : 'favOff'), pName(p), false);
       return;
     }
 
@@ -1122,12 +1514,12 @@ body::before{
       const size = $('select', card).value;
       addToCart(p.id, color, size);
       flyToCart($('.art', card));
-      showToast(`${p.name} в корзине`, `${p.colors[color].n} · ${size === 'Единый' ? 'единый размер' : 'размер ' + size} · ${fmt(p.price)}`);
+      showToast(t('toastAdded', { name: pName(p) }), `${colorName(p.colors[color].n)} · ${sizeText(size)} · ${fmt(p.price)}`);
       const label = $('span', add);
       add.classList.add('done');
-      label.textContent = 'Добавлено';
+      label.textContent = t('added');
       clearTimeout(add._t);
-      add._t = setTimeout(() => { add.classList.remove('done'); label.textContent = 'В корзину'; }, 1400);
+      add._t = setTimeout(() => { add.classList.remove('done'); label.textContent = t('addBtn'); }, 1400);
     }
   });
 
@@ -1143,8 +1535,8 @@ body::before{
           <span class="look-num">${l.num}</span>
           <span class="look-big" aria-hidden="true">0${i + 1}</span>
           <h3>${l.title}</h3>
-          <p>${l.text}</p>
-          <button class="btn btn-primary" type="button" data-look="${i}">Купить образ · ${fmt(sum)}</button>
+          <p>${tr(l.text)}</p>
+          <button class="btn btn-primary" type="button" data-look="${i}">${t('lookBuy', { sum: fmt(sum) })}</button>
         </article>`;
     }).join('');
   }
@@ -1154,7 +1546,7 @@ body::before{
     const look = LOOKS[Number(btn.dataset.look)];
     look.items.forEach(([id, c, s]) => addToCart(id, c, s));
     flyToCart(btn.closest('.look').querySelector('.look-art > div'));
-    showToast(`Образ «${look.title}» в корзине`, `${look.items.length} ${plural(look.items.length, ['вещь', 'вещи', 'вещей'])} — размеры можно изменить`);
+    showToast(t('toastLook', { t: look.title }), t('toastLookSub', { n: look.items.length, things: pl(look.items.length, 'pThings') }));
   });
 
   /* ---------- cart UI ---------- */
@@ -1170,12 +1562,12 @@ body::before{
   }
 
   function renderCart() {
-    const t = totals();
+    const tt = totals();
     const badge = $('#cartCount');
-    badge.textContent = t.count;
-    badge.dataset.empty = String(t.count === 0);
-    $('#cartBtn').setAttribute('aria-label', `Открыть корзину, товаров: ${t.count}`);
-    $('#cartCountText').textContent = t.count ? `· ${t.count}` : '';
+    badge.textContent = tt.count;
+    badge.dataset.empty = String(tt.count === 0);
+    $('#cartBtn').setAttribute('aria-label', t('cartAria', { n: tt.count }));
+    $('#cartCountText').textContent = tt.count ? ` · ${tt.count}` : '';
 
     cartList.innerHTML = cart.map(i => {
       const p = byId[i.id];
@@ -1183,40 +1575,39 @@ body::before{
         <li class="line" data-key="${i.key}">
           ${thumb(p, i.color)}
           <div>
-            <h4>${p.name}</h4>
-            <div class="opts">${p.colors[i.color].n} · ${i.size === 'Единый' ? 'единый размер' : 'размер ' + i.size}</div>
+            <h4>${pName(p)}</h4>
+            <div class="opts">${colorName(p.colors[i.color].n)} · ${sizeText(i.size)}</div>
             <div class="qty">
-              <button type="button" data-act="dec" aria-label="Уменьшить количество">−</button>
+              <button type="button" data-act="dec" aria-label="${t('dec')}">−</button>
               <output aria-live="polite">${i.qty}</output>
-              <button type="button" data-act="inc" aria-label="Увеличить количество"${i.qty >= 9 ? ' disabled' : ''}>+</button>
+              <button type="button" data-act="inc" aria-label="${t('inc')}"${i.qty >= 9 ? ' disabled' : ''}>+</button>
             </div>
           </div>
           <div class="line-right">
             <span class="line-price">${fmt(p.price * i.qty)}</span>
-            <button type="button" class="rm" data-act="rm">Удалить</button>
+            <button type="button" class="rm" data-act="rm">${t('remove')}</button>
           </div>
         </li>`;
     }).join('');
     $('#cartEmpty').hidden = cart.length > 0;
 
     // free shipping progress
-    const left = Math.max(0, FREE_SHIP - t.sub);
-    const pct = Math.min(100, (t.sub / FREE_SHIP) * 100);
+    const left = Math.max(0, FREE_SHIP - tt.sub);
+    const pct = Math.min(100, (tt.sub / FREE_SHIP) * 100);
     const shipText = $('#shipText');
-    shipText.classList.toggle('done', left === 0 && t.sub > 0);
-    shipText.innerHTML = t.sub === 0
-      ? `Бесплатная доставка от <b>${fmt(FREE_SHIP)}</b>`
-      : left > 0 ? `Добавьте ещё <b>${fmt(left)}</b> — и доставка будет бесплатной`
-                 : `<b>Доставка бесплатная!</b> Отличный выбор.`;
+    shipText.classList.toggle('done', left === 0 && tt.sub > 0);
+    shipText.innerHTML = tt.sub === 0 ? t('shipFrom', { v: fmt(FREE_SHIP) })
+      : left > 0 ? t('shipLeft', { v: fmt(left) })
+                 : t('shipDone');
     $('#shipFill').style.width = pct + '%';
-    $('#shipBar').classList.toggle('full', left === 0 && t.sub > 0);
+    $('#shipBar').classList.toggle('full', left === 0 && tt.sub > 0);
 
     // totals
-    $('#subTotal').textContent = fmt(t.sub);
-    $('#shipCost').innerHTML = t.sub === 0 ? '—' : t.ship === 0 ? '<span class="free">Бесплатно</span>' : fmt(t.ship);
-    $('#grandTotal').textContent = fmt(t.total);
+    $('#subTotal').textContent = fmt(tt.sub);
+    $('#shipCost').innerHTML = tt.sub === 0 ? '—' : tt.ship === 0 ? `<span class="free">${t('free')}</span>` : fmt(tt.ship);
+    $('#grandTotal').textContent = fmt(tt.total);
     payBtn.disabled = cart.length === 0 || paying;
-    if (!paying) $('#payLabel').textContent = cart.length ? `Оплатить в 1 клик · ${fmt(t.total)}` : 'Оплатить в 1 клик';
+    $('#payLabel').textContent = paying ? t('paying') : cart.length ? `${t('payLabel')} · ${fmt(tt.total)}` : t('payLabel');
 
     renderUpsell(left);
   }
@@ -1230,14 +1621,14 @@ body::before{
     // prefer an item that closes the free-shipping gap, then accessories, then the cheapest
     const closes = candidates.filter(p => left > 0 && p.price >= left).sort((a, b) => a.price - b.price)[0];
     const pick = closes || candidates.filter(p => p.cat === 'acc')[0] || candidates.sort((a, b) => a.price - b.price)[0];
-    const note = left > 0 && pick.price >= left ? 'и доставка станет бесплатной' : 'часто берут вместе';
+    const note = left > 0 && pick.price >= left ? t('upsellFree') : t('upsellTogether');
     box.innerHTML = `
       <div class="upsell">
-        <div class="upsell-title">Дополните образ</div>
+        <div class="upsell-title">${t('upsellTitle')}</div>
         <div class="upsell-row">
           ${thumb(pick, 0)}
-          <div><b>${pick.name}</b><span>${fmt(pick.price)} · ${note}</span></div>
-          <button class="upsell-add" type="button" data-upsell="${pick.id}">+ Добавить</button>
+          <div><b>${pName(pick)}</b><span>${fmt(pick.price)} · ${note}</span></div>
+          <button class="upsell-add" type="button" data-upsell="${pick.id}">${t('upsellAdd')}</button>
         </div>
       </div>`;
   }
@@ -1287,16 +1678,21 @@ body::before{
   });
 
   /* ---------- one-click payment ---------- */
+  let lastOrder = null;
+  function renderOrderNo() {
+    if (lastOrder) $('#orderNo').textContent = t('orderNo', { n: lastOrder.no });
+    if (lastOrder) $('#orderSum').textContent = fmt(lastOrder.sum);
+  }
   payBtn.addEventListener('click', () => {
     if (!cart.length || paying) return;
     paying = true;
     const sum = totals().total;
     payBtn.disabled = true;
     payBtn.classList.add('loading');
-    $('#payLabel').textContent = 'Подтверждаем оплату…';
+    $('#payLabel').textContent = t('paying');
     setTimeout(() => {
-      $('#orderNo').textContent = '№ URBN-' + Math.floor(10000 + Math.random() * 89999);
-      $('#orderSum').textContent = fmt(sum);
+      lastOrder = { no: Math.floor(10000 + Math.random() * 89999), sum };
+      renderOrderNo();
       const success = $('#success');
       success.hidden = false;
       // restart check animation
@@ -1355,14 +1751,14 @@ body::before{
   function flyToCart(src) {
     if (reduceMotion || !src || typeof Element.prototype.animate !== 'function') { bump(); return; }
     const s = src.getBoundingClientRect();
-    const t = $('#cartBtn').getBoundingClientRect();
+    const tg = $('#cartBtn').getBoundingClientRect();
     const fly = document.createElement('div');
     fly.className = 'fly';
     fly.innerHTML = src.innerHTML;
     Object.assign(fly.style, { left: s.left + 'px', top: s.top + 'px', width: s.width + 'px', height: s.height + 'px' });
     document.body.appendChild(fly);
-    const dx = t.left + t.width / 2 - (s.left + s.width / 2);
-    const dy = t.top + t.height / 2 - (s.top + s.height / 2);
+    const dx = tg.left + tg.width / 2 - (s.left + s.width / 2);
+    const dy = tg.top + tg.height / 2 - (s.top + s.height / 2);
     const anim = fly.animate([
       { transform: 'translate(0,0) scale(1) rotate(0deg)', opacity: 1 },
       { transform: `translate(${dx * 0.45}px, ${dy * 0.35 - 90}px) scale(.55) rotate(-12deg)`, opacity: 1, offset: 0.5 },
@@ -1400,31 +1796,43 @@ body::before{
   /* ---------- countdown ---------- */
   function nextDrop() {
     const now = new Date();
-    const t = new Date(now);
-    t.setHours(20, 0, 0, 0);
-    t.setDate(now.getDate() + ((5 - now.getDay() + 7) % 7)); // next Friday, 20:00
-    if (t <= now) t.setDate(t.getDate() + 7);
-    return t;
+    const d = new Date(now);
+    d.setHours(20, 0, 0, 0);
+    d.setDate(now.getDate() + ((5 - now.getDay() + 7) % 7)); // next Friday, 20:00
+    if (d <= now) d.setDate(d.getDate() + 7);
+    return d;
   }
   const dropAt = nextDrop();
-  $('#dropLabel').textContent = `До старта дропа · ${dropAt.toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' })}, 20:00`;
+  function renderDropLabel() {
+    const loc = LOCALES[lang];
+    const date = dropAt.toLocaleDateString(loc, { weekday: 'long', day: 'numeric', month: 'long' });
+    const time = dropAt.toLocaleTimeString(loc, { hour: 'numeric', minute: '2-digit' });
+    $('#dropLabel').textContent = t('dropLabel', { date: `${date}, ${time}` });
+  }
   const pad = n => String(n).padStart(2, '0');
   const cd = { d: $('#cdD'), h: $('#cdH'), m: $('#cdM'), s: $('#cdS') };
+  const cdUnits = { d: $('[data-unit="d"]'), h: $('[data-unit="h"]'), m: $('[data-unit="m"]'), s: $('[data-unit="s"]') };
+  const UNIT_KEYS = { d: 'unitD', h: 'unitH', m: 'unitM', s: 'unitS' };
   function tick() {
     let diff = Math.max(0, Math.floor((dropAt - Date.now()) / 1000));
-    const d = Math.floor(diff / 86400); diff %= 86400;
-    const h = Math.floor(diff / 3600); diff %= 3600;
-    const m = Math.floor(diff / 60); const s = diff % 60;
-    cd.d.textContent = pad(d); cd.h.textContent = pad(h); cd.m.textContent = pad(m); cd.s.textContent = pad(s);
+    const v = {};
+    v.d = Math.floor(diff / 86400); diff %= 86400;
+    v.h = Math.floor(diff / 3600); diff %= 3600;
+    v.m = Math.floor(diff / 60); v.s = diff % 60;
+    Object.keys(cd).forEach(k => {
+      cd[k].textContent = pad(v[k]);
+      const unit = pl(v[k], UNIT_KEYS[k]);
+      if (cdUnits[k].textContent !== unit) cdUnits[k].textContent = unit;
+    });
   }
-  tick();
-  setInterval(tick, 1000);
 
   $('#remindBtn').addEventListener('click', e => {
     const btn = e.currentTarget;
     btn.disabled = true;
-    btn.lastChild.textContent = ' Напомним за час';
-    showToast('Напоминание включено', 'Пришлём push за час до старта дропа 07', false);
+    const label = $('#remindLabel');
+    label.dataset.i18n = 'reminded';
+    label.textContent = t('reminded');
+    showToast(t('remindToast'), t('remindSub'), false);
   });
 
   /* ---------- newsletter ---------- */
@@ -1434,23 +1842,72 @@ body::before{
     const msg = $('#newsMsg');
     const ok = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(input.value.trim());
     msg.className = 'news-msg ' + (ok ? 'ok' : 'err');
-    msg.textContent = ok ? 'Готово! Промокод DROP10 уже летит на почту.' : 'Похоже, в адресе опечатка — проверьте email.';
+    msg.dataset.i18n = ok ? 'newsOk' : 'newsErr';
+    msg.textContent = t(msg.dataset.i18n);
     if (ok) input.value = '';
     else input.focus();
   });
 
   /* ---------- reveal on scroll ---------- */
-  function initReveal() {
-    const els = $$('.reveal');
-    if (reduceMotion || !('IntersectionObserver' in window)) { els.forEach(el => el.classList.add('in')); return; }
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  let io = null;
+  function reveal(els) {
+    if (!io) { els.forEach(el => el.classList.add('in')); return; }
     els.forEach(el => io.observe(el));
   }
+  function initReveal() {
+    if (!reduceMotion && 'IntersectionObserver' in window) {
+      io = new IntersectionObserver(entries => {
+        entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    }
+    reveal($$('.reveal'));
+  }
+
+  /* ---------- language ---------- */
+  function applyStatic() {
+    const html = document.documentElement;
+    html.lang = lang;
+    document.title = t('metaTitle');
+    const desc = $('meta[name="description"]');
+    if (desc) desc.setAttribute('content', t('metaDesc'));
+    $$('[data-i18n]').forEach(el => { el.innerHTML = t(el.dataset.i18n); });
+    $$('[data-i18n-placeholder]').forEach(el => el.setAttribute('placeholder', t(el.dataset.i18nPlaceholder)));
+    $$('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.i18nAria)));
+    $$('.lang-btn').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    const hero = byId.h1;
+    $('#heroName').textContent = pName(hero);
+    $('#heroPrice').textContent = fmt(hero.price);
+    $('#heroStock').textContent = t('stock', { n: hero.stock });
+    renderDropLabel();
+    renderOrderNo();
+  }
+
+  function setLang(next) {
+    if (!LANGS.includes(next) || next === lang) return;
+    lang = next;
+    try { localStorage.setItem(LANG_KEY, lang); } catch (e) { /* storage unavailable */ }
+    try {
+      const url = new URL(location.href);
+      if (url.searchParams.has('lang')) { url.searchParams.set('lang', lang); history.replaceState(history.state, '', url); }
+    } catch (e) { /* ignore */ }
+    hideToast();
+    $('#toastTitle').textContent = '';
+    $('#toastSub').textContent = '';
+    applyStatic();
+    renderChips();
+    rerenderGrid();
+    renderLooks();
+    reveal($$('.look'));
+    renderCart();
+    tick();
+  }
+  $$('.lang-btn').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
 
   /* ---------- init ---------- */
+  applyStatic();
   $('#heroArt').innerHTML = art(byId.h1, 0);
+  tick();
+  setInterval(tick, 1000);
   renderChips();
   renderGrid();
   applyFilters();

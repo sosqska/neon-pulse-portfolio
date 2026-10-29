@@ -110,6 +110,13 @@ section{position:relative}
 .burger[aria-expanded="true"] i:nth-child(1){transform:translateY(5px) rotate(45deg)}
 .burger[aria-expanded="true"] i:nth-child(2){opacity:0}
 .burger[aria-expanded="true"] i:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+/* Language switcher */
+.lang{display:flex;align-items:center;padding:3px;border-radius:999px;border:1px solid var(--line);background:rgba(20,9,4,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.lang button{position:relative;min-width:34px;height:30px;padding:0 8px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--muted);transition:background .3s, color .3s}
+.lang button:hover{color:var(--text)}
+.lang button + button::before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:1px;background:var(--line)}
+.lang button[aria-pressed="true"]{background:linear-gradient(135deg,var(--fire),var(--ember));color:#2b1203}
+.lang button[aria-pressed="true"]::before,.lang button[aria-pressed="true"] + button::before{display:none}
 
 /* Hero */
 .hero{min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:150px 0 90px;overflow:hidden}
@@ -274,7 +281,7 @@ section{position:relative}
 .step-title span{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;background:rgba(255,154,61,.15);color:var(--fire);letter-spacing:0}
 .dates{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:var(--rust) transparent}
 .date-chip{
-  flex:none;width:62px;padding:10px 0;border-radius:14px;text-align:center;scroll-snap-align:start;
+  flex:none;min-width:62px;padding:10px 8px;border-radius:14px;text-align:center;scroll-snap-align:start;
   border:1px solid var(--line);background:rgba(255,255,255,.02);transition:all .25s;
 }
 .date-chip small{display:block;font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
@@ -477,8 +484,8 @@ section{position:relative}
   .booking-wrap{grid-template-columns:1fr}
   .booking-info ul{grid-template-columns:repeat(3,1fr)}
 }
-@media (max-width:900px){
-  .header-actions .btn{display:none}
+/* Nav collapses earlier so EN/ES labels + language switcher never crowd the header */
+@media (max-width:1100px){
   .burger{display:block}
   .nav{
     position:fixed;inset:0;z-index:-1;flex-direction:column;justify-content:center;align-items:center;gap:26px;
@@ -487,6 +494,9 @@ section{position:relative}
   }
   .nav.open{opacity:1;visibility:visible}
   .nav .btn{display:inline-flex;font-family:var(--sans);font-size:16px;margin-top:10px}
+}
+@media (max-width:900px){
+  .header-actions .btn{display:none}
   .hero-grid,.about-grid,.contacts-grid{grid-template-columns:1fr}
   .hero{padding-top:140px}
   .hero-visual{max-width:420px;order:-1}
@@ -497,7 +507,7 @@ section{position:relative}
   .footer-grid{grid-template-columns:1fr 1fr}
   .chef-visual{max-width:460px;width:100%;margin-inline:auto}
 }
-@media (min-width:901px){.nav .btn{display:none}}
+@media (min-width:1101px){.nav .btn{display:none}}
 @media (max-width:640px){
   .container{width:calc(100% - 32px)}
   .booking-info ul{grid-template-columns:1fr}
@@ -528,6 +538,14 @@ section{position:relative}
   .slots{grid-template-columns:repeat(auto-fill,minmax(62px,1fr))}
   .map-actions{left:16px;right:16px}
   .map-actions .btn{flex:1}
+  .demo-pill{max-width:calc(100% - 28px)}
+}
+@media (max-width:380px){
+  .header .container{gap:10px}
+  .header-actions{gap:8px}
+  .logo{font-size:24px;gap:8px}
+  .lang button{min-width:30px;padding:0 6px}
+  .demo-pill{font-size:11px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
@@ -538,22 +556,27 @@ section{position:relative}
 </head>
 <body>
 
-<a class="demo-pill" href="../../index.html#works">← Назад в портфолио <span>Демо-проект</span></a>
+<a class="demo-pill" href="../../index.html#works"><b style="font-weight:600" data-i18n="pill_back">← Назад в портфолио</b> <span data-i18n="pill_demo">Демо-проект</span></a>
 
 <header class="header" id="header">
   <div class="container">
-    <a href="#top" class="logo" aria-label="Ember — на главную"><span class="logo-mark" aria-hidden="true"></span>Ember</a>
-    <nav class="nav" id="nav" aria-label="Основная навигация">
-      <a href="#menu">Меню</a>
-      <a href="#booking">Бронь</a>
-      <a href="#about">О нас</a>
-      <a href="#events">События</a>
-      <a href="#reviews">Отзывы</a>
-      <a href="#contacts">Контакты</a>
-      <a href="#booking" class="btn btn-fire">Забронировать стол</a>
+    <a href="#top" class="logo" aria-label="Ember — на главную" data-i18n-aria="logo_aria"><span class="logo-mark" aria-hidden="true"></span>Ember</a>
+    <nav class="nav" id="nav" aria-label="Основная навигация" data-i18n-aria="nav_aria">
+      <a href="#menu" data-i18n="nav_menu">Меню</a>
+      <a href="#booking" data-i18n="nav_booking">Бронь</a>
+      <a href="#about" data-i18n="nav_about">О нас</a>
+      <a href="#events" data-i18n="nav_events">События</a>
+      <a href="#reviews" data-i18n="nav_reviews">Отзывы</a>
+      <a href="#contacts" data-i18n="nav_contacts">Контакты</a>
+      <a href="#booking" class="btn btn-fire" data-i18n="btn_book_table">Забронировать стол</a>
     </nav>
     <div class="header-actions">
-      <a href="#booking" class="btn btn-fire">Забронировать</a>
+      <div class="lang" id="lang" role="group" aria-label="Язык сайта" data-i18n-aria="lang_aria">
+        <button type="button" data-lang="ru" lang="ru" title="Русский" aria-pressed="true">RU</button>
+        <button type="button" data-lang="en" lang="en" title="English" aria-pressed="false">EN</button>
+        <button type="button" data-lang="es" lang="es" title="Español" aria-pressed="false">ES</button>
+      </div>
+      <a href="#booking" class="btn btn-fire" data-i18n="btn_book">Забронировать</a>
       <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="nav"><i></i><i></i><i></i></button>
     </div>
   </div>
@@ -565,19 +588,19 @@ section{position:relative}
     <canvas id="sparks" aria-hidden="true"></canvas>
     <div class="container hero-grid">
       <div>
-        <span class="eyebrow reveal">Гастробар · кухня на открытом огне</span>
-        <h1 class="reveal d1"><span class="line">Вкус, рождённый</span><span class="line"><em>в живом огне</em></span></h1>
-        <p class="lead reveal d2">Дровяной гриль из вишни и дуба, авторские коктейли и долгие тёплые вечера в самом сердце города. Мы готовим так, как готовили веками — только честнее.</p>
+        <span class="eyebrow reveal" data-i18n="hero_eyebrow">Гастробар · кухня на открытом огне</span>
+        <h1 class="reveal d1" data-i18n-html="hero_h1"><span class="line">Вкус, рождённый</span><span class="line"><em>в живом огне</em></span></h1>
+        <p class="lead reveal d2" data-i18n="hero_lead">Дровяной гриль из вишни и дуба, авторские коктейли и долгие тёплые вечера в самом сердце города. Мы готовим так, как готовили веками — только честнее.</p>
         <div class="hero-cta reveal d3">
-          <a href="#booking" class="btn btn-fire">Забронировать стол
+          <a href="#booking" class="btn btn-fire"><span data-i18n="btn_book_table">Забронировать стол</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
-          <a href="#menu" class="btn btn-ghost">Смотреть меню</a>
+          <a href="#menu" class="btn btn-ghost" data-i18n="hero_menu">Смотреть меню</a>
         </div>
         <div class="hero-meta reveal d3">
-          <div><b>12 ч</b><small>томим ребро в дыму</small></div>
-          <div><b>4.9</b><small>рейтинг гостей</small></div>
-          <div><b>до 02:00</b><small>в пятницу и субботу</small></div>
+          <div><b data-i18n="m1_b">12 ч</b><small data-i18n="m1">томим ребро в дыму</small></div>
+          <div><b>4.9</b><small data-i18n="m2">рейтинг гостей</small></div>
+          <div><b data-i18n="m3_b">до 02:00</b><small data-i18n="m3">в пятницу и субботу</small></div>
         </div>
       </div>
       <div class="hero-visual reveal d2" aria-hidden="true">
@@ -589,11 +612,11 @@ section{position:relative}
             <span class="sauce"></span><span class="food"></span><i></i><i></i><i></i><i></i><i></i>
           </div>
         </div>
-        <div class="hero-badge b1"><b>Рибай на углях</b>dry-aged 28 дней</div>
-        <div class="hero-badge b2"><b>🔥 Сегодня</b>свободно 6 столов</div>
+        <div class="hero-badge b1"><b data-i18n="b1_b">Рибай на углях</b><span data-i18n="b1">dry-aged 28 дней</span></div>
+        <div class="hero-badge b2"><b data-i18n="b2_b">🔥 Сегодня</b><span data-i18n="b2">свободно 6 столов</span></div>
       </div>
     </div>
-    <div class="scroll-hint">Листайте</div>
+    <div class="scroll-hint" data-i18n="scroll">Листайте</div>
   </section>
 
   <!-- MENU -->
@@ -601,11 +624,11 @@ section{position:relative}
     <div class="container">
       <div class="menu-head">
         <div class="reveal">
-          <span class="eyebrow">Меню</span>
-          <h2>Всё, что <em>любит огонь</em></h2>
-          <p class="lead">Сезонное меню от шефа: локальные фермерские продукты, дровяная печь и гриль, никаких полуфабрикатов.</p>
+          <span class="eyebrow" data-i18n="menu_eyebrow">Меню</span>
+          <h2 data-i18n-html="menu_h2">Всё, что <em>любит огонь</em></h2>
+          <p class="lead" data-i18n="menu_lead">Сезонное меню от шефа: локальные фермерские продукты, дровяная печь и гриль, никаких полуфабрикатов.</p>
         </div>
-        <div class="tabs reveal d1" role="tablist" aria-label="Категории меню" id="tabs"></div>
+        <div class="tabs reveal d1" role="tablist" aria-label="Категории меню" data-i18n-aria="tabs_aria" id="tabs"></div>
       </div>
       <div class="dishes" id="dishes" role="tabpanel" aria-live="polite"></div>
     </div>
@@ -615,68 +638,68 @@ section{position:relative}
   <section class="section booking" id="booking">
     <div class="container booking-wrap">
       <div class="booking-info reveal">
-        <span class="eyebrow">Онлайн-бронирование</span>
-        <h2>Ваш стол <em>у огня</em></h2>
-        <p class="lead">Выберите дату, время и конкретный стол на схеме зала. Подтверждение придёт в SMS за минуту — без звонков и ожидания.</p>
+        <span class="eyebrow" data-i18n="book_eyebrow">Онлайн-бронирование</span>
+        <h2 data-i18n-html="book_h2">Ваш стол <em>у огня</em></h2>
+        <p class="lead" data-i18n="book_lead">Выберите дату, время и конкретный стол на схеме зала. Подтверждение придёт в SMS за минуту — без звонков и ожидания.</p>
         <ul>
-          <li><span class="ico">⏱</span><div><b>Бронь держим 20 минут</b>Если задерживаетесь — просто напишите нам.</div></li>
-          <li><span class="ico">🎂</span><div><b>Праздник?</b>Укажите повод — подготовим десерт со свечой.</div></li>
-          <li><span class="ico">👥</span><div><b>От 10 гостей</b>Банкетное меню и закрытый зал по запросу.</div></li>
+          <li><span class="ico">⏱</span><div data-i18n-html="book_li1"><b>Бронь держим 20 минут</b>Если задерживаетесь — просто напишите нам.</div></li>
+          <li><span class="ico">🎂</span><div data-i18n-html="book_li2"><b>Праздник?</b>Укажите повод — подготовим десерт со свечой.</div></li>
+          <li><span class="ico">👥</span><div data-i18n-html="book_li3"><b>От 10 гостей</b>Банкетное меню и закрытый зал по запросу.</div></li>
         </ul>
       </div>
 
       <form class="widget reveal d1" id="bookingForm" novalidate>
         <div class="step">
-          <div class="step-title"><span>1</span>Дата</div>
-          <div class="dates" id="dates" role="group" aria-label="Выбор даты"></div>
+          <div class="step-title"><span>1</span><b style="font-weight:inherit" data-i18n="step_date">Дата</b></div>
+          <div class="dates" id="dates" role="group" aria-label="Выбор даты" data-i18n-aria="dates_aria"></div>
         </div>
         <div class="step row-2">
           <div>
-            <div class="step-title"><span>2</span>Гости</div>
+            <div class="step-title"><span>2</span><b style="font-weight:inherit" data-i18n="step_guests">Гости</b></div>
             <div class="counter">
-              <button type="button" id="gMinus" aria-label="Меньше гостей">−</button>
+              <button type="button" id="gMinus" aria-label="Меньше гостей" data-i18n-aria="g_minus">−</button>
               <output id="guests" aria-live="polite">2 гостя</output>
-              <button type="button" id="gPlus" aria-label="Больше гостей">+</button>
+              <button type="button" id="gPlus" aria-label="Больше гостей" data-i18n-aria="g_plus">+</button>
             </div>
           </div>
           <div>
-            <div class="step-title"><span>3</span>Время</div>
-            <div class="slots" id="slots" role="group" aria-label="Выбор времени"></div>
+            <div class="step-title"><span>3</span><b style="font-weight:inherit" data-i18n="step_time">Время</b></div>
+            <div class="slots" id="slots" role="group" aria-label="Выбор времени" data-i18n-aria="slots_aria"></div>
           </div>
         </div>
         <div class="step">
-          <div class="step-title"><span>4</span>Стол на схеме зала</div>
+          <div class="step-title"><span>4</span><b style="font-weight:inherit" data-i18n="step_table">Стол на схеме зала</b></div>
           <div class="floor">
-            <svg id="floor" viewBox="0 0 600 340" role="group" aria-label="Схема зала"></svg>
+            <svg id="floor" viewBox="0 0 600 340" role="group" aria-label="Схема зала" data-i18n-aria="floor_aria"></svg>
           </div>
           <div class="legend">
-            <span><i style="background:#3a1c0a;border:1px solid rgba(255,154,61,.55)"></i>Свободен</span>
-            <span><i style="background:var(--fire)"></i>Ваш выбор</span>
-            <span><i style="background:#241510"></i>Занят</span>
-            <span><i style="border:1px dashed rgba(255,154,61,.4)"></i>Мало мест</span>
+            <span><i style="background:#3a1c0a;border:1px solid rgba(255,154,61,.55)"></i><b style="font-weight:inherit" data-i18n="legend_free">Свободен</b></span>
+            <span><i style="background:var(--fire)"></i><b style="font-weight:inherit" data-i18n="legend_yours">Ваш выбор</b></span>
+            <span><i style="background:#241510"></i><b style="font-weight:inherit" data-i18n="legend_busy">Занят</b></span>
+            <span><i style="border:1px dashed rgba(255,154,61,.4)"></i><b style="font-weight:inherit" data-i18n="legend_small">Мало мест</b></span>
           </div>
         </div>
         <div class="step">
-          <div class="step-title"><span>5</span>Контакты</div>
+          <div class="step-title"><span>5</span><b style="font-weight:inherit" data-i18n="step_contacts">Контакты</b></div>
           <div class="fields">
-            <div class="field"><input id="name" type="text" placeholder=" " autocomplete="name" required><label for="name">Ваше имя</label></div>
-            <div class="field"><input id="phone" type="tel" placeholder=" " autocomplete="tel" inputmode="tel" required><label for="phone">Телефон</label></div>
+            <div class="field"><input id="name" type="text" placeholder=" " autocomplete="name" required><label for="name" data-i18n="f_name">Ваше имя</label></div>
+            <div class="field"><input id="phone" type="tel" placeholder=" " autocomplete="tel" inputmode="tel" required><label for="phone" data-i18n="f_phone">Телефон</label></div>
           </div>
           <p class="form-msg" id="formMsg" role="alert"></p>
         </div>
         <div class="summary-bar">
           <p id="summary">Выберите время и стол</p>
-          <button type="submit" class="btn btn-fire" id="submitBtn">Подтвердить бронь</button>
+          <button type="submit" class="btn btn-fire" id="submitBtn" data-i18n="submit">Подтвердить бронь</button>
         </div>
 
         <div class="confirm" id="confirm" aria-live="assertive">
           <div class="ticket" role="dialog" aria-modal="true" aria-labelledby="ticketTitle">
             <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="#2b1203" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
-            <h3 id="ticketTitle">Стол забронирован!</h3>
+            <h3 id="ticketTitle" data-i18n="ticket_title">Стол забронирован!</h3>
             <div class="num" id="tNum">№ EM-0000</div>
             <dl id="tDetails"></dl>
-            <p>Мы отправили SMS с подтверждением. До встречи у огня!</p>
-            <button type="button" class="btn btn-ghost" id="newBooking">Новая бронь</button>
+            <p data-i18n="ticket_sms">Мы отправили SMS с подтверждением. До встречи у огня!</p>
+            <button type="button" class="btn btn-ghost" id="newBooking" data-i18n="ticket_new">Новая бронь</button>
           </div>
         </div>
       </form>
@@ -697,18 +720,18 @@ section{position:relative}
           <path d="M160 285l40 40 40-40" stroke="#ff9a3d" stroke-width="3" fill="none" opacity=".7"/>
           <circle cx="200" cy="345" r="4" fill="#ff9a3d" opacity=".8"/><circle cx="200" cy="370" r="4" fill="#ff9a3d" opacity=".8"/>
         </svg>
-        <div class="chef-card"><div><b>Артём Волков</b><small>шеф-повар и основатель</small></div><span class="tag chef">15 лет у огня</span></div>
+        <div class="chef-card"><div><b data-i18n="chef_name">Артём Волков</b><small data-i18n="chef_role">шеф-повар и основатель</small></div><span class="tag chef" data-i18n="chef_tag">15 лет у огня</span></div>
       </div>
       <div class="reveal d1">
-        <span class="eyebrow">О нас</span>
-        <h2>Огонь — это <em>характер</em></h2>
-        <p class="lead">Ember вырос из маленькой летней веранды с одним грилем. Сегодня это 70 посадочных мест, открытая кухня с дровяной печью и команда, которая знает каждого поставщика по имени.</p>
-        <blockquote class="quote">«Огонь не терпит спешки. Он учит уважать продукт, время и людей, ради которых ты готовишь».</blockquote>
-        <p class="lead">Мясо выдерживаем сами, хлеб печём каждое утро, а соусы и ферменты готовим из сезонных овощей с подмосковных ферм.</p>
+        <span class="eyebrow" data-i18n="about_eyebrow">О нас</span>
+        <h2 data-i18n-html="about_h2">Огонь — это <em>характер</em></h2>
+        <p class="lead" data-i18n="about_lead1">Ember вырос из маленькой летней веранды с одним грилем. Сегодня это 70 посадочных мест, открытая кухня с дровяной печью и команда, которая знает каждого поставщика по имени.</p>
+        <blockquote class="quote" data-i18n="about_quote">«Огонь не терпит спешки. Он учит уважать продукт, время и людей, ради которых ты готовишь».</blockquote>
+        <p class="lead" data-i18n="about_lead2">Мясо выдерживаем сами, хлеб печём каждое утро, а соусы и ферменты готовим из сезонных овощей с подмосковных ферм.</p>
         <div class="stats">
-          <div class="stat"><b data-count="28">0</b><small>дней сухой выдержки</small></div>
-          <div class="stat"><b data-count="40">0</b><small>фермеров-партнёров</small></div>
-          <div class="stat"><b data-count="120">0</b><small>позиций в винной карте</small></div>
+          <div class="stat"><b data-count="28">0</b><small data-i18n="stat1">дней сухой выдержки</small></div>
+          <div class="stat"><b data-count="40">0</b><small data-i18n="stat2">фермеров-партнёров</small></div>
+          <div class="stat"><b data-count="120">0</b><small data-i18n="stat3">позиций в винной карте</small></div>
         </div>
       </div>
     </div>
@@ -718,22 +741,22 @@ section{position:relative}
   <section class="section" id="events" style="padding-top:0">
     <div class="container">
       <div class="reveal">
-        <span class="eyebrow">Атмосфера и события</span>
-        <h2>Вечера, которые <em>хочется повторить</em></h2>
-        <p class="lead">Тёплый свет, потрескивание углей и хорошая музыка. Каждую неделю — что-то особенное.</p>
+        <span class="eyebrow" data-i18n="events_eyebrow">Атмосфера и события</span>
+        <h2 data-i18n-html="events_h2">Вечера, которые <em>хочется повторить</em></h2>
+        <p class="lead" data-i18n="events_lead">Тёплый свет, потрескивание углей и хорошая музыка. Каждую неделю — что-то особенное.</p>
       </div>
       <div class="events-grid">
         <article class="event reveal">
           <div class="event-art art-jazz" aria-hidden="true"></div>
-          <div class="event-body"><span class="event-date">Каждый четверг · 20:00</span><h3>Джаз у камина</h3><p>Живой квартет, винил между сетами и специальное сет-меню от шефа.</p></div>
+          <div class="event-body"><span class="event-date" data-i18n="ev1_date">Каждый четверг · 20:00</span><h3 data-i18n="ev1_t">Джаз у камина</h3><p data-i18n="ev1_p">Живой квартет, винил между сетами и специальное сет-меню от шефа.</p></div>
         </article>
         <article class="event reveal d1">
           <div class="event-art art-wine" aria-hidden="true"></div>
-          <div class="event-body"><span class="event-date">7 ноября · 19:30</span><h3>Винный ужин</h3><p>Пять подач в паре с натуральными винами Грузии и сомелье Ниной Карповой.</p></div>
+          <div class="event-body"><span class="event-date" data-i18n="ev2_date">7 ноября · 19:30</span><h3 data-i18n="ev2_t">Винный ужин</h3><p data-i18n="ev2_p">Пять подач в паре с натуральными винами Грузии и сомелье Ниной Карповой.</p></div>
         </article>
         <article class="event reveal d2">
           <div class="event-art art-chef" aria-hidden="true"></div>
-          <div class="event-body"><span class="event-date">По субботам · 15:00</span><h3>Мастер-класс гриля</h3><p>Учимся работать с углями, температурой и выдержанным мясом. До 8 человек.</p></div>
+          <div class="event-body"><span class="event-date" data-i18n="ev3_date">По субботам · 15:00</span><h3 data-i18n="ev3_t">Мастер-класс гриля</h3><p data-i18n="ev3_p">Учимся работать с углями, температурой и выдержанным мясом. До 8 человек.</p></div>
         </article>
       </div>
     </div>
@@ -743,25 +766,25 @@ section{position:relative}
   <section class="section" id="reviews" style="padding-top:0">
     <div class="container">
       <div class="reveal">
-        <span class="eyebrow">Отзывы</span>
-        <h2>Говорят <em>гости</em></h2>
-        <div class="rating-line"><span><b>4.9</b>Яндекс Карты · 1 240 оценок</span><span><b>4.8</b>2ГИС · 860 оценок</span></div>
+        <span class="eyebrow" data-i18n="reviews_eyebrow">Отзывы</span>
+        <h2 data-i18n-html="reviews_h2">Говорят <em>гости</em></h2>
+        <div class="rating-line"><span><b>4.9</b><span data-i18n="rating1">Яндекс Карты · 1 240 оценок</span></span><span><b>4.8</b><span data-i18n="rating2">2ГИС · 860 оценок</span></span></div>
       </div>
       <div class="reviews-grid">
         <figure class="review reveal" style="margin:0">
-          <div class="stars" aria-label="5 из 5">★★★★★</div>
-          <p>«Лучший рибай в городе, без преувеличения. Забронировали стол у окна прямо на сайте — всё заняло минуту».</p>
-          <figcaption class="who"><span class="avatar" style="background:linear-gradient(135deg,#ffb866,#e2601b)">МК</span><div>Мария Ковалёва<small>октябрь 2026</small></div></figcaption>
+          <div class="stars" aria-label="5 из 5" data-i18n-aria="stars_aria">★★★★★</div>
+          <p data-i18n="r1_p">«Лучший рибай в городе, без преувеличения. Забронировали стол у окна прямо на сайте — всё заняло минуту».</p>
+          <figcaption class="who"><span class="avatar" style="background:linear-gradient(135deg,#ffb866,#e2601b)" data-i18n="r1_av">МК</span><div><span data-i18n="r1_name">Мария Ковалёва</span><small data-i18n="r1_date">октябрь 2026</small></div></figcaption>
         </figure>
         <figure class="review reveal d1" style="margin:0">
-          <div class="stars" aria-label="5 из 5">★★★★★</div>
-          <p>«Атмосфера как у костра с друзьями, только с отличной винной картой. Джазовые четверги — наша традиция».</p>
-          <figcaption class="who"><span class="avatar" style="background:linear-gradient(135deg,#f7c59f,#b45309)">ДС</span><div>Дмитрий Соколов<small>сентябрь 2026</small></div></figcaption>
+          <div class="stars" aria-label="5 из 5" data-i18n-aria="stars_aria">★★★★★</div>
+          <p data-i18n="r2_p">«Атмосфера как у костра с друзьями, только с отличной винной картой. Джазовые четверги — наша традиция».</p>
+          <figcaption class="who"><span class="avatar" style="background:linear-gradient(135deg,#f7c59f,#b45309)" data-i18n="r2_av">ДС</span><div><span data-i18n="r2_name">Дмитрий Соколов</span><small data-i18n="r2_date">сентябрь 2026</small></div></figcaption>
         </figure>
         <figure class="review reveal d2" style="margin:0">
-          <div class="stars" aria-label="5 из 5">★★★★★</div>
-          <p>«Отмечали день рождения — принесли десерт со свечой, о котором я написала в брони. Очень трогательно».</p>
-          <figcaption class="who"><span class="avatar" style="background:linear-gradient(135deg,#ffd29a,#8a3b0b)">АЛ</span><div>Анна Лебедева<small>август 2026</small></div></figcaption>
+          <div class="stars" aria-label="5 из 5" data-i18n-aria="stars_aria">★★★★★</div>
+          <p data-i18n="r3_p">«Отмечали день рождения — принесли десерт со свечой, о котором я написала в брони. Очень трогательно».</p>
+          <figcaption class="who"><span class="avatar" style="background:linear-gradient(135deg,#ffd29a,#8a3b0b)" data-i18n="r3_av">АЛ</span><div><span data-i18n="r3_name">Анна Лебедева</span><small data-i18n="r3_date">август 2026</small></div></figcaption>
         </figure>
       </div>
     </div>
@@ -771,36 +794,36 @@ section{position:relative}
   <section class="section" id="contacts" style="padding-top:0">
     <div class="container contacts-grid">
       <div class="reveal">
-        <span class="eyebrow">Контакты</span>
-        <h2>Найти <em>нас</em></h2>
+        <span class="eyebrow" data-i18n="contacts_eyebrow">Контакты</span>
+        <h2 data-i18n-html="contacts_h2">Найти <em>нас</em></h2>
         <div class="contact-list">
-          <div><small>Адрес</small><b>Москва, ул. Угольная, 17</b><br><span style="color:var(--muted);font-size:14px">м. Китай-город, 5 минут пешком</span></div>
-          <div><small>Телефон</small><b><a href="tel:+74951234567">+7 (495) 123-45-67</a></b></div>
-          <div><small>Часы работы</small>
+          <div><small data-i18n="c_address">Адрес</small><b data-i18n="c_address_v">Москва, ул. Угольная, 17</b><br><span style="color:var(--muted);font-size:14px" data-i18n="c_metro">м. Китай-город, 5 минут пешком</span></div>
+          <div><small data-i18n="c_phone">Телефон</small><b><a href="tel:+74951234567">+7 (495) 123-45-67</a></b></div>
+          <div><small data-i18n="c_hours">Часы работы</small>
             <ul class="hours" id="hours">
-              <li><span>Пн — Чт</span><span>12:00 — 00:00</span></li>
-              <li><span>Пт — Сб</span><span>12:00 — 02:00</span></li>
-              <li><span>Воскресенье</span><span>12:00 — 23:00</span></li>
+              <li><span data-i18n="h_mon_thu">Пн — Чт</span><span>12:00 — 00:00</span></li>
+              <li><span data-i18n="h_fri_sat">Пт — Сб</span><span>12:00 — 02:00</span></li>
+              <li><span data-i18n="h_sun">Воскресенье</span><span>12:00 — 23:00</span></li>
             </ul>
             <span class="open-now" id="openNow">Сейчас открыто</span>
           </div>
         </div>
       </div>
-      <div class="map reveal d1" role="img" aria-label="Схема расположения: ул. Угольная, 17">
-        <span class="map-street" style="left:8%;top:40%;transform:rotate(28deg)">ул. Угольная</span>
-        <span class="map-street" style="left:34%;top:8%;transform:rotate(90deg);transform-origin:left">Кузнечный пер.</span>
-        <span class="map-street" style="right:6%;top:30%">Москва-река</span>
+      <div class="map reveal d1" role="img" aria-label="Схема расположения: ул. Угольная, 17" data-i18n-aria="map_aria">
+        <span class="map-street" style="left:8%;top:40%;transform:rotate(28deg)" data-i18n="map_st1">ул. Угольная</span>
+        <span class="map-street" style="left:34%;top:8%;transform:rotate(90deg);transform-origin:left" data-i18n="map_st2">Кузнечный пер.</span>
+        <span class="map-street" style="right:6%;top:30%" data-i18n="map_river">Москва-река</span>
         <div class="map-pin"><span class="pulse"></span><div class="pin"></div></div>
-        <div class="map-label">Ember · ул. Угольная, 17</div>
-        <div class="map-actions"><a class="btn btn-ghost" href="#contacts">Построить маршрут</a><a class="btn btn-ghost" href="#contacts">Такси</a></div>
+        <div class="map-label" data-i18n="map_label">Ember · ул. Угольная, 17</div>
+        <div class="map-actions"><a class="btn btn-ghost" href="#contacts" data-i18n="map_route">Построить маршрут</a><a class="btn btn-ghost" href="#contacts" data-i18n="map_taxi">Такси</a></div>
       </div>
     </div>
 
     <div class="container">
       <div class="cta-band reveal">
-        <h2>Сегодня вечером <em>есть места</em></h2>
-        <p>Свободные столы разбирают быстро — особенно у камина. Забронируйте за минуту.</p>
-        <a href="#booking" class="btn btn-fire">Забронировать стол</a>
+        <h2 data-i18n-html="cta_h2">Сегодня вечером <em>есть места</em></h2>
+        <p data-i18n="cta_p">Свободные столы разбирают быстро — особенно у камина. Забронируйте за минуту.</p>
+        <a href="#booking" class="btn btn-fire" data-i18n="btn_book_table">Забронировать стол</a>
       </div>
     </div>
   </section>
@@ -811,14 +834,14 @@ section{position:relative}
     <div class="footer-grid">
       <div>
         <a href="#top" class="logo"><span class="logo-mark" aria-hidden="true"></span>Ember</a>
-        <p>Гастробар с кухней на открытом огне. Тёплые вечера с 2019 года.</p>
-        <div class="socials"><a href="#top" aria-label="Telegram">TG</a><a href="#top" aria-label="ВКонтакте">VK</a><a href="#top" aria-label="YouTube">YT</a></div>
+        <p data-i18n="footer_about">Гастробар с кухней на открытом огне. Тёплые вечера с 2019 года.</p>
+        <div class="socials"><a href="#top" aria-label="Telegram">TG</a><a href="#top" aria-label="ВКонтакте" data-i18n-aria="social_vk">VK</a><a href="#top" aria-label="YouTube">YT</a></div>
       </div>
-      <div><h4>Навигация</h4><ul><li><a href="#menu">Меню</a></li><li><a href="#booking">Бронирование</a></li><li><a href="#events">События</a></li><li><a href="#reviews">Отзывы</a></li></ul></div>
-      <div><h4>Гостям</h4><ul><li><a href="#events">Банкеты</a></li><li><a href="#booking">Подарочные сертификаты</a></li><li><a href="#events">Мастер-классы</a></li><li><a href="#contacts">Доставка</a></li></ul></div>
-      <div><h4>Связь</h4><ul><li><a href="tel:+74951234567">+7 (495) 123-45-67</a></li><li><a href="mailto:hello@ember.bar">hello@ember.bar</a></li><li>ул. Угольная, 17</li></ul></div>
+      <div><h4 data-i18n="f_nav">Навигация</h4><ul><li><a href="#menu" data-i18n="nav_menu">Меню</a></li><li><a href="#booking" data-i18n="f_booking">Бронирование</a></li><li><a href="#events" data-i18n="nav_events">События</a></li><li><a href="#reviews" data-i18n="nav_reviews">Отзывы</a></li></ul></div>
+      <div><h4 data-i18n="f_guests">Гостям</h4><ul><li><a href="#events" data-i18n="f_banquets">Банкеты</a></li><li><a href="#booking" data-i18n="f_gift">Подарочные сертификаты</a></li><li><a href="#events" data-i18n="f_classes">Мастер-классы</a></li><li><a href="#contacts" data-i18n="f_delivery">Доставка</a></li></ul></div>
+      <div><h4 data-i18n="f_contact">Связь</h4><ul><li><a href="tel:+74951234567">+7 (495) 123-45-67</a></li><li><a href="mailto:hello@ember.bar">hello@ember.bar</a></li><li data-i18n="f_addr">ул. Угольная, 17</li></ul></div>
     </div>
-    <div class="copyright"><span>© 2026 Ember. Все права защищены.</span><span>Демо-проект для портфолио · вымышленное заведение</span></div>
+    <div class="copyright"><span data-i18n="copyright">© 2026 Ember. Все права защищены.</span><span data-i18n="footer_demo">Демо-проект для портфолио · вымышленное заведение</span></div>
   </div>
 </footer>
 
@@ -828,6 +851,241 @@ section{position:relative}
 
   const $ = (s, el = document) => el.querySelector(s);
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- i18n ---------- */
+  const LANGS = ['ru', 'en', 'es'];
+  const LOCALE = { ru: 'ru-RU', en: 'en-US', es: 'es-ES' };
+  const LS_KEY = 'kb-lang';
+
+  const I18N = {
+    ru: {
+      meta_title: 'Ember — гастробар на открытом огне',
+      meta_desc: 'Ember — гастробар с кухней на открытом огне. Онлайн-бронирование столов, меню гриля, коктейли и вечера живой музыки.',
+      pill_back: '← Назад в портфолио', pill_demo: 'Демо-проект',
+      logo_aria: 'Ember — на главную', nav_aria: 'Основная навигация', lang_aria: 'Язык сайта',
+      nav_menu: 'Меню', nav_booking: 'Бронь', nav_about: 'О нас', nav_events: 'События', nav_reviews: 'Отзывы', nav_contacts: 'Контакты',
+      btn_book_table: 'Забронировать стол', btn_book: 'Забронировать', burger_open: 'Открыть меню', burger_close: 'Закрыть меню',
+      hero_eyebrow: 'Гастробар · кухня на открытом огне',
+      hero_h1: '<span class="line">Вкус, рождённый</span><span class="line"><em>в живом огне</em></span>',
+      hero_lead: 'Дровяной гриль из вишни и дуба, авторские коктейли и долгие тёплые вечера в самом сердце города. Мы готовим так, как готовили веками — только честнее.',
+      hero_menu: 'Смотреть меню',
+      m1_b: '12 ч', m1: 'томим ребро в дыму', m2: 'рейтинг гостей', m3_b: 'до 02:00', m3: 'в пятницу и субботу',
+      b1_b: 'Рибай на углях', b1: 'dry-aged 28 дней', b2_b: '🔥 Сегодня', b2: 'свободно 6 столов', scroll: 'Листайте',
+      menu_eyebrow: 'Меню', menu_h2: 'Всё, что <em>любит огонь</em>',
+      menu_lead: 'Сезонное меню от шефа: локальные фермерские продукты, дровяная печь и гриль, никаких полуфабрикатов.',
+      tabs_aria: 'Категории меню',
+      cat_starters: 'Закуски', cat_grill: 'Гриль', cat_desserts: 'Десерты', cat_drinks: 'Напитки',
+      tag_hot: 'Острое 🌶', tag_vegan: 'Веган', tag_chef: 'Выбор шефа',
+      book_eyebrow: 'Онлайн-бронирование', book_h2: 'Ваш стол <em>у огня</em>',
+      book_lead: 'Выберите дату, время и конкретный стол на схеме зала. Подтверждение придёт в SMS за минуту — без звонков и ожидания.',
+      book_li1: '<b>Бронь держим 20 минут</b>Если задерживаетесь — просто напишите нам.',
+      book_li2: '<b>Праздник?</b>Укажите повод — подготовим десерт со свечой.',
+      book_li3: '<b>От 10 гостей</b>Банкетное меню и закрытый зал по запросу.',
+      step_date: 'Дата', dates_aria: 'Выбор даты', step_guests: 'Гости', g_minus: 'Меньше гостей', g_plus: 'Больше гостей',
+      step_time: 'Время', slots_aria: 'Выбор времени', step_table: 'Стол на схеме зала', floor_aria: 'Схема зала',
+      legend_free: 'Свободен', legend_yours: 'Ваш выбор', legend_busy: 'Занят', legend_small: 'Мало мест',
+      step_contacts: 'Контакты', f_name: 'Ваше имя', f_phone: 'Телефон',
+      summary_default: 'Выберите время и стол', submit: 'Подтвердить бронь',
+      ticket_title: 'Стол забронирован!', ticket_sms: 'Мы отправили SMS с подтверждением. До встречи у огня!', ticket_new: 'Новая бронь', ticket_num: '№ {n}',
+      today: 'сегодня', tomorrow: 'завтра', slot_busy_aria: '{t}, занято', slot_busy: 'Занято', slot_free: 'Свободно',
+      fl_kitchen: 'ОТКРЫТАЯ КУХНЯ', fl_kitchen_sub: 'гриль · дровяная печь', fl_windows: 'ОКНА', fl_entrance: 'вход', fl_fireplace: 'камин',
+      tbl_aria: 'Стол {id}, {seats}, {status}', st_busy: 'занят', st_small: 'мало мест', st_selected: 'выбран', st_free: 'свободен',
+      seats: { one: 'место', few: 'места', many: 'мест', other: 'места' },
+      guests: { one: 'гость', few: 'гостя', many: 'гостей', other: 'гостя' },
+      sum_table: 'стол <b>№{n}</b>', sum_pick_time: ' — выберите время', sum_pick_table: ' — выберите стол',
+      err_prefix: 'Почти готово: {list}.', err_time: 'выберите время', err_table: 'выберите стол на схеме', err_name: 'укажите имя', err_phone: 'укажите телефон',
+      t_guest: 'Гость', t_date: 'Дата', t_time: 'Время', t_guests: 'Гостей', t_table: 'Стол', t_phone: 'Телефон', t_table_v: '№{id} · {seats}',
+      chef_name: 'Артём Волков', chef_role: 'шеф-повар и основатель', chef_tag: '15 лет у огня',
+      about_eyebrow: 'О нас', about_h2: 'Огонь — это <em>характер</em>',
+      about_lead1: 'Ember вырос из маленькой летней веранды с одним грилем. Сегодня это 70 посадочных мест, открытая кухня с дровяной печью и команда, которая знает каждого поставщика по имени.',
+      about_quote: '«Огонь не терпит спешки. Он учит уважать продукт, время и людей, ради которых ты готовишь».',
+      about_lead2: 'Мясо выдерживаем сами, хлеб печём каждое утро, а соусы и ферменты готовим из сезонных овощей с подмосковных ферм.',
+      stat1: 'дней сухой выдержки', stat2: 'фермеров-партнёров', stat3: 'позиций в винной карте',
+      events_eyebrow: 'Атмосфера и события', events_h2: 'Вечера, которые <em>хочется повторить</em>',
+      events_lead: 'Тёплый свет, потрескивание углей и хорошая музыка. Каждую неделю — что-то особенное.',
+      ev1_date: 'Каждый четверг · 20:00', ev1_t: 'Джаз у камина', ev1_p: 'Живой квартет, винил между сетами и специальное сет-меню от шефа.',
+      ev2_date: '7 ноября · 19:30', ev2_t: 'Винный ужин', ev2_p: 'Пять подач в паре с натуральными винами Грузии и сомелье Ниной Карповой.',
+      ev3_date: 'По субботам · 15:00', ev3_t: 'Мастер-класс гриля', ev3_p: 'Учимся работать с углями, температурой и выдержанным мясом. До 8 человек.',
+      reviews_eyebrow: 'Отзывы', reviews_h2: 'Говорят <em>гости</em>',
+      rating1: 'Яндекс Карты · 1 240 оценок', rating2: '2ГИС · 860 оценок', stars_aria: '5 из 5',
+      r1_p: '«Лучший рибай в городе, без преувеличения. Забронировали стол у окна прямо на сайте — всё заняло минуту».', r1_name: 'Мария Ковалёва', r1_date: 'октябрь 2026', r1_av: 'МК',
+      r2_p: '«Атмосфера как у костра с друзьями, только с отличной винной картой. Джазовые четверги — наша традиция».', r2_name: 'Дмитрий Соколов', r2_date: 'сентябрь 2026', r2_av: 'ДС',
+      r3_p: '«Отмечали день рождения — принесли десерт со свечой, о котором я написала в брони. Очень трогательно».', r3_name: 'Анна Лебедева', r3_date: 'август 2026', r3_av: 'АЛ',
+      contacts_eyebrow: 'Контакты', contacts_h2: 'Найти <em>нас</em>',
+      c_address: 'Адрес', c_address_v: 'Москва, ул. Угольная, 17', c_metro: 'м. Китай-город, 5 минут пешком', c_phone: 'Телефон', c_hours: 'Часы работы',
+      h_mon_thu: 'Пн — Чт', h_fri_sat: 'Пт — Сб', h_sun: 'Воскресенье',
+      open_now: 'Сейчас открыто', closed_now: 'Сейчас закрыто · откроемся в 12:00',
+      map_aria: 'Схема расположения: ул. Угольная, 17', map_st1: 'ул. Угольная', map_st2: 'Кузнечный пер.', map_river: 'Москва-река',
+      map_label: 'Ember · ул. Угольная, 17', map_route: 'Построить маршрут', map_taxi: 'Такси',
+      cta_h2: 'Сегодня вечером <em>есть места</em>', cta_p: 'Свободные столы разбирают быстро — особенно у камина. Забронируйте за минуту.',
+      footer_about: 'Гастробар с кухней на открытом огне. Тёплые вечера с 2019 года.', social_vk: 'ВКонтакте',
+      f_nav: 'Навигация', f_booking: 'Бронирование', f_guests: 'Гостям', f_banquets: 'Банкеты', f_gift: 'Подарочные сертификаты',
+      f_classes: 'Мастер-классы', f_delivery: 'Доставка', f_contact: 'Связь', f_addr: 'ул. Угольная, 17',
+      copyright: '© 2026 Ember. Все права защищены.', footer_demo: 'Демо-проект для портфолио · вымышленное заведение'
+    },
+    en: {
+      meta_title: 'Ember — open-fire gastrobar',
+      meta_desc: 'Ember is a gastrobar cooking over open fire. Book a table online, explore our grill menu, signature cocktails and live music nights.',
+      pill_back: '← Back to portfolio', pill_demo: 'Demo project',
+      logo_aria: 'Ember — home', nav_aria: 'Main navigation', lang_aria: 'Site language',
+      nav_menu: 'Menu', nav_booking: 'Book', nav_about: 'About', nav_events: 'Events', nav_reviews: 'Reviews', nav_contacts: 'Contact',
+      btn_book_table: 'Book a table', btn_book: 'Book now', burger_open: 'Open menu', burger_close: 'Close menu',
+      hero_eyebrow: 'Gastrobar · open-fire kitchen',
+      hero_h1: '<span class="line">Flavor born</span><span class="line"><em>in living fire</em></span>',
+      hero_lead: 'A wood-fired grill burning cherry and oak, signature cocktails and long, warm evenings in the heart of the city. We cook the way people have for centuries — only more honestly.',
+      hero_menu: 'See the menu',
+      m1_b: '12 h', m1: 'ribs slow-smoked', m2: 'guest rating', m3_b: 'till 2 AM', m3: 'on Fridays & Saturdays',
+      b1_b: 'Ember-grilled ribeye', b1: 'dry-aged for 28 days', b2_b: '🔥 Tonight', b2: '6 tables available', scroll: 'Scroll',
+      menu_eyebrow: 'Menu', menu_h2: 'Everything <em>fire loves</em>',
+      menu_lead: 'A seasonal chef’s menu: local farm produce, a wood-fired oven and grill — nothing pre-made, ever.',
+      tabs_aria: 'Menu categories',
+      cat_starters: 'Starters', cat_grill: 'Grill', cat_desserts: 'Desserts', cat_drinks: 'Drinks',
+      tag_hot: 'Spicy 🌶', tag_vegan: 'Vegan', tag_chef: 'Chef’s pick',
+      book_eyebrow: 'Online booking', book_h2: 'Your table <em>by the fire</em>',
+      book_lead: 'Pick a date, a time and the exact table on the floor plan. Confirmation arrives by text within a minute — no calls, no waiting.',
+      book_li1: '<b>We hold your table for 20 minutes</b>Running late? Just drop us a message.',
+      book_li2: '<b>Celebrating?</b>Tell us the occasion — we’ll bring out a dessert with a candle.',
+      book_li3: '<b>Parties of 10+</b>Banquet menu and a private room on request.',
+      step_date: 'Date', dates_aria: 'Choose a date', step_guests: 'Guests', g_minus: 'Fewer guests', g_plus: 'More guests',
+      step_time: 'Time', slots_aria: 'Choose a time', step_table: 'Pick your table', floor_aria: 'Floor plan',
+      legend_free: 'Available', legend_yours: 'Your pick', legend_busy: 'Taken', legend_small: 'Too small',
+      step_contacts: 'Your details', f_name: 'Your name', f_phone: 'Phone',
+      summary_default: 'Choose a time and a table', submit: 'Confirm booking',
+      ticket_title: 'Your table is booked!', ticket_sms: 'We’ve sent you a confirmation text. See you by the fire!', ticket_new: 'New booking', ticket_num: 'No. {n}',
+      today: 'today', tomorrow: 'tomorrow', slot_busy_aria: '{t}, fully booked', slot_busy: 'Fully booked', slot_free: 'Available',
+      fl_kitchen: 'OPEN KITCHEN', fl_kitchen_sub: 'grill · wood-fired oven', fl_windows: 'WINDOWS', fl_entrance: 'entrance', fl_fireplace: 'fireplace',
+      tbl_aria: 'Table {id}, {seats}, {status}', st_busy: 'taken', st_small: 'too small for your party', st_selected: 'selected', st_free: 'available',
+      seats: { one: 'seat', other: 'seats' },
+      guests: { one: 'guest', other: 'guests' },
+      sum_table: 'table <b>#{n}</b>', sum_pick_time: ' — choose a time', sum_pick_table: ' — choose a table',
+      err_prefix: 'Almost there: {list}.', err_time: 'choose a time', err_table: 'pick a table on the plan', err_name: 'enter your name', err_phone: 'enter your phone number',
+      t_guest: 'Name', t_date: 'Date', t_time: 'Time', t_guests: 'Guests', t_table: 'Table', t_phone: 'Phone', t_table_v: '#{id} · {seats}',
+      chef_name: 'Artyom Volkov', chef_role: 'head chef & founder', chef_tag: '15 years by the fire',
+      about_eyebrow: 'About us', about_h2: 'Fire is <em>character</em>',
+      about_lead1: 'Ember grew out of a tiny summer terrace with a single grill. Today it’s 70 seats, an open kitchen with a wood-fired oven and a team that knows every supplier by name.',
+      about_quote: '“Fire won’t be rushed. It teaches you to respect the produce, the time and the people you cook for.”',
+      about_lead2: 'We dry-age our own meat, bake bread every morning and make our sauces and ferments from seasonal vegetables grown on farms just outside Moscow.',
+      stat1: 'days of dry-aging', stat2: 'partner farmers', stat3: 'wines on the list',
+      events_eyebrow: 'Atmosphere & events', events_h2: 'Evenings you’ll <em>want to repeat</em>',
+      events_lead: 'Warm light, crackling embers and great music. Something special every week.',
+      ev1_date: 'Every Thursday · 8 PM', ev1_t: 'Fireside jazz', ev1_p: 'A live quartet, vinyl between sets and a special set menu from the chef.',
+      ev2_date: 'November 7 · 7:30 PM', ev2_t: 'Wine dinner', ev2_p: 'Five courses paired with natural Georgian wines, hosted by sommelier Nina Karpova.',
+      ev3_date: 'Saturdays · 3 PM', ev3_t: 'Grill masterclass', ev3_p: 'Learn to master embers, heat and dry-aged meat. Up to 8 people.',
+      reviews_eyebrow: 'Reviews', reviews_h2: 'What our <em>guests</em> say',
+      rating1: 'Yandex Maps · 1,240 ratings', rating2: '2GIS · 860 ratings', stars_aria: '5 out of 5',
+      r1_p: '“The best ribeye in town, no exaggeration. We booked a window table right on the website — it took a minute.”', r1_name: 'Maria Kovaleva', r1_date: 'October 2026', r1_av: 'MK',
+      r2_p: '“Feels like sitting round a campfire with friends — only with a superb wine list. Jazz Thursdays are our tradition now.”', r2_name: 'Dmitry Sokolov', r2_date: 'September 2026', r2_av: 'DS',
+      r3_p: '“We celebrated a birthday, and they brought out a dessert with a candle — just as I’d mentioned in the booking. So touching.”', r3_name: 'Anna Lebedeva', r3_date: 'August 2026', r3_av: 'AL',
+      contacts_eyebrow: 'Contact', contacts_h2: 'Find <em>us</em>',
+      c_address: 'Address', c_address_v: '17 Ugolnaya St., Moscow', c_metro: '5 min walk from Kitay-Gorod metro', c_phone: 'Phone', c_hours: 'Opening hours',
+      h_mon_thu: 'Mon — Thu', h_fri_sat: 'Fri — Sat', h_sun: 'Sunday',
+      open_now: 'Open now', closed_now: 'Closed now · opens at 12:00',
+      map_aria: 'Location map: 17 Ugolnaya St.', map_st1: 'Ugolnaya St.', map_st2: 'Kuznechny Ln.', map_river: 'Moskva River',
+      map_label: 'Ember · 17 Ugolnaya St.', map_route: 'Get directions', map_taxi: 'Taxi',
+      cta_h2: 'Tables <em>free tonight</em>', cta_p: 'Free tables go fast — especially by the fireplace. Book yours in a minute.',
+      footer_about: 'An open-fire gastrobar. Warm evenings since 2019.', social_vk: 'VK',
+      f_nav: 'Explore', f_booking: 'Booking', f_guests: 'For guests', f_banquets: 'Banquets', f_gift: 'Gift cards',
+      f_classes: 'Masterclasses', f_delivery: 'Delivery', f_contact: 'Get in touch', f_addr: '17 Ugolnaya St.',
+      copyright: '© 2026 Ember. All rights reserved.', footer_demo: 'Portfolio demo project · fictional venue'
+    },
+    es: {
+      meta_title: 'Ember — gastrobar a fuego vivo',
+      meta_desc: 'Ember es un gastrobar con cocina a fuego vivo. Reserva mesa online y descubre nuestra carta de parrilla, cócteles de autor y noches de música en directo.',
+      pill_back: '← Volver al portafolio', pill_demo: 'Proyecto demo',
+      logo_aria: 'Ember — inicio', nav_aria: 'Navegación principal', lang_aria: 'Idioma del sitio',
+      nav_menu: 'Carta', nav_booking: 'Reservas', nav_about: 'Nosotros', nav_events: 'Eventos', nav_reviews: 'Reseñas', nav_contacts: 'Contacto',
+      btn_book_table: 'Reservar mesa', btn_book: 'Reservar', burger_open: 'Abrir menú', burger_close: 'Cerrar menú',
+      hero_eyebrow: 'Gastrobar · cocina a fuego vivo',
+      hero_h1: '<span class="line">Sabor nacido</span><span class="line"><em>del fuego vivo</em></span>',
+      hero_lead: 'Parrilla de leña de cerezo y roble, cócteles de autor y largas veladas al calor del fuego en pleno centro de la ciudad. Cocinamos como se ha hecho durante siglos, solo que con más honestidad.',
+      hero_menu: 'Ver la carta',
+      m1_b: '12 h', m1: 'ahumando la costilla', m2: 'valoración de clientes', m3_b: 'hasta las 02:00', m3: 'viernes y sábados',
+      b1_b: 'Chuletón a la brasa', b1: 'madurado 28 días', b2_b: '🔥 Hoy', b2: '6 mesas libres', scroll: 'Desliza',
+      menu_eyebrow: 'Carta', menu_h2: 'Todo lo que <em>ama el fuego</em>',
+      menu_lead: 'Carta de temporada del chef: producto local de granja, horno de leña y parrilla, nada precocinado.',
+      tabs_aria: 'Categorías de la carta',
+      cat_starters: 'Entrantes', cat_grill: 'Parrilla', cat_desserts: 'Postres', cat_drinks: 'Bebidas',
+      tag_hot: 'Picante 🌶', tag_vegan: 'Vegano', tag_chef: 'Elección del chef',
+      book_eyebrow: 'Reserva online', book_h2: 'Tu mesa <em>junto al fuego</em>',
+      book_lead: 'Elige fecha, hora y la mesa exacta en el plano del salón. La confirmación llega por SMS en un minuto, sin llamadas ni esperas.',
+      book_li1: '<b>Guardamos tu mesa 20 minutos</b>¿Te retrasas? Solo escríbenos.',
+      book_li2: '<b>¿Una celebración?</b>Cuéntanos el motivo y te prepararemos un postre con vela.',
+      book_li3: '<b>Grupos de 10 o más</b>Menú de banquete y salón privado bajo petición.',
+      step_date: 'Fecha', dates_aria: 'Elegir fecha', step_guests: 'Personas', g_minus: 'Menos personas', g_plus: 'Más personas',
+      step_time: 'Hora', slots_aria: 'Elegir hora', step_table: 'Mesa en el plano', floor_aria: 'Plano del salón',
+      legend_free: 'Libre', legend_yours: 'Tu elección', legend_busy: 'Ocupada', legend_small: 'Pocas plazas',
+      step_contacts: 'Tus datos', f_name: 'Tu nombre', f_phone: 'Teléfono',
+      summary_default: 'Elige hora y mesa', submit: 'Confirmar reserva',
+      ticket_title: '¡Mesa reservada!', ticket_sms: 'Te hemos enviado un SMS de confirmación. ¡Nos vemos junto al fuego!', ticket_new: 'Nueva reserva', ticket_num: 'N.º {n}',
+      today: 'hoy', tomorrow: 'mañana', slot_busy_aria: '{t}, completo', slot_busy: 'Completo', slot_free: 'Libre',
+      fl_kitchen: 'COCINA ABIERTA', fl_kitchen_sub: 'parrilla · horno de leña', fl_windows: 'VENTANAS', fl_entrance: 'entrada', fl_fireplace: 'chimenea',
+      tbl_aria: 'Mesa {id}, {seats}, {status}', st_busy: 'ocupada', st_small: 'pocas plazas', st_selected: 'seleccionada', st_free: 'libre',
+      seats: { one: 'plaza', other: 'plazas' },
+      guests: { one: 'persona', other: 'personas' },
+      sum_table: 'mesa <b>n.º {n}</b>', sum_pick_time: ' — elige la hora', sum_pick_table: ' — elige la mesa',
+      err_prefix: 'Casi listo: {list}.', err_time: 'elige la hora', err_table: 'elige una mesa en el plano', err_name: 'indica tu nombre', err_phone: 'indica tu teléfono',
+      t_guest: 'Nombre', t_date: 'Fecha', t_time: 'Hora', t_guests: 'Personas', t_table: 'Mesa', t_phone: 'Teléfono', t_table_v: 'N.º {id} · {seats}',
+      chef_name: 'Artiom Vólkov', chef_role: 'chef y fundador', chef_tag: '15 años junto al fuego',
+      about_eyebrow: 'Nosotros', about_h2: 'El fuego es <em>carácter</em>',
+      about_lead1: 'Ember nació en una pequeña terraza de verano con una sola parrilla. Hoy son 70 cubiertos, una cocina abierta con horno de leña y un equipo que conoce a cada proveedor por su nombre.',
+      about_quote: '«El fuego no admite prisas. Te enseña a respetar el producto, el tiempo y a las personas para quienes cocinas».',
+      about_lead2: 'Maduramos nuestra propia carne, horneamos pan cada mañana y elaboramos salsas y fermentados con verduras de temporada de granjas de las afueras de Moscú.',
+      stat1: 'días de maduración en seco', stat2: 'granjeros asociados', stat3: 'referencias en la carta de vinos',
+      events_eyebrow: 'Ambiente y eventos', events_h2: 'Noches que <em>querrás repetir</em>',
+      events_lead: 'Luz cálida, el crepitar de las brasas y buena música. Cada semana, algo especial.',
+      ev1_date: 'Todos los jueves · 20:00', ev1_t: 'Jazz junto a la chimenea', ev1_p: 'Cuarteto en directo, vinilos entre pases y un menú especial del chef.',
+      ev2_date: '7 de noviembre · 19:30', ev2_t: 'Cena maridaje', ev2_p: 'Cinco pases maridados con vinos naturales de Georgia, de la mano de la sumiller Nina Kárpova.',
+      ev3_date: 'Los sábados · 15:00', ev3_t: 'Taller de parrilla', ev3_p: 'Aprende a dominar las brasas, la temperatura y la carne madurada. Hasta 8 personas.',
+      reviews_eyebrow: 'Reseñas', reviews_h2: 'Lo que dicen <em>los clientes</em>',
+      rating1: 'Yandex Maps · 1240 valoraciones', rating2: '2GIS · 860 valoraciones', stars_aria: '5 de 5',
+      r1_p: '«El mejor chuletón de la ciudad, sin exagerar. Reservamos una mesa junto a la ventana desde la web y tardamos un minuto».', r1_name: 'María Kovaliova', r1_date: 'octubre de 2026', r1_av: 'MK',
+      r2_p: '«Un ambiente como de hoguera entre amigos, pero con una carta de vinos excelente. Los jueves de jazz ya son nuestra tradición».', r2_name: 'Dmitri Sokolov', r2_date: 'septiembre de 2026', r2_av: 'DS',
+      r3_p: '«Celebramos un cumpleaños y nos sacaron el postre con vela que pedí en la reserva. Todo un detalle».', r3_name: 'Anna Lébedeva', r3_date: 'agosto de 2026', r3_av: 'AL',
+      contacts_eyebrow: 'Contacto', contacts_h2: 'Dónde <em>estamos</em>',
+      c_address: 'Dirección', c_address_v: 'Moscú, calle Ugólnaya, 17', c_metro: 'Metro Kitái-Górod, a 5 minutos a pie', c_phone: 'Teléfono', c_hours: 'Horario',
+      h_mon_thu: 'Lun — Jue', h_fri_sat: 'Vie — Sáb', h_sun: 'Domingo',
+      open_now: 'Abierto ahora', closed_now: 'Cerrado ahora · abrimos a las 12:00',
+      map_aria: 'Mapa de ubicación: calle Ugólnaya, 17', map_st1: 'calle Ugólnaya', map_st2: 'callejón Kuznechni', map_river: 'río Moscova',
+      map_label: 'Ember · calle Ugólnaya, 17', map_route: 'Cómo llegar', map_taxi: 'Taxi',
+      cta_h2: 'Esta noche <em>hay mesas</em>', cta_p: 'Las mesas libres vuelan, sobre todo junto a la chimenea. Reserva en un minuto.',
+      footer_about: 'Gastrobar con cocina a fuego vivo. Veladas cálidas desde 2019.', social_vk: 'VK',
+      f_nav: 'Navegación', f_booking: 'Reservas', f_guests: 'Para clientes', f_banquets: 'Banquetes', f_gift: 'Tarjetas regalo',
+      f_classes: 'Talleres', f_delivery: 'A domicilio', f_contact: 'Contacto', f_addr: 'calle Ugólnaya, 17',
+      copyright: '© 2026 Ember. Todos los derechos reservados.', footer_demo: 'Proyecto demo para portafolio · local ficticio'
+    }
+  };
+
+  const pickLang = () => {
+    try {
+      const q = (new URLSearchParams(location.search).get('lang') || '').toLowerCase();
+      if (LANGS.includes(q)) return { lang: q, fromUrl: true };
+    } catch (e) { /* ignore */ }
+    try {
+      const s = localStorage.getItem(LS_KEY);
+      if (LANGS.includes(s)) return { lang: s };
+    } catch (e) { /* storage blocked */ }
+    const nl = String(navigator.language || '').toLowerCase();
+    if (nl.startsWith('en')) return { lang: 'en' };
+    if (nl.startsWith('es')) return { lang: 'es' };
+    return { lang: 'ru' };
+  };
+  const saveLang = l => { try { localStorage.setItem(LS_KEY, l); } catch (e) { /* storage blocked */ } };
+
+  let lang = 'ru';
+  const t = (key, vars) => {
+    let s = I18N[lang][key];
+    if (s === undefined) s = I18N.ru[key];
+    if (s === undefined) return key;
+    return vars ? s.replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m)) : s;
+  };
+  const pluralCache = {};
+  const pl = (n, key) => {
+    const rules = pluralCache[lang] || (pluralCache[lang] = new Intl.PluralRules(LOCALE[lang]));
+    const forms = I18N[lang][key];
+    return `${n} ${forms[rules.select(n)] || forms.other}`;
+  };
+  const dtf = (opts, d) => new Intl.DateTimeFormat(LOCALE[lang], opts).format(d);
+  const noDot = s => s.replace(/\.$/, '');
 
   /* ---------- Header & mobile nav ---------- */
   const header = $('#header');
@@ -840,7 +1098,7 @@ section{position:relative}
   const setNav = open => {
     nav.classList.toggle('open', open);
     burger.setAttribute('aria-expanded', String(open));
-    burger.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
+    burger.setAttribute('aria-label', t(open ? 'burger_close' : 'burger_open'));
     document.body.style.overflow = open ? 'hidden' : '';
   };
   burger.addEventListener('click', () => setNav(!nav.classList.contains('open')));
@@ -916,62 +1174,90 @@ section{position:relative}
   };
 
   /* ---------- Menu ---------- */
-  const MENU = {
-    'Закуски': [
-      { n: 'Тартар из говядины', d: 'Копчёный желток, каперсы, хрустящий хлеб с золы', p: 890, t: ['chef'], v: { type: 'bowl', c: { f1: '#8b1e10', f2: '#c2410c', g: '#ffd166', g2: '#7aa33a', s: '#5a1f06' } } },
-      { n: 'Печёная свёкла', d: 'Козий сыр, лесной орех, мёд с тимьяном', p: 620, t: [], v: { type: 'salad', c: { f1: '#7a1238', f2: '#b0234f', f3: '#f2e6c9', g: '#c08a3e', g2: '#6b8e23', s: '#7a1238' } } },
-      { n: 'Хумус с углей', d: 'Нут, запечённый на огне перец, заатар, лепёшка', p: 540, t: ['vegan'], v: { type: 'bowl', c: { f1: '#d9a35b', f2: '#f0c987', g: '#c2410c', g2: '#7aa33a', s: '#c2410c' }, dark: true } },
-      { n: 'Креветки чили', d: 'Тигровые креветки, масло с чесноком и копчёным чили', p: 980, t: ['hot'], v: { type: 'salad', c: { f1: '#f97316', f2: '#fb923c', f3: '#7f1d1d', g: '#84cc16', g2: '#fde047', s: '#b91c1c' }, dark: true } }
-    ],
-    'Гриль': [
-      { n: 'Рибай dry-aged', d: '28 дней сухой выдержки, соль с золой, чимичурри', p: 3200, t: ['chef'], v: { type: 'steak', c: { f1: '#4a1804', f2: '#b5541a', g: '#65a30d', g2: '#ffb866', s: '#ff9a3d' }, dark: true } },
-      { n: 'Свиное ребро 12 часов', d: 'Томлённое в дыму вишни, глазурь из бурбона', p: 1450, t: [], v: { type: 'steak', c: { f1: '#5b1a07', f2: '#c2410c', g: '#f59e0b', g2: '#fde68a', s: '#7c2d12' } } },
-      { n: 'Цыплёнок в огне', d: 'Маринад с харисой, йогурт с мятой, лаваш', p: 1150, t: ['hot'], v: { type: 'steak', c: { f1: '#9a3412', f2: '#f59e0b', g: '#16a34a', g2: '#fef3c7', s: '#dc2626' } } },
-      { n: 'Овощи с углей', d: 'Баклажан, кабачок, перец, соус ромеско', p: 720, t: ['vegan'], v: { type: 'salad', c: { f1: '#4c1d95', f2: '#ea580c', f3: '#65a30d', g: '#facc15', g2: '#dc2626', s: '#ea580c' }, dark: true } }
-    ],
-    'Десерты': [
-      { n: 'Бёрнт чизкейк', d: 'Карамелизированная корочка, соус из облепихи', p: 590, t: ['chef'], v: { type: 'dessert', c: { f1: '#7c3a0c', f2: '#e8b46a', g: '#f97316', g2: '#fde68a', s: '#f97316' } } },
-      { n: 'Шоколадный фондан', d: 'Горячее сердце, мороженое из копчёной ванили', p: 640, t: [], v: { type: 'dessert', c: { f1: '#1f0c05', f2: '#5b2a12', g: '#f5f0e6', g2: '#b91c1c', s: '#f5e6d3' }, dark: false } },
-      { n: 'Печёное яблоко', d: 'Кокосовый крем, гранола, кленовый сироп', p: 520, t: ['vegan'], v: { type: 'dessert', c: { f1: '#991b1b', f2: '#f59e0b', g: '#fef3c7', g2: '#84cc16', s: '#b45309' }, dark: true } }
-    ],
-    'Напитки': [
-      { n: 'Ember Old Fashioned', d: 'Бурбон, копчёный сироп, апельсиновая цедра', p: 790, t: ['chef'], v: { type: 'drink', c: { f1: '#7c2d12', f2: '#f59e0b', g: '#fb923c' } } },
-      { n: 'Острая Маргарита', d: 'Текила, лайм, халапеньо, соль с копчёной паприкой', p: 720, t: ['hot'], v: { type: 'drink', c: { f1: '#4d7c0f', f2: '#d9f99d', g: '#dc2626' } } },
-      { n: 'Глинтвейн на углях', d: 'Красное вино, специи, апельсин, мёд', p: 560, t: [], v: { type: 'drink', c: { f1: '#4c0519', f2: '#be123c', g: '#fb923c' } } },
-      { n: 'Облепиховый чай', d: 'Облепиха, имбирь, розмарин — без алкоголя', p: 450, t: ['vegan'], v: { type: 'drink', c: { f1: '#c2410c', f2: '#fdba74', g: '#65a30d' } } }
-    ]
-  };
-  const TAG = { hot: ['hot', 'Острое 🌶'], vegan: ['vegan', 'Веган'], chef: ['chef', 'Выбор шефа'] };
-  const rub = n => n.toLocaleString('ru-RU') + ' ₽';
+  const MENU = [
+    { key: 'starters', items: [
+      { n: { ru: 'Тартар из говядины', en: 'Beef tartare', es: 'Tartar de ternera' },
+        d: { ru: 'Копчёный желток, каперсы, хрустящий хлеб с золы', en: 'Smoked egg yolk, capers, crisp bread baked in the embers', es: 'Yema ahumada, alcaparras y pan crujiente horneado en las brasas' },
+        p: 890, t: ['chef'], v: { type: 'bowl', c: { f1: '#8b1e10', f2: '#c2410c', g: '#ffd166', g2: '#7aa33a', s: '#5a1f06' } } },
+      { n: { ru: 'Печёная свёкла', en: 'Roasted beetroot', es: 'Remolacha asada' },
+        d: { ru: 'Козий сыр, лесной орех, мёд с тимьяном', en: 'Goat’s cheese, toasted hazelnuts, thyme honey', es: 'Queso de cabra, avellanas tostadas y miel de tomillo' },
+        p: 620, t: [], v: { type: 'salad', c: { f1: '#7a1238', f2: '#b0234f', f3: '#f2e6c9', g: '#c08a3e', g2: '#6b8e23', s: '#7a1238' } } },
+      { n: { ru: 'Хумус с углей', en: 'Ember-roasted hummus', es: 'Hummus a la brasa' },
+        d: { ru: 'Нут, запечённый на огне перец, заатар, лепёшка', en: 'Chickpeas, fire-roasted peppers, za’atar, warm flatbread', es: 'Garbanzos, pimiento asado al fuego, za’atar y pan plano' },
+        p: 540, t: ['vegan'], v: { type: 'bowl', c: { f1: '#d9a35b', f2: '#f0c987', g: '#c2410c', g2: '#7aa33a', s: '#c2410c' }, dark: true } },
+      { n: { ru: 'Креветки чили', en: 'Chili prawns', es: 'Langostinos al chile' },
+        d: { ru: 'Тигровые креветки, масло с чесноком и копчёным чили', en: 'Tiger prawns in garlic oil with smoked chili', es: 'Langostinos tigre en aceite de ajo y chile ahumado' },
+        p: 980, t: ['hot'], v: { type: 'salad', c: { f1: '#f97316', f2: '#fb923c', f3: '#7f1d1d', g: '#84cc16', g2: '#fde047', s: '#b91c1c' }, dark: true } }
+    ] },
+    { key: 'grill', items: [
+      { n: { ru: 'Рибай dry-aged', en: 'Dry-aged ribeye', es: 'Chuletón madurado' },
+        d: { ru: '28 дней сухой выдержки, соль с золой, чимичурри', en: 'Dry-aged for 28 days, ash salt, chimichurri', es: '28 días de maduración en seco, sal de ceniza y chimichurri' },
+        p: 3200, t: ['chef'], v: { type: 'steak', c: { f1: '#4a1804', f2: '#b5541a', g: '#65a30d', g2: '#ffb866', s: '#ff9a3d' }, dark: true } },
+      { n: { ru: 'Свиное ребро 12 часов', en: '12-hour pork ribs', es: 'Costilla de cerdo 12 horas' },
+        d: { ru: 'Томлённое в дыму вишни, глазурь из бурбона', en: 'Slow-smoked over cherry wood, bourbon glaze', es: 'Ahumada lentamente con madera de cerezo y glaseada con bourbon' },
+        p: 1450, t: [], v: { type: 'steak', c: { f1: '#5b1a07', f2: '#c2410c', g: '#f59e0b', g2: '#fde68a', s: '#7c2d12' } } },
+      { n: { ru: 'Цыплёнок в огне', en: 'Flame-grilled chicken', es: 'Pollo al fuego' },
+        d: { ru: 'Маринад с харисой, йогурт с мятой, лаваш', en: 'Harissa marinade, mint yogurt, lavash', es: 'Marinado en harissa, yogur con menta y lavash' },
+        p: 1150, t: ['hot'], v: { type: 'steak', c: { f1: '#9a3412', f2: '#f59e0b', g: '#16a34a', g2: '#fef3c7', s: '#dc2626' } } },
+      { n: { ru: 'Овощи с углей', en: 'Ember-grilled vegetables', es: 'Verduras a la brasa' },
+        d: { ru: 'Баклажан, кабачок, перец, соус ромеско', en: 'Eggplant, zucchini, peppers, romesco sauce', es: 'Berenjena, calabacín, pimiento y salsa romesco' },
+        p: 720, t: ['vegan'], v: { type: 'salad', c: { f1: '#4c1d95', f2: '#ea580c', f3: '#65a30d', g: '#facc15', g2: '#dc2626', s: '#ea580c' }, dark: true } }
+    ] },
+    { key: 'desserts', items: [
+      { n: { ru: 'Бёрнт чизкейк', en: 'Burnt cheesecake', es: 'Tarta de queso quemada' },
+        d: { ru: 'Карамелизированная корочка, соус из облепихи', en: 'Caramelized top, sea buckthorn sauce', es: 'Costra caramelizada y salsa de espino amarillo' },
+        p: 590, t: ['chef'], v: { type: 'dessert', c: { f1: '#7c3a0c', f2: '#e8b46a', g: '#f97316', g2: '#fde68a', s: '#f97316' } } },
+      { n: { ru: 'Шоколадный фондан', en: 'Chocolate fondant', es: 'Coulant de chocolate' },
+        d: { ru: 'Горячее сердце, мороженое из копчёной ванили', en: 'Molten center, smoked vanilla ice cream', es: 'Corazón fundido y helado de vainilla ahumada' },
+        p: 640, t: [], v: { type: 'dessert', c: { f1: '#1f0c05', f2: '#5b2a12', g: '#f5f0e6', g2: '#b91c1c', s: '#f5e6d3' }, dark: false } },
+      { n: { ru: 'Печёное яблоко', en: 'Baked apple', es: 'Manzana asada' },
+        d: { ru: 'Кокосовый крем, гранола, кленовый сироп', en: 'Coconut cream, granola, maple syrup', es: 'Crema de coco, granola y sirope de arce' },
+        p: 520, t: ['vegan'], v: { type: 'dessert', c: { f1: '#991b1b', f2: '#f59e0b', g: '#fef3c7', g2: '#84cc16', s: '#b45309' }, dark: true } }
+    ] },
+    { key: 'drinks', items: [
+      { n: { ru: 'Ember Old Fashioned', en: 'Ember Old Fashioned', es: 'Ember Old Fashioned' },
+        d: { ru: 'Бурбон, копчёный сироп, апельсиновая цедра', en: 'Bourbon, smoked syrup, orange zest', es: 'Bourbon, sirope ahumado y piel de naranja' },
+        p: 790, t: ['chef'], v: { type: 'drink', c: { f1: '#7c2d12', f2: '#f59e0b', g: '#fb923c' } } },
+      { n: { ru: 'Острая Маргарита', en: 'Spicy Margarita', es: 'Margarita picante' },
+        d: { ru: 'Текила, лайм, халапеньо, соль с копчёной паприкой', en: 'Tequila, lime, jalapeño, smoked paprika salt rim', es: 'Tequila, lima, jalapeño y sal con pimentón ahumado' },
+        p: 720, t: ['hot'], v: { type: 'drink', c: { f1: '#4d7c0f', f2: '#d9f99d', g: '#dc2626' } } },
+      { n: { ru: 'Глинтвейн на углях', en: 'Ember-mulled wine', es: 'Vino caliente a la brasa' },
+        d: { ru: 'Красное вино, специи, апельсин, мёд', en: 'Red wine, warm spices, orange, honey', es: 'Vino tinto, especias, naranja y miel' },
+        p: 560, t: [], v: { type: 'drink', c: { f1: '#4c0519', f2: '#be123c', g: '#fb923c' } } },
+      { n: { ru: 'Облепиховый чай', en: 'Sea buckthorn tea', es: 'Té de espino amarillo' },
+        d: { ru: 'Облепиха, имбирь, розмарин — без алкоголя', en: 'Sea buckthorn, ginger, rosemary — alcohol-free', es: 'Espino amarillo, jengibre y romero, sin alcohol' },
+        p: 450, t: ['vegan'], v: { type: 'drink', c: { f1: '#c2410c', f2: '#fdba74', g: '#65a30d' } } }
+    ] }
+  ];
+  const TAG_CLS = { hot: 'hot', vegan: 'vegan', chef: 'chef' };
+  const rub = n => n.toLocaleString(LOCALE[lang]) + ' ₽';
 
   const tabsEl = $('#tabs');
   const dishesEl = $('#dishes');
-  const cats = Object.keys(MENU);
+  let curCat = 0;
 
-  tabsEl.innerHTML = cats.map((c, i) =>
-    `<button class="tab" role="tab" type="button" aria-selected="${i === 0}" data-cat="${c}">${c}</button>`).join('');
-
-  const renderMenu = cat => {
-    dishesEl.innerHTML = MENU[cat].map((d, i) => `
+  const renderTabs = () => {
+    tabsEl.innerHTML = MENU.map((c, i) =>
+      `<button class="tab" role="tab" type="button" aria-selected="${i === curCat}" data-i="${i}">${t('cat_' + c.key)}</button>`).join('');
+  };
+  const renderMenu = () => {
+    dishesEl.innerHTML = MENU[curCat].items.map((d, i) => `
       <article class="dish" style="animation-delay:${i * 80}ms">
         <div class="dish-plate" aria-hidden="true">${plate(d.v)}</div>
-        <div class="dish-top"><h3>${d.n}</h3><span class="price">${rub(d.p)}</span></div>
-        <p>${d.d}</p>
-        <div class="tags">${d.t.map(t => `<span class="tag ${TAG[t][0]}">${TAG[t][1]}</span>`).join('')}</div>
+        <div class="dish-top"><h3>${d.n[lang]}</h3><span class="price">${rub(d.p)}</span></div>
+        <p>${d.d[lang]}</p>
+        <div class="tags">${d.t.map(tg => `<span class="tag ${TAG_CLS[tg]}">${t('tag_' + tg)}</span>`).join('')}</div>
       </article>`).join('');
   };
   tabsEl.addEventListener('click', e => {
     const btn = e.target.closest('.tab');
     if (!btn) return;
-    tabsEl.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', String(t === btn)));
-    renderMenu(btn.dataset.cat);
+    curCat = Number(btn.dataset.i);
+    tabsEl.querySelectorAll('.tab').forEach(tb => tb.setAttribute('aria-selected', String(tb === btn)));
+    renderMenu();
   });
-  renderMenu(cats[0]);
 
   /* ---------- Booking ---------- */
-  const DAYS = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
-  const MONTHS = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
-  const MONTHS_FULL = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
   const TIMES = ['12:00', '13:00', '14:00', '15:00', '17:00', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00'];
   const TABLES = [
     // id, x, y, seats, shape ('r' round / 's' square / 'l' long), label zone
@@ -987,29 +1273,33 @@ section{position:relative}
     { id: 10, x: 530, y: 275, seats: 2, shape: 'r' }
   ];
 
-  const state = { date: null, guests: 2, time: null, table: null };
+  const state = { date: null, dateIdx: 0, guests: 2, time: null, table: null, errors: [], ticket: null };
 
   // Deterministic pseudo-random so availability is stable per date/time
   const seeded = seed => () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
   const hash = str => { let h = 2166136261; for (const ch of str) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return Math.abs(h) || 1; };
   const dayKey = d => d.toISOString().slice(0, 10);
 
-  const plural = (n, one, few, many) => {
-    const m10 = n % 10, m100 = n % 100;
-    if (m10 === 1 && m100 !== 11) return one;
-    if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
-    return many;
+  // Localized date helpers (Intl)
+  const monthShort = d => {
+    const part = new Intl.DateTimeFormat(LOCALE[lang], { day: 'numeric', month: 'short' }).formatToParts(d).find(p => p.type === 'month');
+    return part ? noDot(part.value) : '';
   };
+  const weekdayShort = d => noDot(dtf({ weekday: 'short' }, d));
+  const dayMonthShort = d => noDot(dtf({ day: 'numeric', month: 'short' }, d));
+  const fmtDate = d => dtf({ weekday: 'long', day: 'numeric', month: 'long' }, d);
 
   // Dates
   const today = new Date(); today.setHours(0, 0, 0, 0);
   const dates = Array.from({ length: 14 }, (_, i) => { const d = new Date(today); d.setDate(d.getDate() + i); return d; });
   const datesEl = $('#dates');
-  datesEl.innerHTML = dates.map((d, i) => `
-    <button type="button" class="date-chip" data-i="${i}" aria-pressed="false" aria-label="${d.getDate()} ${MONTHS_FULL[d.getMonth()]}">
-      <small>${i === 0 ? 'сегодня' : i === 1 ? 'завтра' : DAYS[d.getDay()]}</small>
-      <b>${d.getDate()}</b><em>${MONTHS[d.getMonth()]}</em>
-    </button>`).join('');
+  const renderDates = () => {
+    datesEl.innerHTML = dates.map((d, i) => `
+      <button type="button" class="date-chip" data-i="${i}" aria-pressed="${i === state.dateIdx}" aria-label="${dtf({ weekday: 'long', day: 'numeric', month: 'long' }, d)}">
+        <small>${i === 0 ? t('today') : i === 1 ? t('tomorrow') : weekdayShort(d)}</small>
+        <b>${d.getDate()}</b><em>${monthShort(d)}</em>
+      </button>`).join('');
+  };
 
   // Slots
   const slotsEl = $('#slots');
@@ -1017,9 +1307,9 @@ section{position:relative}
     const rnd = seeded(hash(dayKey(date)));
     const now = new Date();
     const isToday = dayKey(date) === dayKey(today);
-    return new Set(TIMES.filter(t => {
+    return new Set(TIMES.filter(tm => {
       if (isToday) {
-        const [h, m] = t.split(':').map(Number);
+        const [h, m] = tm.split(':').map(Number);
         if (h * 60 + m <= now.getHours() * 60 + now.getMinutes() + 30) return true;
       }
       return rnd() < .3;
@@ -1028,9 +1318,9 @@ section{position:relative}
   const renderSlots = () => {
     const busy = busySlots(state.date);
     if (busy.has(state.time)) state.time = null;
-    slotsEl.innerHTML = TIMES.map(t => {
-      const b = busy.has(t);
-      return `<button type="button" class="slot" data-t="${t}" ${b ? 'disabled aria-label="' + t + ', занято"' : ''} aria-pressed="${state.time === t}" title="${b ? 'Занято' : 'Свободно'}">${t}</button>`;
+    slotsEl.innerHTML = TIMES.map(tm => {
+      const b = busy.has(tm);
+      return `<button type="button" class="slot" data-t="${tm}" ${b ? 'disabled aria-label="' + t('slot_busy_aria', { t: tm }) + '"' : ''} aria-pressed="${state.time === tm}" title="${b ? t('slot_busy') : t('slot_free')}">${tm}</button>`;
     }).join('');
   };
 
@@ -1039,54 +1329,55 @@ section{position:relative}
   const busyTables = () => {
     if (!state.time) return new Set();
     const rnd = seeded(hash(dayKey(state.date) + state.time));
-    return new Set(TABLES.filter(() => rnd() < .35).map(t => t.id));
+    return new Set(TABLES.filter(() => rnd() < .35).map(tb => tb.id));
   };
-  const seatDots = t => {
+  const seatDots = tb => {
     const out = [];
-    if (t.shape === 'r') {
-      for (let i = 0; i < t.seats; i++) {
-        const a = (Math.PI * 2 / t.seats) * i - Math.PI / 2;
-        out.push([t.x + Math.cos(a) * 34, t.y + Math.sin(a) * 34]);
+    if (tb.shape === 'r') {
+      for (let i = 0; i < tb.seats; i++) {
+        const a = (Math.PI * 2 / tb.seats) * i - Math.PI / 2;
+        out.push([tb.x + Math.cos(a) * 34, tb.y + Math.sin(a) * 34]);
       }
     } else {
-      const w = t.shape === 'l' ? (t.seats / 2) * 34 : 50;
-      const per = t.seats / 2;
+      const w = tb.shape === 'l' ? (tb.seats / 2) * 34 : 50;
+      const per = tb.seats / 2;
       for (let i = 0; i < per; i++) {
-        const sx = t.x - w / 2 + (w / per) * (i + .5);
-        out.push([sx, t.y - 38], [sx, t.y + 38]);
+        const sx = tb.x - w / 2 + (w / per) * (i + .5);
+        out.push([sx, tb.y - 38], [sx, tb.y + 38]);
       }
     }
     return out;
   };
   const renderFloor = () => {
     const busy = busyTables();
-    if (state.table && (busy.has(state.table) || TABLES.find(t => t.id === state.table).seats < state.guests)) state.table = null;
+    if (state.table && (busy.has(state.table) || TABLES.find(tb => tb.id === state.table).seats < state.guests)) state.table = null;
     const decor = `
       <rect x="2" y="2" width="596" height="336" rx="14" fill="none" stroke="rgba(255,154,61,.25)" stroke-width="2"/>
       <rect x="350" y="20" width="230" height="70" rx="10" fill="rgba(255,120,40,.12)" stroke="rgba(255,154,61,.4)" stroke-dasharray="4 4"/>
-      <text x="465" y="50" text-anchor="middle" fill="#ff9a3d" font-size="12" font-weight="700" font-family="Manrope,sans-serif" letter-spacing="2">ОТКРЫТАЯ КУХНЯ</text>
-      <text x="465" y="68" text-anchor="middle" fill="#c4a790" font-size="10" font-family="Manrope,sans-serif">гриль · дровяная печь</text>
+      <text x="465" y="50" text-anchor="middle" fill="#ff9a3d" font-size="12" font-weight="700" font-family="Manrope,sans-serif" letter-spacing="2">${t('fl_kitchen')}</text>
+      <text x="465" y="68" text-anchor="middle" fill="#c4a790" font-size="10" font-family="Manrope,sans-serif">${t('fl_kitchen_sub')}</text>
       <rect x="2" y="120" width="10" height="110" rx="3" fill="rgba(255,184,102,.25)"/>
-      <text x="22" y="178" fill="#8d715d" font-size="9" font-family="Manrope,sans-serif" transform="rotate(-90 22 178)" text-anchor="middle">ОКНА</text>
+      <text x="22" y="178" fill="#8d715d" font-size="9" font-family="Manrope,sans-serif" transform="rotate(-90 22 178)" text-anchor="middle">${t('fl_windows')}</text>
       <path d="M330 330 v-24 a24 24 0 0 1 24 24" fill="none" stroke="#8d715d" stroke-width="1.5"/>
-      <text x="370" y="326" fill="#8d715d" font-size="10" font-family="Manrope,sans-serif">вход</text>
+      <text x="370" y="326" fill="#8d715d" font-size="10" font-family="Manrope,sans-serif">${t('fl_entrance')}</text>
       <circle cx="560" cy="160" r="16" fill="rgba(255,120,40,.25)"/><circle cx="560" cy="160" r="8" fill="rgba(255,154,61,.6)"/>
-      <text x="560" y="194" fill="#8d715d" font-size="9" text-anchor="middle" font-family="Manrope,sans-serif">камин</text>`;
-    const tables = TABLES.map(t => {
-      const isBusy = busy.has(t.id);
-      const isSmall = !isBusy && t.seats < state.guests;
-      const sel = state.table === t.id;
+      <text x="560" y="194" fill="#8d715d" font-size="9" text-anchor="middle" font-family="Manrope,sans-serif">${t('fl_fireplace')}</text>`;
+    const tables = TABLES.map(tb => {
+      const isBusy = busy.has(tb.id);
+      const isSmall = !isBusy && tb.seats < state.guests;
+      const sel = state.table === tb.id;
       const cls = ['tbl', isBusy && 'busy', isSmall && 'small', sel && 'selected'].filter(Boolean).join(' ');
       const disabled = isBusy || isSmall || !state.time;
-      const seats = seatDots(t).map(([x, y]) => `<circle class="seat" cx="${x}" cy="${y}" r="7"/>`).join('');
+      const seats = seatDots(tb).map(([x, y]) => `<circle class="seat" cx="${x}" cy="${y}" r="7"/>`).join('');
       let top;
-      if (t.shape === 'r') top = `<circle class="top" cx="${t.x}" cy="${t.y}" r="24"/>`;
-      else { const w = t.shape === 'l' ? (t.seats / 2) * 34 + 10 : 56; top = `<rect class="top" x="${t.x - w / 2}" y="${t.y - 26}" width="${w}" height="52" rx="8"/>`; }
-      const status = isBusy ? 'занят' : isSmall ? 'мало мест' : sel ? 'выбран' : 'свободен';
-      return `<g class="${cls}" data-id="${t.id}" role="button" tabindex="${disabled ? -1 : 0}" aria-disabled="${disabled}" aria-pressed="${sel}" aria-label="Стол ${t.id}, ${t.seats} ${plural(t.seats, 'место', 'места', 'мест')}, ${status}">
+      if (tb.shape === 'r') top = `<circle class="top" cx="${tb.x}" cy="${tb.y}" r="24"/>`;
+      else { const w = tb.shape === 'l' ? (tb.seats / 2) * 34 + 10 : 56; top = `<rect class="top" x="${tb.x - w / 2}" y="${tb.y - 26}" width="${w}" height="52" rx="8"/>`; }
+      const status = t(isBusy ? 'st_busy' : isSmall ? 'st_small' : sel ? 'st_selected' : 'st_free');
+      const seatsTxt = pl(tb.seats, 'seats');
+      return `<g class="${cls}" data-id="${tb.id}" role="button" tabindex="${disabled ? -1 : 0}" aria-disabled="${disabled}" aria-pressed="${sel}" aria-label="${t('tbl_aria', { id: tb.id, seats: seatsTxt, status })}">
         ${seats}${top}
-        <text x="${t.x}" y="${t.y + 1}" text-anchor="middle">${t.id}</text>
-        <text class="cap" x="${t.x}" y="${t.y + 13}" text-anchor="middle">${t.seats} ${plural(t.seats, 'место', 'места', 'мест')}</text>
+        <text x="${tb.x}" y="${tb.y + 1}" text-anchor="middle">${tb.id}</text>
+        <text class="cap" x="${tb.x}" y="${tb.y + 13}" text-anchor="middle">${seatsTxt}</text>
       </g>`;
     }).join('');
     floorEl.innerHTML = decor + tables;
@@ -1095,18 +1386,17 @@ section{position:relative}
 
   // Summary
   const summaryEl = $('#summary');
-  const fmtDate = d => `${d.getDate()} ${MONTHS_FULL[d.getMonth()]}, ${['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'][d.getDay()]}`;
-  const guestsLabel = n => `${n} ${plural(n, 'гость', 'гостя', 'гостей')}`;
   const renderSummary = () => {
-    const parts = [`<b>${state.date.getDate()} ${MONTHS[state.date.getMonth()]}</b>`, guestsLabel(state.guests)];
+    const parts = [`<b>${dayMonthShort(state.date)}</b>`, pl(state.guests, 'guests')];
     if (state.time) parts.push(`<b>${state.time}</b>`);
-    if (state.table) parts.push(`стол <b>№${state.table}</b>`);
-    summaryEl.innerHTML = parts.join(' · ') + (!state.time ? ' — выберите время' : !state.table ? ' — выберите стол' : '');
+    if (state.table) parts.push(t('sum_table', { n: state.table }));
+    summaryEl.innerHTML = parts.join(' · ') + (!state.time ? t('sum_pick_time') : !state.table ? t('sum_pick_table') : '');
   };
 
   const refresh = () => { renderSlots(); renderFloor(); renderSummary(); };
 
   const selectDate = i => {
+    state.dateIdx = i;
     state.date = dates[i];
     datesEl.querySelectorAll('.date-chip').forEach((c, j) => c.setAttribute('aria-pressed', String(j === i)));
     refresh();
@@ -1138,9 +1428,10 @@ section{position:relative}
 
   // Guests
   const gMinus = $('#gMinus'), gPlus = $('#gPlus'), guestsOut = $('#guests');
+  const renderGuests = () => { guestsOut.textContent = pl(state.guests, 'guests'); };
   const setGuests = n => {
     state.guests = Math.max(1, Math.min(8, n));
-    guestsOut.textContent = guestsLabel(state.guests);
+    renderGuests();
     gMinus.disabled = state.guests <= 1;
     gPlus.disabled = state.guests >= 8;
     renderFloor(); renderSummary();
@@ -1167,45 +1458,54 @@ section{position:relative}
 
   // Submit
   const form = $('#bookingForm'), msg = $('#formMsg'), confirmEl = $('#confirm');
+  const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const renderMsg = () => {
+    msg.textContent = state.errors.length ? t('err_prefix', { list: state.errors.map(k => t(k)).join(', ') }) : '';
+  };
+  const renderTicket = () => {
+    const tk = state.ticket;
+    if (!tk) return;
+    $('#tNum').textContent = t('ticket_num', { n: tk.num });
+    const tb = TABLES.find(x => x.id === tk.table);
+    $('#tDetails').innerHTML = [
+      ['t_guest', tk.name],
+      ['t_date', fmtDate(tk.date)],
+      ['t_time', tk.time],
+      ['t_guests', String(tk.guests)],
+      ['t_table', t('t_table_v', { id: tb.id, seats: pl(tb.seats, 'seats') })],
+      ['t_phone', tk.phone]
+    ].map(([k, v]) => `<dt>${t(k)}</dt><dd>${esc(v)}</dd>`).join('');
+  };
   form.addEventListener('submit', e => {
     e.preventDefault();
     const errors = [];
-    if (!state.time) errors.push('выберите время');
-    if (!state.table) errors.push('выберите стол на схеме');
+    if (!state.time) errors.push('err_time');
+    if (!state.table) errors.push('err_table');
     const nameOk = nameIn.value.trim().length >= 2;
     const phoneOk = phone.value.replace(/\D/g, '').length === 11;
     nameIn.parentElement.classList.toggle('error', !nameOk);
     phone.parentElement.classList.toggle('error', !phoneOk);
-    if (!nameOk) errors.push('укажите имя');
-    if (!phoneOk) errors.push('укажите телефон');
-    if (errors.length) {
-      msg.textContent = 'Почти готово: ' + errors.join(', ') + '.';
-      return;
-    }
-    msg.textContent = '';
-    const num = 'EM-' + String(Math.floor(1000 + Math.random() * 9000));
-    $('#tNum').textContent = '№ ' + num;
-    const t = TABLES.find(x => x.id === state.table);
-    $('#tDetails').innerHTML = [
-      ['Гость', nameIn.value.trim()],
-      ['Дата', fmtDate(state.date)],
-      ['Время', state.time],
-      ['Гостей', String(state.guests)],
-      ['Стол', `№${t.id} · ${t.seats} ${plural(t.seats, 'место', 'места', 'мест')}`],
-      ['Телефон', phone.value]
-    ].map(([k, v]) => `<dt>${k}</dt><dd>${v.replace(/</g, '&lt;')}</dd>`).join('');
+    if (!nameOk) errors.push('err_name');
+    if (!phoneOk) errors.push('err_phone');
+    state.errors = errors;
+    renderMsg();
+    if (errors.length) return;
+    state.ticket = {
+      num: 'EM-' + String(Math.floor(1000 + Math.random() * 9000)),
+      name: nameIn.value.trim(), phone: phone.value,
+      date: state.date, time: state.time, guests: state.guests, table: state.table
+    };
+    renderTicket();
     confirmEl.classList.add('show');
     $('#newBooking').focus({ preventScroll: true });
   });
   $('#newBooking').addEventListener('click', () => {
     confirmEl.classList.remove('show');
     form.reset();
-    state.time = null; state.table = null;
+    state.time = null; state.table = null; state.ticket = null; state.errors = [];
+    renderMsg();
     refresh();
   });
-
-  selectDate(0);
-  setGuests(2);
 
   /* ---------- Open now ---------- */
   const openNow = $('#openNow');
@@ -1213,7 +1513,40 @@ section{position:relative}
   const close = day === 0 ? 23 : (day === 5 || day === 6) ? 26 : 24;
   const prevDayLate = (day === 6 || day === 0) && h < 2; // after-midnight on Fri/Sat nights
   const isOpen = (h >= 12 && h < Math.min(close, 24)) || (close > 24 && h >= 12) || prevDayLate;
-  if (!isOpen) { openNow.textContent = 'Сейчас закрыто · откроемся в 12:00'; openNow.classList.add('closed'); }
+  openNow.classList.toggle('closed', !isOpen);
+  const renderOpen = () => { openNow.textContent = t(isOpen ? 'open_now' : 'closed_now'); };
+
+  /* ---------- Apply language ---------- */
+  const metaDesc = document.querySelector('meta[name="description"]');
+  const langBtns = document.querySelectorAll('#lang [data-lang]');
+  const applyLang = l => {
+    lang = LANGS.includes(l) ? l : 'ru';
+    document.documentElement.lang = lang;
+    document.title = t('meta_title');
+    if (metaDesc) metaDesc.setAttribute('content', t('meta_desc'));
+    document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+    document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => { el.setAttribute('placeholder', t(el.dataset.i18nPlaceholder)); });
+    langBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    burger.setAttribute('aria-label', t(nav.classList.contains('open') ? 'burger_close' : 'burger_open'));
+    // JS-rendered parts (booking selections in `state` are preserved)
+    renderTabs(); renderMenu();
+    renderDates(); renderGuests();
+    if (state.date) refresh();
+    renderMsg(); renderTicket(); renderOpen();
+  };
+  langBtns.forEach(b => b.addEventListener('click', () => {
+    if (b.dataset.lang === lang) return;
+    saveLang(b.dataset.lang);
+    applyLang(b.dataset.lang);
+  }));
+
+  const initial = pickLang();
+  if (initial.fromUrl) saveLang(initial.lang);
+  applyLang(initial.lang);
+  selectDate(0);
+  setGuests(2);
 
   /* ---------- Reveal & counters ---------- */
   const countUp = el => {

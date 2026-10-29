@@ -47,6 +47,8 @@
       radial-gradient(700px 500px at -10% 30%, rgba(42, 27, 122, .7), transparent 65%),
       linear-gradient(180deg, var(--night), var(--ink) 70%);
   }
+  /* Decorative rings/orbs must not widen the mobile layout viewport */
+  main { overflow-x: clip; }
   img, svg { display: block; max-width: 100%; }
   a { color: inherit; text-decoration: none; }
   button, input { font: inherit; color: inherit; }
@@ -60,7 +62,7 @@
     color: var(--lime);
   }
   .eyebrow::before { content: ""; width: 18px; height: 2px; background: currentColor; border-radius: 2px; }
-  h1, h2, h3 { font-family: var(--display); font-weight: 600; line-height: 1.08; margin: 0; letter-spacing: -.02em; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 600; line-height: 1.08; margin: 0; letter-spacing: -.02em; overflow-wrap: break-word; }
   h2 { font-size: clamp(30px, 4.4vw, 52px); margin-top: 14px; }
   .section-head { max-width: 680px; margin-bottom: 56px; }
   .section-head p { color: var(--muted); font-size: 18px; margin: 18px 0 0; }
@@ -122,6 +124,19 @@
   .nav a { padding: 8px 14px; border-radius: 999px; font-size: 15px; color: var(--muted); transition: color .2s, background .2s; }
   .nav a:hover { color: var(--text); background: rgba(255, 255, 255, .06); }
   .header-actions { display: flex; align-items: center; gap: 8px; }
+
+  /* Language switcher */
+  .lang-sw {
+    display: inline-flex; flex: none; gap: 2px; padding: 3px; border-radius: 999px;
+    background: rgba(11, 7, 34, .6); border: 1px solid var(--line);
+  }
+  .lang-sw button {
+    min-width: 34px; padding: 8px 9px; border: 0; border-radius: 999px; background: transparent; cursor: pointer;
+    color: var(--muted); font: 500 12px/1 var(--mono); letter-spacing: .04em;
+    transition: background .2s, color .2s, box-shadow .2s;
+  }
+  .lang-sw button:hover { color: var(--text); }
+  .lang-sw button[aria-pressed="true"] { background: var(--lime); color: #11081f; box-shadow: 0 6px 16px -8px rgba(198, 255, 61, .7); }
   .burger {
     display: none; width: 42px; height: 42px; border-radius: 50%;
     border: 1px solid var(--line); background: transparent; cursor: pointer; position: relative;
@@ -467,7 +482,8 @@
     .cta { grid-template-columns: 1fr; padding: 54px 40px; }
     .footer-grid { grid-template-columns: 1fr 1fr; }
   }
-  @media (max-width: 860px) {
+  /* Nav collapses earlier than before: the language switcher needs room next to it */
+  @media (max-width: 1080px) {
     .nav {
       position: absolute; top: calc(100% + 10px); left: 0; right: 0; flex-direction: column; gap: 4px;
       padding: 12px; border-radius: 24px; background: rgba(18, 12, 51, .96); border: 1px solid var(--line);
@@ -477,6 +493,8 @@
     .nav a { padding: 14px 16px; font-size: 16px; }
     .header-bar { position: relative; }
     .burger { display: block; }
+  }
+  @media (max-width: 860px) {
     .steps { grid-template-columns: 1fr; }
     .step:not(:last-child)::after { display: none; }
   }
@@ -507,8 +525,18 @@
     .stat b { font-size: 26px; }
     .stat span { font-size: 13px; }
     .demo-pill { font-size: 12px; }
+    .header-bar { gap: 10px; }
+    .logo { font-size: 17px; gap: 8px; }
+    .logo-mark { width: 28px; height: 28px; }
+    .lang-sw button { min-width: 0; padding: 8px 7px; font-size: 11px; }
     .faq-q { padding: 18px; font-size: 16px; }
     .faq-a p { padding: 0 18px 18px; }
+  }
+
+  @media (max-width: 340px) {
+    .header-bar { gap: 6px; padding-left: 12px; }
+    .logo { font-size: 15px; }
+    .lang-sw button { padding: 8px 5px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -520,24 +548,29 @@
 </head>
 <body>
 
-<a class="demo-pill" href="../../index.html#works">← Назад в портфолио <span>Демо-проект</span></a>
+<a class="demo-pill" href="../../index.html#works"><bdi data-i18n="pill.back">← Назад в портфолио</bdi> <span class="demo-tag" data-i18n="pill.demo">Демо-проект</span></a>
 
 <header class="header" id="header">
   <div class="container">
     <div class="header-bar">
-      <a href="#top" class="logo" aria-label="NovaPay — на главную">
+      <a href="#top" class="logo" aria-label="NovaPay — на главную" data-i18n-aria="aria.logo">
         <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M5 19V5l14 14V5" stroke="#c6ff3d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         NovaPay
       </a>
-      <nav class="nav" id="nav" aria-label="Основная навигация">
-        <a href="#calc">Калькулятор</a>
-        <a href="#features">Возможности</a>
-        <a href="#pricing">Тарифы</a>
-        <a href="#faq">Вопросы</a>
+      <nav class="nav" id="nav" aria-label="Основная навигация" data-i18n-aria="aria.nav">
+        <a href="#calc" data-i18n="nav.calc">Калькулятор</a>
+        <a href="#features" data-i18n="nav.features">Возможности</a>
+        <a href="#pricing" data-i18n="nav.pricing">Тарифы</a>
+        <a href="#faq" data-i18n="nav.faq">Вопросы</a>
       </nav>
       <div class="header-actions">
-        <a href="#start" class="btn btn-primary btn-sm">Открыть счёт</a>
-        <button class="burger" id="burger" aria-label="Меню" aria-expanded="false" aria-controls="nav"><i></i><i></i><i></i></button>
+        <div class="lang-sw" id="langSwitch" role="group" aria-label="Язык сайта" data-i18n-aria="aria.lang">
+          <button type="button" data-lang="ru" lang="ru" aria-label="Русский" aria-pressed="true">RU</button>
+          <button type="button" data-lang="en" lang="en" aria-label="English" aria-pressed="false">EN</button>
+          <button type="button" data-lang="es" lang="es" aria-label="Español" aria-pressed="false">ES</button>
+        </div>
+        <a href="#start" class="btn btn-primary btn-sm" data-i18n="header.cta">Открыть счёт</a>
+        <button class="burger" id="burger" aria-label="Меню" data-i18n-aria="aria.menu" aria-expanded="false" aria-controls="nav"><i></i><i></i><i></i></button>
       </div>
     </div>
   </div>
@@ -548,20 +581,20 @@
   <section class="hero">
     <div class="container hero-grid">
       <div class="hero-copy">
-        <span class="badge reveal"><b>Новое</b> Переводы в 140+ стран за 30 секунд</span>
-        <h1 class="reveal" style="--d:.08s">Платежи <em>без&nbsp;лишних</em> комиссий</h1>
-        <p class="hero-sub reveal" style="--d:.16s">NovaPay — платёжный сервис для людей и бизнеса. Переводите, принимайте оплату и платите картой там, где банки берут проценты, а мы — нет.</p>
+        <span class="badge reveal" data-i18n="hero.badge"><b>Новое</b> Переводы в 140+ стран за 30 секунд</span>
+        <h1 class="reveal" style="--d:.08s" data-i18n="hero.title">Платежи <em>без&nbsp;лишних</em> комиссий</h1>
+        <p class="hero-sub reveal" style="--d:.16s" data-i18n="hero.sub">NovaPay — платёжный сервис для людей и бизнеса. Переводите, принимайте оплату и платите картой там, где банки берут проценты, а мы — нет.</p>
         <div class="hero-cta reveal" style="--d:.24s">
-          <a href="#start" class="btn btn-primary">Открыть счёт бесплатно
+          <a href="#start" class="btn btn-primary"><span data-i18n="hero.cta1">Открыть счёт бесплатно</span>
             <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <a href="#calc" class="btn btn-ghost">Рассчитать комиссию</a>
+          <a href="#calc" class="btn btn-ghost" data-i18n="hero.cta2">Рассчитать комиссию</a>
         </div>
         <div class="hero-trust reveal" style="--d:.32s">
           <div class="avatars" aria-hidden="true">
             <i style="background:#c6ff3d">А</i><i style="background:#a48cff">М</i><i style="background:#ffd36e">К</i><i style="background:#7fe3ff">Д</i>
           </div>
-          <div><span class="stars">★★★★★</span><br>4,9 — более 1,2 млн клиентов</div>
+          <div><span class="stars">★★★★★</span><br><span data-i18n="hero.trust">4,9 — более 1,2 млн клиентов</span></div>
         </div>
       </div>
 
@@ -571,15 +604,15 @@
 
         <div class="float-chip fc-1" aria-hidden="true">
           <span class="dot"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          <div><b>+ 48 500 ₽</b><small>Перевод получен · 0 ₽</small></div>
+          <div><b>+ <span data-money="48500">48 500 ₽</span></b><small data-i18n="chip.received">Перевод получен · 0 ₽</small></div>
         </div>
         <div class="float-chip fc-2" aria-hidden="true">
           <span class="dot"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v18M17 7.5C17 5.6 14.8 4.5 12 4.5S7 5.8 7 8c0 4.8 10 2.6 10 7.6 0 2.2-2.2 3.4-5 3.4s-5.2-1.2-5.2-3.2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
-          <div><b>5% кэшбэк</b><small>на кафе и такси</small></div>
+          <div><b data-i18n="chip.cashback">5% кэшбэк</b><small data-i18n="chip.cashbackSub">на кафе и такси</small></div>
         </div>
 
         <div class="card-float">
-          <div class="bank-card" id="bankCard" role="img" aria-label="Карта NovaPay">
+          <div class="bank-card" id="bankCard" role="img" aria-label="Карта NovaPay" data-i18n-aria="aria.card">
             <svg class="card-waves" viewBox="0 0 200 200" fill="none" aria-hidden="true">
               <circle cx="140" cy="140" r="40" stroke="#c6ff3d" stroke-width="1.5"/>
               <circle cx="140" cy="140" r="70" stroke="#c6ff3d" stroke-width="1"/>
@@ -601,11 +634,11 @@
             <div class="card-number">5536 •••• •••• 2048</div>
             <div class="card-row">
               <div>
-                <div class="card-meta">Владелец</div>
+                <div class="card-meta" data-i18n="card.holder">Владелец</div>
                 <div class="card-val">ALEXANDRA NOVA</div>
               </div>
               <div>
-                <div class="card-meta">До</div>
+                <div class="card-meta" data-i18n="card.valid">До</div>
                 <div class="card-val">09/31</div>
               </div>
               <div class="mc" aria-hidden="true"><i></i><i></i></div>
@@ -617,9 +650,9 @@
   </section>
 
   <div class="partners container reveal">
-    <p>Нам доверяют компании и маркетплейсы</p>
+    <p data-i18n="partners.title">Нам доверяют компании и маркетплейсы</p>
     <div class="partners-row" aria-hidden="true">
-      <span>Orbita</span><span>Kvant</span><span>Lumen</span><span>Северсталь&nbsp;Ритейл</span><span>Polar</span><span>Mosaic</span>
+      <span>Orbita</span><span>Kvant</span><span>Lumen</span><span data-i18n="partners.sever">Северсталь&nbsp;Ритейл</span><span>Polar</span><span>Mosaic</span>
     </div>
   </div>
 
@@ -627,30 +660,30 @@
   <section class="section" id="calc">
     <div class="container">
       <div class="section-head reveal">
-        <span class="eyebrow">Калькулятор комиссий</span>
-        <h2>Посчитайте, сколько <span class="lime">сэкономите</span></h2>
-        <p>Двигайте ползунок и выбирайте тип перевода — сравним с тарифами обычного банка в реальном времени.</p>
+        <span class="eyebrow" data-i18n="calc.eyebrow">Калькулятор комиссий</span>
+        <h2 data-i18n="calc.title">Посчитайте, сколько <span class="lime">сэкономите</span></h2>
+        <p data-i18n="calc.sub">Двигайте ползунок и выбирайте тип перевода — сравним с тарифами обычного банка в реальном времени.</p>
       </div>
 
       <div class="calc reveal">
         <div class="calc-main">
-          <div class="tabs" role="tablist" aria-label="Тип перевода" id="tabs">
-            <button class="tab" role="tab" aria-selected="true" data-type="card">На карту</button>
-            <button class="tab" role="tab" aria-selected="false" data-type="sbp">По СБП</button>
-            <button class="tab" role="tab" aria-selected="false" data-type="intl">За границу</button>
-            <button class="tab" role="tab" aria-selected="false" data-type="biz">Бизнесу</button>
+          <div class="tabs" role="tablist" aria-label="Тип перевода" data-i18n-aria="calc.tabs" id="tabs">
+            <button class="tab" role="tab" aria-selected="true" data-type="card" data-i18n="tab.card">На карту</button>
+            <button class="tab" role="tab" aria-selected="false" data-type="sbp" data-i18n="tab.sbp">По СБП</button>
+            <button class="tab" role="tab" aria-selected="false" data-type="intl" data-i18n="tab.intl">За границу</button>
+            <button class="tab" role="tab" aria-selected="false" data-type="biz" data-i18n="tab.biz">Бизнесу</button>
           </div>
 
-          <label class="calc-label" for="amount">Сумма перевода <span id="typeHint">Мгновенно, 24/7</span></label>
+          <label class="calc-label" for="amount"><span data-i18n="calc.amount">Сумма перевода</span> <span id="typeHint">Мгновенно, 24/7</span></label>
           <div class="amount" id="amountOut" aria-live="polite">50 000 ₽</div>
-          <input class="range" id="amount" type="range" min="0" max="1000" step="1" value="566" aria-label="Сумма перевода">
-          <div class="range-scale"><span>1 000 ₽</span><span>1 000 000 ₽</span></div>
+          <input class="range" id="amount" type="range" min="0" max="1000" step="1" value="566" aria-label="Сумма перевода" data-i18n-aria="calc.amount">
+          <div class="range-scale"><span data-money="1000">1 000 ₽</span><span data-money="1000000">1 000 000 ₽</span></div>
 
           <div class="presets" id="presets">
-            <button class="preset" data-v="5000">5 000 ₽</button>
-            <button class="preset" data-v="25000">25 000 ₽</button>
-            <button class="preset" data-v="100000">100 000 ₽</button>
-            <button class="preset" data-v="500000">500 000 ₽</button>
+            <button class="preset" data-v="5000" data-money="5000">5 000 ₽</button>
+            <button class="preset" data-v="25000" data-money="25000">25 000 ₽</button>
+            <button class="preset" data-v="100000" data-money="100000">100 000 ₽</button>
+            <button class="preset" data-v="500000" data-money="500000">500 000 ₽</button>
           </div>
 
           <div class="calc-note">
@@ -660,9 +693,9 @@
         </div>
 
         <div class="calc-side">
-          <div class="result-row"><span>Комиссия NovaPay</span><b id="feeOut">0 ₽</b></div>
-          <div class="result-row"><span>Ставка</span><b id="rateOut">0,5%</b></div>
-          <div class="result-big"><span>Получатель получит</span><b id="receiveOut">0 ₽</b></div>
+          <div class="result-row"><span data-i18n="res.fee">Комиссия NovaPay</span><b id="feeOut">0 ₽</b></div>
+          <div class="result-row"><span data-i18n="res.rate">Ставка</span><b id="rateOut">0,5%</b></div>
+          <div class="result-big"><span data-i18n="res.receive">Получатель получит</span><b id="receiveOut">0 ₽</b></div>
 
           <div class="compare">
             <div>
@@ -670,17 +703,17 @@
               <div class="bar bar-nova"><i id="barNova" style="width:10%"></i></div>
             </div>
             <div>
-              <div class="bar-label"><span>Обычный банк</span><b id="barBankVal">0 ₽</b></div>
+              <div class="bar-label"><span data-i18n="res.bank">Обычный банк</span><b id="barBankVal">0 ₽</b></div>
               <div class="bar bar-bank"><i id="barBank" style="width:100%"></i></div>
             </div>
           </div>
 
           <div class="saving">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8M15 7h6v6" stroke="#c6ff3d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <div>Экономия с NovaPay: <b id="saveOut">0 ₽</b></div>
+            <div><span data-i18n="res.save">Экономия с NovaPay:</span> <b id="saveOut">0 ₽</b></div>
           </div>
 
-          <a href="#start" class="btn btn-primary">Перевести с выгодой</a>
+          <a href="#start" class="btn btn-primary" data-i18n="calc.btn">Перевести с выгодой</a>
         </div>
       </div>
     </div>
@@ -690,17 +723,17 @@
   <section class="section" id="features">
     <div class="container">
       <div class="section-head reveal">
-        <span class="eyebrow">Возможности</span>
-        <h2>Всё для денег — в одном приложении</h2>
-        <p>Карта, переводы, приём платежей и аналитика расходов. Без отделений, очередей и скрытых условий.</p>
+        <span class="eyebrow" data-i18n="feat.eyebrow">Возможности</span>
+        <h2 data-i18n="feat.title">Всё для денег — в одном приложении</h2>
+        <p data-i18n="feat.sub">Карта, переводы, приём платежей и аналитика расходов. Без отделений, очередей и скрытых условий.</p>
       </div>
 
       <div class="features">
         <article class="feature wide reveal">
           <div>
             <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div>
-            <h3>Мгновенные переводы</h3>
-            <p>Деньги доходят за секунды — по номеру телефона, карты или через СБП. Работает круглосуточно, включая выходные и праздники.</p>
+            <h3 data-i18n="f1.t">Мгновенные переводы</h3>
+            <p data-i18n="f1.d">Деньги доходят за секунды — по номеру телефона, карты или через СБП. Работает круглосуточно, включая выходные и праздники.</p>
           </div>
           <div class="mini-chart" aria-hidden="true">
             <i style="height:35%"></i><i style="height:52%"></i><i style="height:44%"></i><i style="height:68%"></i><i style="height:60%"></i><i style="height:82%"></i><i style="height:100%"></i>
@@ -708,23 +741,23 @@
         </article>
         <article class="feature reveal" style="--d:.08s">
           <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6l-8-3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <h3>Защита 3D Secure 2.0</h3>
-          <p>Антифрод на базе ML блокирует подозрительные операции до списания.</p>
+          <h3 data-i18n="f2.t">Защита 3D Secure 2.0</h3>
+          <p data-i18n="f2.d">Антифрод на базе ML блокирует подозрительные операции до списания.</p>
         </article>
         <article class="feature reveal">
           <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9S14.5 18.3 12 21c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3Z" stroke="currentColor" stroke-width="2"/></svg></div>
-          <h3>Мультивалютность</h3>
-          <p>Счета в 12 валютах и обмен по биржевому курсу без наценки.</p>
+          <h3 data-i18n="f3.t">Мультивалютность</h3>
+          <p data-i18n="f3.d">Счета в 12 валютах и обмен по биржевому курсу без наценки.</p>
         </article>
         <article class="feature reveal" style="--d:.08s">
           <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="13" rx="3" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M7 15h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
-          <h3>Виртуальные карты</h3>
-          <p>Выпуск за 10 секунд — отдельная карта для подписок и покупок онлайн.</p>
+          <h3 data-i18n="f4.t">Виртуальные карты</h3>
+          <p data-i18n="f4.d">Выпуск за 10 секунд — отдельная карта для подписок и покупок онлайн.</p>
         </article>
         <article class="feature reveal" style="--d:.16s">
           <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
-          <h3>Умная аналитика</h3>
-          <p>Расходы по категориям, лимиты и подсказки, где можно сэкономить.</p>
+          <h3 data-i18n="f5.t">Умная аналитика</h3>
+          <p data-i18n="f5.d">Расходы по категориям, лимиты и подсказки, где можно сэкономить.</p>
         </article>
       </div>
     </div>
@@ -733,10 +766,10 @@
   <!-- STATS -->
   <section class="container">
     <div class="stats reveal">
-      <div class="stat"><b data-count="1.2" data-dec="1"><em>0</em> млн</b><span>активных клиентов</span></div>
-      <div class="stat"><b data-count="140"><em>0</em>+</b><span>стран для переводов</span></div>
-      <div class="stat"><b data-count="30"><em>0</em> сек</b><span>среднее время перевода</span></div>
-      <div class="stat"><b data-count="99.98" data-dec="2"><em>0</em>%</b><span>аптайм платёжной системы</span></div>
+      <div class="stat"><b data-count="1.2" data-dec="1"><em>0</em><bdi data-i18n="stat.mln"> млн</bdi></b><span data-i18n="stat.1">активных клиентов</span></div>
+      <div class="stat"><b data-count="140"><em>0</em>+</b><span data-i18n="stat.2">стран для переводов</span></div>
+      <div class="stat"><b data-count="30"><em>0</em><bdi data-i18n="stat.sec"> сек</bdi></b><span data-i18n="stat.3">среднее время перевода</span></div>
+      <div class="stat"><b data-count="99.98" data-dec="2"><em>0</em>%</b><span data-i18n="stat.4">аптайм платёжной системы</span></div>
     </div>
   </section>
 
@@ -744,28 +777,28 @@
   <section class="section" id="steps">
     <div class="container">
       <div class="section-head reveal">
-        <span class="eyebrow">Как начать</span>
-        <h2>Три шага — и счёт готов</h2>
-        <p>Никаких визитов в офис. Всё оформление занимает меньше пяти минут.</p>
+        <span class="eyebrow" data-i18n="steps.eyebrow">Как начать</span>
+        <h2 data-i18n="steps.title">Три шага — и счёт готов</h2>
+        <p data-i18n="steps.sub">Никаких визитов в офис. Всё оформление занимает меньше пяти минут.</p>
       </div>
       <div class="steps">
         <div class="step reveal">
           <div class="step-num">01</div>
-          <h3>Скачайте приложение</h3>
-          <p>Доступно для iOS и Android. Или зарегистрируйтесь прямо на сайте.</p>
-          <span class="step-time">≈ 1 минута</span>
+          <h3 data-i18n="s1.t">Скачайте приложение</h3>
+          <p data-i18n="s1.d">Доступно для iOS и Android. Или зарегистрируйтесь прямо на сайте.</p>
+          <span class="step-time" data-i18n="s1.time">≈ 1 минута</span>
         </div>
         <div class="step reveal" style="--d:.1s">
           <div class="step-num">02</div>
-          <h3>Подтвердите личность</h3>
-          <p>Через Госуслуги или по фото паспорта — проверка проходит автоматически.</p>
-          <span class="step-time">≈ 2 минуты</span>
+          <h3 data-i18n="s2.t">Подтвердите личность</h3>
+          <p data-i18n="s2.d">Через Госуслуги или по фото паспорта — проверка проходит автоматически.</p>
+          <span class="step-time" data-i18n="s2.time">≈ 2 минуты</span>
         </div>
         <div class="step reveal" style="--d:.2s">
           <div class="step-num">03</div>
-          <h3>Пользуйтесь картой</h3>
-          <p>Виртуальная карта готова сразу, пластиковую привезём курьером бесплатно.</p>
-          <span class="step-time">Сразу</span>
+          <h3 data-i18n="s3.t">Пользуйтесь картой</h3>
+          <p data-i18n="s3.d">Виртуальная карта готова сразу, пластиковую привезём курьером бесплатно.</p>
+          <span class="step-time" data-i18n="s3.time">Сразу</span>
         </div>
       </div>
     </div>
@@ -775,45 +808,45 @@
   <section class="section" id="pricing">
     <div class="container">
       <div class="section-head reveal">
-        <span class="eyebrow">Тарифы</span>
-        <h2>Честные цены без звёздочек</h2>
-        <p>Меняйте тариф в любой момент — без комиссии и звонков в поддержку.</p>
+        <span class="eyebrow" data-i18n="price.eyebrow">Тарифы</span>
+        <h2 data-i18n="price.title">Честные цены без звёздочек</h2>
+        <p data-i18n="price.sub">Меняйте тариф в любой момент — без комиссии и звонков в поддержку.</p>
       </div>
       <div class="pricing">
         <div class="plan reveal">
-          <h3>Старт</h3>
-          <p class="plan-desc">Для повседневных покупок и переводов</p>
-          <div class="price">0 ₽ <small>/ мес</small></div>
+          <h3 data-i18n="p1.name">Старт</h3>
+          <p class="plan-desc" data-i18n="p1.desc">Для повседневных покупок и переводов</p>
+          <div class="price"><span data-money="0">0 ₽</span> <small data-i18n="price.mo">/ мес</small></div>
           <ul>
-            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Переводы до 100 000 ₽ без комиссии</li>
-            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Кэшбэк 1% на всё</li>
-            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>1 виртуальная карта</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="p1.f1">Переводы до 100 000 ₽ без комиссии</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="p1.f2">Кэшбэк 1% на всё</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="p1.f3">1 виртуальная карта</span></li>
           </ul>
-          <a href="#start" class="btn btn-ghost">Выбрать Старт</a>
+          <a href="#start" class="btn btn-ghost" data-i18n="p1.btn">Выбрать Старт</a>
         </div>
         <div class="plan featured reveal" style="--d:.1s">
-          <span class="plan-badge">Популярный</span>
-          <h3>Про</h3>
-          <p class="plan-desc">Для тех, кто много платит и путешествует</p>
-          <div class="price">299 ₽ <small>/ мес</small></div>
+          <span class="plan-badge" data-i18n="p2.badge">Популярный</span>
+          <h3 data-i18n="p2.name">Про</h3>
+          <p class="plan-desc" data-i18n="p2.desc">Для тех, кто много платит и путешествует</p>
+          <div class="price"><span data-money="299">299 ₽</span> <small data-i18n="price.mo">/ мес</small></div>
           <ul>
-            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Переводы без лимита и комиссии</li>
-            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Кэшбэк до 5% в категориях</li>
-            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Обмен валют по биржевому курсу</li>
-            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Металлическая карта Premium</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="p2.f1">Переводы без лимита и комиссии</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="p2.f2">Кэшбэк до 5% в категориях</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="p2.f3">Обмен валют по биржевому курсу</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="p2.f4">Металлическая карта Premium</span></li>
           </ul>
-          <a href="#start" class="btn btn-primary">Подключить Про</a>
+          <a href="#start" class="btn btn-primary" data-i18n="p2.btn">Подключить Про</a>
         </div>
         <div class="plan reveal" style="--d:.2s">
-          <h3>Бизнес</h3>
-          <p class="plan-desc">Для ИП и компаний любого размера</p>
-          <div class="price">990 ₽ <small>/ мес</small></div>
+          <h3 data-i18n="p3.name">Бизнес</h3>
+          <p class="plan-desc" data-i18n="p3.desc">Для ИП и компаний любого размера</p>
+          <div class="price"><span data-money="990">990 ₽</span> <small data-i18n="price.mo">/ мес</small></div>
           <ul>
-            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Эквайринг от 0,9%</li>
-            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>API и выплаты самозанятым</li>
-            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Персональный менеджер 24/7</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="p3.f1">Эквайринг от 0,9%</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="p3.f2">API и выплаты самозанятым</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="p3.f3">Персональный менеджер 24/7</span></li>
           </ul>
-          <a href="#start" class="btn btn-ghost">Выбрать Бизнес</a>
+          <a href="#start" class="btn btn-ghost" data-i18n="p3.btn">Выбрать Бизнес</a>
         </div>
       </div>
     </div>
@@ -823,30 +856,30 @@
   <section class="section" id="faq">
     <div class="container faq-wrap">
       <div class="section-head reveal">
-        <span class="eyebrow">Вопросы и ответы</span>
-        <h2>Частые вопросы</h2>
-        <p>Не нашли ответ? Поддержка в приложении отвечает в среднем за 47 секунд.</p>
+        <span class="eyebrow" data-i18n="faq.eyebrow">Вопросы и ответы</span>
+        <h2 data-i18n="faq.title">Частые вопросы</h2>
+        <p data-i18n="faq.sub">Не нашли ответ? Поддержка в приложении отвечает в среднем за 47 секунд.</p>
       </div>
       <div class="faq" id="faqList">
         <div class="faq-item open reveal">
-          <button class="faq-q" aria-expanded="true">Насколько безопасно хранить деньги в NovaPay?<span class="faq-icon" aria-hidden="true"></span></button>
-          <div class="faq-a"><div><p>Средства клиентов хранятся на отдельных счетах в банках-партнёрах и застрахованы в АСВ на сумму до 1,4 млн ₽. Все операции защищены шифрованием и 3D Secure 2.0.</p></div></div>
+          <button class="faq-q" aria-expanded="true"><span data-i18n="q1">Насколько безопасно хранить деньги в NovaPay?</span><span class="faq-icon" aria-hidden="true"></span></button>
+          <div class="faq-a"><div><p data-i18n="a1">Средства клиентов хранятся на отдельных счетах в банках-партнёрах и застрахованы в АСВ на сумму до 1,4 млн ₽. Все операции защищены шифрованием и 3D Secure 2.0.</p></div></div>
         </div>
         <div class="faq-item reveal" style="--d:.05s">
-          <button class="faq-q" aria-expanded="false">Есть ли скрытые комиссии?<span class="faq-icon" aria-hidden="true"></span></button>
-          <div class="faq-a"><div><p>Нет. Все условия указаны в тарифе и в калькуляторе выше. Перед каждым переводом приложение показывает итоговую сумму к списанию.</p></div></div>
+          <button class="faq-q" aria-expanded="false"><span data-i18n="q2">Есть ли скрытые комиссии?</span><span class="faq-icon" aria-hidden="true"></span></button>
+          <div class="faq-a"><div><p data-i18n="a2">Нет. Все условия указаны в тарифе и в калькуляторе выше. Перед каждым переводом приложение показывает итоговую сумму к списанию.</p></div></div>
         </div>
         <div class="faq-item reveal" style="--d:.1s">
-          <button class="faq-q" aria-expanded="false">Сколько идёт перевод за границу?<span class="faq-icon" aria-hidden="true"></span></button>
-          <div class="faq-a"><div><p>В большинство стран — от 30 секунд до нескольких минут. В редких случаях, при дополнительной проверке, — до одного рабочего дня.</p></div></div>
+          <button class="faq-q" aria-expanded="false"><span data-i18n="q3">Сколько идёт перевод за границу?</span><span class="faq-icon" aria-hidden="true"></span></button>
+          <div class="faq-a"><div><p data-i18n="a3">В большинство стран — от 30 секунд до нескольких минут. В редких случаях, при дополнительной проверке, — до одного рабочего дня.</p></div></div>
         </div>
         <div class="faq-item reveal" style="--d:.15s">
-          <button class="faq-q" aria-expanded="false">Можно ли открыть счёт для бизнеса?<span class="faq-icon" aria-hidden="true"></span></button>
-          <div class="faq-a"><div><p>Да, на тарифе «Бизнес» доступны расчётный счёт, эквайринг, API для интернет-магазинов и массовые выплаты.</p></div></div>
+          <button class="faq-q" aria-expanded="false"><span data-i18n="q4">Можно ли открыть счёт для бизнеса?</span><span class="faq-icon" aria-hidden="true"></span></button>
+          <div class="faq-a"><div><p data-i18n="a4">Да, на тарифе «Бизнес» доступны расчётный счёт, эквайринг, API для интернет-магазинов и массовые выплаты.</p></div></div>
         </div>
         <div class="faq-item reveal" style="--d:.2s">
-          <button class="faq-q" aria-expanded="false">Как закрыть счёт?<span class="faq-icon" aria-hidden="true"></span></button>
-          <div class="faq-a"><div><p>В пару нажатий в приложении. Остаток можно бесплатно перевести на карту любого банка.</p></div></div>
+          <button class="faq-q" aria-expanded="false"><span data-i18n="q5">Как закрыть счёт?</span><span class="faq-icon" aria-hidden="true"></span></button>
+          <div class="faq-a"><div><p data-i18n="a5">В пару нажатий в приложении. Остаток можно бесплатно перевести на карту любого банка.</p></div></div>
         </div>
       </div>
     </div>
@@ -857,19 +890,19 @@
     <div class="cta reveal">
       <div class="cta-orb" aria-hidden="true"></div>
       <div>
-        <span class="eyebrow">Ранний доступ</span>
-        <h2 style="margin-top:14px">Откройте счёт и получите <span class="lime">3 месяца Про</span> бесплатно</h2>
-        <p>Оставьте почту — пришлём ссылку на приложение и промокод.</p>
+        <span class="eyebrow" data-i18n="cta.eyebrow">Ранний доступ</span>
+        <h2 style="margin-top:14px" data-i18n="cta.title">Откройте счёт и получите <span class="lime">3 месяца Про</span> бесплатно</h2>
+        <p data-i18n="cta.sub">Оставьте почту — пришлём ссылку на приложение и промокод.</p>
       </div>
       <form class="form" id="form" novalidate>
         <div class="form-row">
-          <input type="email" id="email" name="email" placeholder="Ваш e-mail" autocomplete="email" aria-label="E-mail" required>
-          <button type="submit" class="btn btn-primary" id="submitBtn">Получить доступ</button>
+          <input type="email" id="email" name="email" placeholder="Ваш e-mail" data-i18n-placeholder="form.placeholder" autocomplete="email" aria-label="E-mail" data-i18n-aria="form.aria" required>
+          <button type="submit" class="btn btn-primary" id="submitBtn" data-i18n="form.submit">Получить доступ</button>
         </div>
         <p class="form-hint" id="formHint">Без спама. Отписаться можно в один клик.</p>
         <div class="form-success" role="status" aria-live="polite">
           <span class="check"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5L20 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          <div><b>Готово! Проверьте почту</b><span id="successText">Мы отправили ссылку и промокод.</span></div>
+          <div><b data-i18n="form.done">Готово! Проверьте почту</b><span id="successText">Мы отправили ссылку и промокод.</span></div>
         </div>
       </form>
     </div>
@@ -884,24 +917,24 @@
           <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M5 19V5l14 14V5" stroke="#c6ff3d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           NovaPay
         </a>
-        <p>Платёжный сервис нового поколения. Концепт-проект, созданный для портфолио; компания и данные вымышлены.</p>
+        <p data-i18n="foot.about">Платёжный сервис нового поколения. Концепт-проект, созданный для портфолио; компания и данные вымышлены.</p>
       </div>
       <div>
-        <h4>Продукт</h4>
-        <ul><li><a href="#calc">Калькулятор</a></li><li><a href="#features">Возможности</a></li><li><a href="#pricing">Тарифы</a></li></ul>
+        <h4 data-i18n="foot.product">Продукт</h4>
+        <ul><li><a href="#calc" data-i18n="nav.calc">Калькулятор</a></li><li><a href="#features" data-i18n="nav.features">Возможности</a></li><li><a href="#pricing" data-i18n="nav.pricing">Тарифы</a></li></ul>
       </div>
       <div>
-        <h4>Компания</h4>
-        <ul><li><a href="#top">О нас</a></li><li><a href="#top">Карьера</a></li><li><a href="#top">Пресс-центр</a></li></ul>
+        <h4 data-i18n="foot.company">Компания</h4>
+        <ul><li><a href="#top" data-i18n="foot.about_us">О нас</a></li><li><a href="#top" data-i18n="foot.careers">Карьера</a></li><li><a href="#top" data-i18n="foot.press">Пресс-центр</a></li></ul>
       </div>
       <div>
-        <h4>Помощь</h4>
-        <ul><li><a href="#faq">Вопросы</a></li><li><a href="#top">Поддержка</a></li><li><a href="#top">Документы</a></li></ul>
+        <h4 data-i18n="foot.help">Помощь</h4>
+        <ul><li><a href="#faq" data-i18n="nav.faq">Вопросы</a></li><li><a href="#top" data-i18n="foot.support">Поддержка</a></li><li><a href="#top" data-i18n="foot.docs">Документы</a></li></ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 NovaPay. Демо-проект, не является финансовой организацией.</span>
-      <a href="../../index.html#works">← Вернуться в портфолио</a>
+      <span data-i18n="foot.copy">© 2026 NovaPay. Демо-проект, не является финансовой организацией.</span>
+      <a href="../../index.html#works" data-i18n="foot.back">← Вернуться в портфолио</a>
     </div>
   </div>
 </footer>
@@ -913,7 +946,337 @@
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
-  const rub = (n) => Math.round(n).toLocaleString('ru-RU').replace(/,/g, ' ') + ' ₽';
+
+  /* ---------- i18n: dictionary ---------- */
+  // All values are trusted, static strings (some contain inline markup).
+  const I18N = {
+    ru: {
+      'meta.title': 'NovaPay — платёжный сервис',
+      'meta.desc': 'NovaPay — переводы и платежи без лишних комиссий. Демо-проект для портфолио.',
+      'pill.back': '← Назад в портфолио', 'pill.demo': 'Демо-проект',
+      'aria.logo': 'NovaPay — на главную', 'aria.nav': 'Основная навигация', 'aria.menu': 'Меню',
+      'aria.lang': 'Язык сайта', 'aria.card': 'Карта NovaPay',
+      'nav.calc': 'Калькулятор', 'nav.features': 'Возможности', 'nav.pricing': 'Тарифы', 'nav.faq': 'Вопросы',
+      'header.cta': 'Открыть счёт',
+      'hero.badge': '<b>Новое</b> Переводы в 140+ стран за 30 секунд',
+      'hero.title': 'Платежи <em>без&nbsp;лишних</em> комиссий',
+      'hero.sub': 'NovaPay — платёжный сервис для людей и бизнеса. Переводите, принимайте оплату и платите картой там, где банки берут проценты, а мы — нет.',
+      'hero.cta1': 'Открыть счёт бесплатно', 'hero.cta2': 'Рассчитать комиссию',
+      'hero.trust': '4,9 — более 1,2 млн клиентов',
+      'chip.received': 'Перевод получен · 0 ₽', 'chip.cashback': '5% кэшбэк', 'chip.cashbackSub': 'на кафе и такси',
+      'card.holder': 'Владелец', 'card.valid': 'До',
+      'partners.title': 'Нам доверяют компании и маркетплейсы', 'partners.sever': 'Северсталь&nbsp;Ритейл',
+      'calc.eyebrow': 'Калькулятор комиссий',
+      'calc.title': 'Посчитайте, сколько <span class="lime">сэкономите</span>',
+      'calc.sub': 'Двигайте ползунок и выбирайте тип перевода — сравним с тарифами обычного банка в реальном времени.',
+      'calc.tabs': 'Тип перевода',
+      'tab.card': 'На карту', 'tab.sbp': 'По СБП', 'tab.intl': 'За границу', 'tab.biz': 'Бизнесу',
+      'calc.amount': 'Сумма перевода',
+      'card.hint': 'Мгновенно, 24/7',
+      'card.note': 'Переводы на карты любых банков РФ. Комиссия NovaPay — 0,5%, но не более 1 500 ₽.',
+      'card.rate': '0,5%',
+      'sbp.hint': 'До 30 секунд',
+      'sbp.note': 'Через СБП до 100 000 ₽ в месяц — бесплатно, свыше — 0,3%. Банки обычно берут 0,5% сверх лимита.',
+      'sbp.rate': '0% / 0,3%',
+      'intl.hint': '140+ стран',
+      'intl.note': 'Международные переводы по биржевому курсу. Комиссия 1%, банки берут 3% и наценку на курс.',
+      'intl.rate': '1%',
+      'biz.hint': 'Для ИП и ООО',
+      'biz.note': 'Платежи контрагентам и выплаты физлицам. Комиссия 0,2%, минимум 15 ₽.',
+      'biz.rate': '0,2%',
+      'res.fee': 'Комиссия NovaPay', 'res.rate': 'Ставка', 'res.receive': 'Получатель получит',
+      'res.bank': 'Обычный банк', 'res.save': 'Экономия с NovaPay:',
+      'calc.btn': 'Перевести с выгодой',
+      'feat.eyebrow': 'Возможности', 'feat.title': 'Всё для денег — в одном приложении',
+      'feat.sub': 'Карта, переводы, приём платежей и аналитика расходов. Без отделений, очередей и скрытых условий.',
+      'f1.t': 'Мгновенные переводы',
+      'f1.d': 'Деньги доходят за секунды — по номеру телефона, карты или через СБП. Работает круглосуточно, включая выходные и праздники.',
+      'f2.t': 'Защита 3D Secure 2.0', 'f2.d': 'Антифрод на базе ML блокирует подозрительные операции до списания.',
+      'f3.t': 'Мультивалютность', 'f3.d': 'Счета в 12 валютах и обмен по биржевому курсу без наценки.',
+      'f4.t': 'Виртуальные карты', 'f4.d': 'Выпуск за 10 секунд — отдельная карта для подписок и покупок онлайн.',
+      'f5.t': 'Умная аналитика', 'f5.d': 'Расходы по категориям, лимиты и подсказки, где можно сэкономить.',
+      'stat.mln': ' млн', 'stat.sec': ' сек',
+      'stat.1': 'активных клиентов', 'stat.2': 'стран для переводов', 'stat.3': 'среднее время перевода', 'stat.4': 'аптайм платёжной системы',
+      'steps.eyebrow': 'Как начать', 'steps.title': 'Три шага — и счёт готов',
+      'steps.sub': 'Никаких визитов в офис. Всё оформление занимает меньше пяти минут.',
+      's1.t': 'Скачайте приложение', 's1.d': 'Доступно для iOS и Android. Или зарегистрируйтесь прямо на сайте.', 's1.time': '≈ 1 минута',
+      's2.t': 'Подтвердите личность', 's2.d': 'Через Госуслуги или по фото паспорта — проверка проходит автоматически.', 's2.time': '≈ 2 минуты',
+      's3.t': 'Пользуйтесь картой', 's3.d': 'Виртуальная карта готова сразу, пластиковую привезём курьером бесплатно.', 's3.time': 'Сразу',
+      'price.eyebrow': 'Тарифы', 'price.title': 'Честные цены без звёздочек',
+      'price.sub': 'Меняйте тариф в любой момент — без комиссии и звонков в поддержку.', 'price.mo': '/ мес',
+      'p1.name': 'Старт', 'p1.desc': 'Для повседневных покупок и переводов',
+      'p1.f1': 'Переводы до 100 000 ₽ без комиссии', 'p1.f2': 'Кэшбэк 1% на всё', 'p1.f3': '1 виртуальная карта', 'p1.btn': 'Выбрать Старт',
+      'p2.badge': 'Популярный', 'p2.name': 'Про', 'p2.desc': 'Для тех, кто много платит и путешествует',
+      'p2.f1': 'Переводы без лимита и комиссии', 'p2.f2': 'Кэшбэк до 5% в категориях', 'p2.f3': 'Обмен валют по биржевому курсу',
+      'p2.f4': 'Металлическая карта Premium', 'p2.btn': 'Подключить Про',
+      'p3.name': 'Бизнес', 'p3.desc': 'Для ИП и компаний любого размера',
+      'p3.f1': 'Эквайринг от 0,9%', 'p3.f2': 'API и выплаты самозанятым', 'p3.f3': 'Персональный менеджер 24/7', 'p3.btn': 'Выбрать Бизнес',
+      'faq.eyebrow': 'Вопросы и ответы', 'faq.title': 'Частые вопросы',
+      'faq.sub': 'Не нашли ответ? Поддержка в приложении отвечает в среднем за 47 секунд.',
+      'q1': 'Насколько безопасно хранить деньги в NovaPay?',
+      'a1': 'Средства клиентов хранятся на отдельных счетах в банках-партнёрах и застрахованы в АСВ на сумму до 1,4 млн ₽. Все операции защищены шифрованием и 3D Secure 2.0.',
+      'q2': 'Есть ли скрытые комиссии?',
+      'a2': 'Нет. Все условия указаны в тарифе и в калькуляторе выше. Перед каждым переводом приложение показывает итоговую сумму к списанию.',
+      'q3': 'Сколько идёт перевод за границу?',
+      'a3': 'В большинство стран — от 30 секунд до нескольких минут. В редких случаях, при дополнительной проверке, — до одного рабочего дня.',
+      'q4': 'Можно ли открыть счёт для бизнеса?',
+      'a4': 'Да, на тарифе «Бизнес» доступны расчётный счёт, эквайринг, API для интернет-магазинов и массовые выплаты.',
+      'q5': 'Как закрыть счёт?',
+      'a5': 'В пару нажатий в приложении. Остаток можно бесплатно перевести на карту любого банка.',
+      'cta.eyebrow': 'Ранний доступ',
+      'cta.title': 'Откройте счёт и получите <span class="lime">3 месяца Про</span> бесплатно',
+      'cta.sub': 'Оставьте почту — пришлём ссылку на приложение и промокод.',
+      'form.placeholder': 'Ваш e-mail', 'form.aria': 'E-mail', 'form.submit': 'Получить доступ',
+      'form.hint': 'Без спама. Отписаться можно в один клик.',
+      'form.error': 'Похоже, в адресе ошибка — проверьте e-mail.',
+      'form.sending': 'Отправляем',
+      'form.done': 'Готово! Проверьте почту', 'form.doneText': 'Мы отправили ссылку и промокод.',
+      'form.sentTo': 'Ссылка и промокод отправлены на {email}.',
+      'foot.about': 'Платёжный сервис нового поколения. Концепт-проект, созданный для портфолио; компания и данные вымышлены.',
+      'foot.product': 'Продукт', 'foot.company': 'Компания', 'foot.help': 'Помощь',
+      'foot.about_us': 'О нас', 'foot.careers': 'Карьера', 'foot.press': 'Пресс-центр',
+      'foot.support': 'Поддержка', 'foot.docs': 'Документы',
+      'foot.copy': '© 2026 NovaPay. Демо-проект, не является финансовой организацией.',
+      'foot.back': '← Вернуться в портфолио'
+    },
+    en: {
+      'meta.title': 'NovaPay — payments without the extra fees',
+      'meta.desc': 'NovaPay — transfers and payments with no unnecessary fees. A portfolio demo project.',
+      'pill.back': '← Back to portfolio', 'pill.demo': 'Demo project',
+      'aria.logo': 'NovaPay — home', 'aria.nav': 'Main navigation', 'aria.menu': 'Menu',
+      'aria.lang': 'Site language', 'aria.card': 'NovaPay card',
+      'nav.calc': 'Calculator', 'nav.features': 'Features', 'nav.pricing': 'Pricing', 'nav.faq': 'FAQ',
+      'header.cta': 'Open account',
+      'hero.badge': '<b>New</b> Transfers to 140+ countries in 30 seconds',
+      'hero.title': 'Payments with <em>no hidden</em> fees',
+      'hero.sub': 'NovaPay is a payment service for people and businesses. Send money, get paid and pay by card — where banks take a cut, we don’t.',
+      'hero.cta1': 'Open a free account', 'hero.cta2': 'Calculate fees',
+      'hero.trust': '4.9 — trusted by 1.2M+ customers',
+      'chip.received': 'Transfer received · 0 ₽', 'chip.cashback': '5% cashback', 'chip.cashbackSub': 'on cafés and taxis',
+      'card.holder': 'Card holder', 'card.valid': 'Valid thru',
+      'partners.title': 'Trusted by companies and marketplaces', 'partners.sever': 'Severstal&nbsp;Retail',
+      'calc.eyebrow': 'Fee calculator',
+      'calc.title': 'See how much <span class="lime">you’ll save</span>',
+      'calc.sub': 'Move the slider and pick a transfer type — we’ll compare it with a typical bank’s rates in real time.',
+      'calc.tabs': 'Transfer type',
+      'tab.card': 'To a card', 'tab.sbp': 'Via SBP', 'tab.intl': 'International', 'tab.biz': 'Business',
+      'calc.amount': 'Transfer amount',
+      'card.hint': 'Instant, 24/7',
+      'card.note': 'Transfers to cards of any Russian bank. NovaPay fee: 0.5%, capped at 1,500 ₽.',
+      'card.rate': '0.5%',
+      'sbp.hint': 'Under 30 seconds',
+      'sbp.note': 'Via SBP (Russia’s Faster Payments System), up to 100,000 ₽ a month is free, then 0.3%. Banks usually charge 0.5% above the limit.',
+      'sbp.rate': '0% / 0.3%',
+      'intl.hint': '140+ countries',
+      'intl.note': 'International transfers at the market exchange rate. A 1% fee — banks charge 3% plus a markup on the rate.',
+      'intl.rate': '1%',
+      'biz.hint': 'For sole traders & LLCs',
+      'biz.note': 'Payments to suppliers and payouts to individuals. 0.2% fee, 15 ₽ minimum.',
+      'biz.rate': '0.2%',
+      'res.fee': 'NovaPay fee', 'res.rate': 'Rate', 'res.receive': 'Recipient gets',
+      'res.bank': 'Typical bank', 'res.save': 'You save with NovaPay:',
+      'calc.btn': 'Send money for less',
+      'feat.eyebrow': 'Features', 'feat.title': 'Everything for your money — in one app',
+      'feat.sub': 'Card, transfers, payment acceptance and spending analytics. No branches, no queues, no fine print.',
+      'f1.t': 'Instant transfers',
+      'f1.d': 'Money arrives in seconds — by phone number, card number or via SBP. Works around the clock, weekends and holidays included.',
+      'f2.t': '3D Secure 2.0 protection', 'f2.d': 'ML-powered anti-fraud blocks suspicious transactions before any money leaves your account.',
+      'f3.t': 'Multi-currency', 'f3.d': 'Accounts in 12 currencies and exchange at the market rate, with zero markup.',
+      'f4.t': 'Virtual cards', 'f4.d': 'Issued in 10 seconds — a separate card for subscriptions and online shopping.',
+      'f5.t': 'Smart analytics', 'f5.d': 'Spending by category, limits and tips on where you can save.',
+      'stat.mln': 'M', 'stat.sec': ' sec',
+      'stat.1': 'active customers', 'stat.2': 'countries you can send to', 'stat.3': 'average transfer time', 'stat.4': 'payment platform uptime',
+      'steps.eyebrow': 'Getting started', 'steps.title': 'Three steps to your new account',
+      'steps.sub': 'No branch visits. Signing up takes less than five minutes.',
+      's1.t': 'Download the app', 's1.d': 'Available on iOS and Android — or sign up right here on the website.', 's1.time': '≈ 1 minute',
+      's2.t': 'Verify your identity', 's2.d': 'Via Gosuslugi (Russia’s public services portal) or a photo of your passport — the check is fully automatic.', 's2.time': '≈ 2 minutes',
+      's3.t': 'Start using your card', 's3.d': 'Your virtual card is ready instantly, and we’ll deliver the physical one by courier for free.', 's3.time': 'Instantly',
+      'price.eyebrow': 'Pricing', 'price.title': 'Honest pricing, no asterisks',
+      'price.sub': 'Switch plans anytime — no fees, no calls to support.', 'price.mo': '/ mo',
+      'p1.name': 'Start', 'p1.desc': 'For everyday purchases and transfers',
+      'p1.f1': 'Fee-free transfers up to 100,000 ₽', 'p1.f2': '1% cashback on everything', 'p1.f3': '1 virtual card', 'p1.btn': 'Choose Start',
+      'p2.badge': 'Most popular', 'p2.name': 'Pro', 'p2.desc': 'For those who spend a lot and travel',
+      'p2.f1': 'Unlimited, fee-free transfers', 'p2.f2': 'Up to 5% cashback in select categories', 'p2.f3': 'Currency exchange at the market rate',
+      'p2.f4': 'Premium metal card', 'p2.btn': 'Get Pro',
+      'p3.name': 'Business', 'p3.desc': 'For sole traders and companies of any size',
+      'p3.f1': 'Card acquiring from 0.9%', 'p3.f2': 'API and payouts to freelancers', 'p3.f3': 'Dedicated account manager 24/7', 'p3.btn': 'Choose Business',
+      'faq.eyebrow': 'Questions & answers', 'faq.title': 'Frequently asked questions',
+      'faq.sub': 'Didn’t find your answer? In-app support replies in 47 seconds on average.',
+      'q1': 'How safe is my money with NovaPay?',
+      'a1': 'Customer funds are held in segregated accounts at partner banks and insured by the Deposit Insurance Agency for up to 1.4M ₽. All transactions are protected by encryption and 3D Secure 2.0.',
+      'q2': 'Are there any hidden fees?',
+      'a2': 'No. All terms are listed in your plan and in the calculator above. Before every transfer, the app shows the exact total to be charged.',
+      'q3': 'How long does an international transfer take?',
+      'a3': 'To most countries, from 30 seconds to a few minutes. In rare cases that need an extra check, up to one business day.',
+      'q4': 'Can I open a business account?',
+      'a4': 'Yes. The Business plan includes a current account, card acquiring, an API for online stores and bulk payouts.',
+      'q5': 'How do I close my account?',
+      'a5': 'With a couple of taps in the app. You can transfer the remaining balance to any bank card for free.',
+      'cta.eyebrow': 'Early access',
+      'cta.title': 'Open an account and get <span class="lime">3 months of Pro</span> for free',
+      'cta.sub': 'Leave your email — we’ll send you a link to the app and a promo code.',
+      'form.placeholder': 'Your email', 'form.aria': 'Email', 'form.submit': 'Get access',
+      'form.hint': 'No spam. Unsubscribe in one click.',
+      'form.error': 'Looks like there’s a typo — please check your email.',
+      'form.sending': 'Sending',
+      'form.done': 'Done! Check your inbox', 'form.doneText': 'We’ve sent you the link and promo code.',
+      'form.sentTo': 'Your link and promo code are on their way to {email}.',
+      'foot.about': 'A next-generation payment service. A concept project built for a portfolio; the company and all data are fictional.',
+      'foot.product': 'Product', 'foot.company': 'Company', 'foot.help': 'Help',
+      'foot.about_us': 'About us', 'foot.careers': 'Careers', 'foot.press': 'Press',
+      'foot.support': 'Support', 'foot.docs': 'Documents',
+      'foot.copy': '© 2026 NovaPay. A demo project, not a financial institution.',
+      'foot.back': '← Back to portfolio'
+    },
+    es: {
+      'meta.title': 'NovaPay — pagos sin comisiones de más',
+      'meta.desc': 'NovaPay — transferencias y pagos sin comisiones innecesarias. Proyecto demo para portafolio.',
+      'pill.back': '← Volver al portafolio', 'pill.demo': 'Proyecto demo',
+      'aria.logo': 'NovaPay — inicio', 'aria.nav': 'Navegación principal', 'aria.menu': 'Menú',
+      'aria.lang': 'Idioma del sitio', 'aria.card': 'Tarjeta NovaPay',
+      'nav.calc': 'Calculadora', 'nav.features': 'Funciones', 'nav.pricing': 'Planes', 'nav.faq': 'Preguntas',
+      'header.cta': 'Abrir cuenta',
+      'hero.badge': '<b>Nuevo</b> Envíos a más de 140 países en 30 segundos',
+      'hero.title': 'Pagos <em>sin comisiones</em> ocultas',
+      'hero.sub': 'NovaPay es un servicio de pagos para personas y empresas. Envía dinero, cobra y paga con tarjeta: donde los bancos se quedan un porcentaje, nosotros no.',
+      'hero.cta1': 'Abre tu cuenta gratis', 'hero.cta2': 'Calcula tu comisión',
+      'hero.trust': '4,9 — más de 1,2 millones de clientes',
+      'chip.received': 'Transferencia recibida · 0 ₽', 'chip.cashback': '5% de cashback', 'chip.cashbackSub': 'en cafeterías y taxis',
+      'card.holder': 'Titular', 'card.valid': 'Válida hasta',
+      'partners.title': 'Confían en nosotros empresas y marketplaces', 'partners.sever': 'Severstal&nbsp;Retail',
+      'calc.eyebrow': 'Calculadora de comisiones',
+      'calc.title': 'Calcula cuánto <span class="lime">vas a ahorrar</span>',
+      'calc.sub': 'Mueve el control deslizante y elige el tipo de envío: lo comparamos en tiempo real con las tarifas de un banco tradicional.',
+      'calc.tabs': 'Tipo de envío',
+      'tab.card': 'A tarjeta', 'tab.sbp': 'Por SBP', 'tab.intl': 'Al extranjero', 'tab.biz': 'Empresas',
+      'calc.amount': 'Importe del envío',
+      'card.hint': 'Al instante, 24/7',
+      'card.note': 'Envíos a tarjetas de cualquier banco ruso. Comisión de NovaPay: 0,5%, con un máximo de 1.500 ₽.',
+      'card.rate': '0,5%',
+      'sbp.hint': 'En menos de 30 s',
+      'sbp.note': 'Por SBP (el Sistema de Pagos Rápidos de Rusia), hasta 100.000 ₽ al mes gratis; a partir de ahí, 0,3%. Los bancos suelen cobrar un 0,5% por encima del límite.',
+      'sbp.rate': '0% / 0,3%',
+      'intl.hint': 'Más de 140 países',
+      'intl.note': 'Envíos internacionales al tipo de cambio de mercado. Comisión del 1%: los bancos cobran un 3% más un margen sobre el cambio.',
+      'intl.rate': '1%',
+      'biz.hint': 'Para autónomos y empresas',
+      'biz.note': 'Pagos a proveedores y a particulares. Comisión del 0,2%, mínimo 15 ₽.',
+      'biz.rate': '0,2%',
+      'res.fee': 'Comisión NovaPay', 'res.rate': 'Tarifa', 'res.receive': 'El destinatario recibe',
+      'res.bank': 'Banco tradicional', 'res.save': 'Ahorras con NovaPay:',
+      'calc.btn': 'Envía y ahorra',
+      'feat.eyebrow': 'Funciones', 'feat.title': 'Todo tu dinero, en una sola app',
+      'feat.sub': 'Tarjeta, envíos, cobros y análisis de gastos. Sin oficinas, sin colas y sin letra pequeña.',
+      'f1.t': 'Envíos instantáneos',
+      'f1.d': 'El dinero llega en segundos: por número de teléfono, de tarjeta o por SBP. Funciona 24/7, también fines de semana y festivos.',
+      'f2.t': 'Protección 3D Secure 2.0', 'f2.d': 'Un sistema antifraude basado en ML bloquea las operaciones sospechosas antes del cargo.',
+      'f3.t': 'Multidivisa', 'f3.d': 'Cuentas en 12 divisas y cambio al tipo de mercado, sin recargos.',
+      'f4.t': 'Tarjetas virtuales', 'f4.d': 'Emitidas en 10 segundos: una tarjeta aparte para suscripciones y compras online.',
+      'f5.t': 'Análisis inteligente', 'f5.d': 'Gastos por categoría, límites y consejos para ahorrar.',
+      'stat.mln': ' M', 'stat.sec': ' s',
+      'stat.1': 'clientes activos', 'stat.2': 'países de destino', 'stat.3': 'tiempo medio por envío', 'stat.4': 'disponibilidad de la plataforma',
+      'steps.eyebrow': 'Cómo empezar', 'steps.title': 'Tres pasos y tu cuenta está lista',
+      'steps.sub': 'Sin pasar por ninguna oficina. El alta lleva menos de cinco minutos.',
+      's1.t': 'Descarga la app', 's1.d': 'Disponible para iOS y Android. O regístrate directamente en la web.', 's1.time': '≈ 1 minuto',
+      's2.t': 'Verifica tu identidad', 's2.d': 'Con Gosuslugi (el portal de servicios públicos de Rusia) o una foto del pasaporte: la verificación es automática.', 's2.time': '≈ 2 minutos',
+      's3.t': 'Usa tu tarjeta', 's3.d': 'La tarjeta virtual está lista al momento y la física te la llevamos gratis por mensajero.', 's3.time': 'Al momento',
+      'price.eyebrow': 'Planes', 'price.title': 'Precios honestos, sin asteriscos',
+      'price.sub': 'Cambia de plan cuando quieras, sin comisiones ni llamadas al soporte.', 'price.mo': '/ mes',
+      'p1.name': 'Start', 'p1.desc': 'Para compras y envíos del día a día',
+      'p1.f1': 'Envíos sin comisión hasta 100.000 ₽', 'p1.f2': '1% de cashback en todo', 'p1.f3': '1 tarjeta virtual', 'p1.btn': 'Elegir Start',
+      'p2.badge': 'El más popular', 'p2.name': 'Pro', 'p2.desc': 'Para quienes gastan mucho y viajan',
+      'p2.f1': 'Envíos ilimitados y sin comisión', 'p2.f2': 'Hasta un 5% de cashback por categorías', 'p2.f3': 'Cambio de divisas al tipo de mercado',
+      'p2.f4': 'Tarjeta metálica Premium', 'p2.btn': 'Activar Pro',
+      'p3.name': 'Empresa', 'p3.desc': 'Para autónomos y empresas de cualquier tamaño',
+      'p3.f1': 'Cobro con tarjeta desde el 0,9%', 'p3.f2': 'API y pagos a autónomos', 'p3.f3': 'Gestor personal 24/7', 'p3.btn': 'Elegir Empresa',
+      'faq.eyebrow': 'Dudas', 'faq.title': 'Preguntas frecuentes',
+      'faq.sub': '¿No encuentras la respuesta? El soporte en la app responde en 47 segundos de media.',
+      'q1': '¿Es seguro guardar mi dinero en NovaPay?',
+      'a1': 'Los fondos de los clientes se guardan en cuentas segregadas de bancos asociados y están asegurados por la Agencia de Seguro de Depósitos hasta 1,4 millones de ₽. Todas las operaciones están protegidas con cifrado y 3D Secure 2.0.',
+      'q2': '¿Hay comisiones ocultas?',
+      'a2': 'No. Todas las condiciones figuran en tu plan y en la calculadora de arriba. Antes de cada envío, la app muestra el importe total que se cargará.',
+      'q3': '¿Cuánto tarda un envío al extranjero?',
+      'a3': 'A la mayoría de países, entre 30 segundos y unos minutos. En casos excepcionales que requieren una verificación adicional, hasta un día hábil.',
+      'q4': '¿Puedo abrir una cuenta de empresa?',
+      'a4': 'Sí. El plan «Empresa» incluye cuenta corriente, cobro con tarjeta, API para tiendas online y pagos masivos.',
+      'q5': '¿Cómo cierro mi cuenta?',
+      'a5': 'Con un par de toques en la app. Puedes enviar el saldo restante a una tarjeta de cualquier banco sin coste.',
+      'cta.eyebrow': 'Acceso anticipado',
+      'cta.title': 'Abre tu cuenta y llévate <span class="lime">3 meses de Pro</span> gratis',
+      'cta.sub': 'Déjanos tu e-mail y te enviaremos el enlace a la app y un código promocional.',
+      'form.placeholder': 'Tu e-mail', 'form.aria': 'Correo electrónico', 'form.submit': 'Obtener acceso',
+      'form.hint': 'Sin spam. Puedes darte de baja con un clic.',
+      'form.error': 'Parece que hay un error en la dirección: revisa tu e-mail.',
+      'form.sending': 'Enviando',
+      'form.done': '¡Listo! Revisa tu correo', 'form.doneText': 'Te hemos enviado el enlace y el código promocional.',
+      'form.sentTo': 'Hemos enviado el enlace y el código promocional a {email}.',
+      'foot.about': 'Un servicio de pagos de nueva generación. Proyecto conceptual creado para un portafolio; la empresa y los datos son ficticios.',
+      'foot.product': 'Producto', 'foot.company': 'Empresa', 'foot.help': 'Ayuda',
+      'foot.about_us': 'Sobre nosotros', 'foot.careers': 'Empleo', 'foot.press': 'Prensa',
+      'foot.support': 'Soporte', 'foot.docs': 'Documentos',
+      'foot.copy': '© 2026 NovaPay. Proyecto demo, no es una entidad financiera.',
+      'foot.back': '← Volver al portafolio'
+    }
+  };
+
+  const LANGS = ['ru', 'en', 'es'];
+  const LOCALES = { ru: 'ru-RU', en: 'en-US', es: 'es-ES' };
+  const STORE_KEY = 'kb-lang';
+
+  const detectLang = () => {
+    try {
+      const p = (new URLSearchParams(location.search).get('lang') || '').toLowerCase();
+      if (LANGS.includes(p)) {
+        try { localStorage.setItem(STORE_KEY, p); } catch (e) { /* storage unavailable */ }
+        return p;
+      }
+    } catch (e) { /* ignore */ }
+    try {
+      const s = localStorage.getItem(STORE_KEY);
+      if (LANGS.includes(s)) return s;
+    } catch (e) { /* storage unavailable */ }
+    const nl = String(navigator.language || '').toLowerCase();
+    if (nl.startsWith('en')) return 'en';
+    if (nl.startsWith('es')) return 'es';
+    return 'ru';
+  };
+
+  let lang = detectLang();
+  const t = (key) => {
+    const v = I18N[lang][key];
+    return v != null ? v : I18N.ru[key];
+  };
+
+  // Number formatting in the current locale; "always" forces grouping for 4-digit numbers in es-ES too.
+  const fmtNum = (n, opts = {}) => {
+    try { return n.toLocaleString(LOCALES[lang], { useGrouping: 'always', ...opts }); }
+    catch (e) { return n.toLocaleString(LOCALES[lang], opts); }
+  };
+  const rub = (n) => fmtNum(Math.round(n)) + ' ₽';
+
+  const langHooks = [];
+
+  function applyLang(next, persist) {
+    if (!LANGS.includes(next)) return;
+    lang = next;
+    if (persist) { try { localStorage.setItem(STORE_KEY, next); } catch (e) { /* storage unavailable */ } }
+    document.documentElement.lang = next;
+    document.title = t('meta.title');
+    const desc = $('meta[name="description"]');
+    if (desc) desc.setAttribute('content', t('meta.desc'));
+
+    $$('[data-i18n]').forEach((el) => { el.innerHTML = t(el.dataset.i18n); });
+    $$('[data-i18n-placeholder]').forEach((el) => el.setAttribute('placeholder', t(el.dataset.i18nPlaceholder)));
+    $$('[data-i18n-aria]').forEach((el) => el.setAttribute('aria-label', t(el.dataset.i18nAria)));
+    $$('[data-money]').forEach((el) => { el.textContent = rub(Number(el.dataset.money)); });
+    $$('#langSwitch [data-lang]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === next)));
+
+    langHooks.forEach((fn) => fn());
+  }
+
+  $$('#langSwitch [data-lang]').forEach((b) => b.addEventListener('click', () => {
+    if (b.dataset.lang !== lang) applyLang(b.dataset.lang, true);
+  }));
 
   /* ---------- Header & mobile menu ---------- */
   const header = $('#header');
@@ -1000,30 +1363,23 @@
   }
 
   /* ---------- Fee calculator ---------- */
+  // Texts (hint / note / rate) live in the dictionary under "<type>.hint|note|rate".
   const MIN = 1000, MAX = 1000000;
   const TYPES = {
     card: {
-      hint: 'Мгновенно, 24/7',
-      note: 'Переводы на карты любых банков РФ. Комиссия NovaPay — 0,5%, но не более 1 500 ₽.',
-      nova: (a) => Math.min(a * 0.005, 1500), novaRate: '0,5%',
+      nova: (a) => Math.min(a * 0.005, 1500),
       bank: (a) => Math.max(a * 0.015, 50)
     },
     sbp: {
-      hint: 'До 30 секунд',
-      note: 'Через СБП до 100 000 ₽ в месяц — бесплатно, свыше — 0,3%. Банки обычно берут 0,5% сверх лимита.',
-      nova: (a) => Math.max(0, a - 100000) * 0.003, novaRate: '0% / 0,3%',
+      nova: (a) => Math.max(0, a - 100000) * 0.003,
       bank: (a) => Math.min(Math.max(0, a - 100000) * 0.005 + a * 0.002, 1500)
     },
     intl: {
-      hint: '140+ стран',
-      note: 'Международные переводы по биржевому курсу. Комиссия 1%, банки берут 3% и наценку на курс.',
-      nova: (a) => a * 0.01, novaRate: '1%',
+      nova: (a) => a * 0.01,
       bank: (a) => Math.max(a * 0.03, 300) + a * 0.015
     },
     biz: {
-      hint: 'Для ИП и ООО',
-      note: 'Платежи контрагентам и выплаты физлицам. Комиссия 0,2%, минимум 15 ₽.',
-      nova: (a) => Math.max(a * 0.002, 15), novaRate: '0,2%',
+      nova: (a) => Math.max(a * 0.002, 15),
       bank: (a) => Math.max(a * 0.01, 100)
     }
   };
@@ -1047,9 +1403,9 @@
   function update() {
     const pos = Number(range.value);
     const amount = posToAmount(pos);
-    const t = TYPES[type];
-    const fee = Math.round(t.nova(amount));
-    const bank = Math.round(t.bank(amount));
+    const tp = TYPES[type];
+    const fee = Math.round(tp.nova(amount));
+    const bank = Math.round(tp.bank(amount));
     const max = Math.max(bank, fee, 1);
 
     range.style.setProperty('--p', (pos / 10) + '%');
@@ -1062,9 +1418,9 @@
     animateNumber(els.save, Math.max(0, bank - fee));
     els.barNova.style.width = Math.max(2, (fee / max) * 100) + '%';
     els.barBank.style.width = Math.max(2, (bank / max) * 100) + '%';
-    els.rate.textContent = t.novaRate;
-    els.hint.textContent = t.hint;
-    els.note.textContent = t.note;
+    els.rate.textContent = t(type + '.rate');
+    els.hint.textContent = t(type + '.hint');
+    els.note.textContent = t(type + '.note');
   }
 
   range.addEventListener('input', update);
@@ -1078,10 +1434,10 @@
   tabs.forEach((tab, i) => {
     tab.addEventListener('click', () => {
       type = tab.dataset.type;
-      tabs.forEach((t) => {
-        const on = t === tab;
-        t.setAttribute('aria-selected', String(on));
-        t.tabIndex = on ? 0 : -1;
+      tabs.forEach((x) => {
+        const on = x === tab;
+        x.setAttribute('aria-selected', String(on));
+        x.tabIndex = on ? 0 : -1;
       });
       update();
     });
@@ -1095,18 +1451,26 @@
   });
 
   range.value = amountToPos(50000);
-  update();
+  langHooks.push(update);
 
   /* ---------- Stats counters ---------- */
   const counters = $$('[data-count]');
+  const counterFmt = (el) => {
+    const dec = Number(el.dataset.dec || 0);
+    return (v) => fmtNum(v, { minimumFractionDigits: dec, maximumFractionDigits: dec });
+  };
   const runCounter = (el) => {
     const target = parseFloat(el.dataset.count);
-    const dec = Number(el.dataset.dec || 0);
     const em = el.querySelector('em');
-    const fmt = (v) => v.toLocaleString('ru-RU', { minimumFractionDigits: dec, maximumFractionDigits: dec });
     tweens.set(em, { value: 0 });
-    animateNumber(em, target, fmt, 1600);
+    animateNumber(em, target, counterFmt(el), 1600);
   };
+  // Re-format counters that already started (or finished) in the new locale.
+  langHooks.push(() => counters.forEach((el) => {
+    const em = el.querySelector('em');
+    const st = tweens.get(em);
+    if (st) em.textContent = counterFmt(el)(st.value);
+  }));
   if (reduceMotion || !('IntersectionObserver' in window)) {
     counters.forEach(runCounter);
   } else {
@@ -1139,29 +1503,53 @@
   const email = $('#email');
   const hint = $('#formHint');
   const submitBtn = $('#submitBtn');
-  const defaultHint = hint.textContent;
+  const successText = $('#successText');
+  let hintError = false;
+  let sending = false;
+  let sentTo = '';
+
+  const renderHint = () => {
+    hint.textContent = t(hintError ? 'form.error' : 'form.hint');
+    hint.classList.toggle('error', hintError);
+  };
+  const renderSending = () => {
+    submitBtn.innerHTML = '<span class="spinner" aria-hidden="true"></span>' + t('form.sending');
+  };
+  const renderSuccess = () => {
+    successText.textContent = sentTo ? t('form.sentTo').replace('{email}', sentTo) : t('form.doneText');
+  };
+  langHooks.push(() => {
+    renderHint();
+    renderSuccess();
+    if (sending) renderSending();
+  });
 
   email.addEventListener('input', () => {
-    hint.textContent = defaultHint;
-    hint.classList.remove('error');
+    hintError = false;
+    renderHint();
   });
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const value = email.value.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
-      hint.textContent = 'Похоже, в адресе ошибка — проверьте e-mail.';
-      hint.classList.add('error');
+      hintError = true;
+      renderHint();
       email.focus();
       return;
     }
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="spinner" aria-hidden="true"></span>Отправляем';
+    sending = true;
+    renderSending();
     setTimeout(() => {
-      $('#successText').textContent = 'Ссылка и промокод отправлены на ' + value + '.';
+      sentTo = value;
+      renderSuccess();
       form.classList.add('done');
     }, reduceMotion ? 0 : 1100);
   });
+
+  /* ---------- Initial language ---------- */
+  applyLang(lang, false);
 })();
 </script>
 </body>

@@ -5,8 +5,10 @@
 /* ---------- Настройки: поменяйте под себя ---------- */
 const CONFIG = {
   email: "hello@example.com",                       // куда придёт заявка из формы
-  heroWords: ["продают", "цепляют", "запоминаются", "окупаются"],
+  // тексты и меняющиеся слова в заголовке — в js/i18n.js
 };
+
+const t = (key) => window.i18n.t(key);
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -116,7 +118,7 @@ const lerp = (a, b, t) => a + (b - a) * t;
     burger.classList.toggle("is-open", open);
     $("#header").classList.toggle("menu-open", open);
     burger.setAttribute("aria-expanded", String(open));
-    burger.setAttribute("aria-label", open ? "Закрыть меню" : "Открыть меню");
+    burger.setAttribute("aria-label", t(open ? "aria.menuClose" : "aria.menuOpen"));
     document.body.style.overflow = open ? "hidden" : "";
   }
 
@@ -140,9 +142,16 @@ const lerp = (a, b, t) => a + (b - a) * t;
 /* ---------- Эффект «расшифровки» слова в заголовке ---------- */
 (function scrambleWord() {
   const el = $("#heroWord");
-  if (!el || reduceMotion) return;
-  const chars = "АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЭЮЯ#%&$@*!?<>";
+  if (!el) return;
+  const chars = "АБВГДЕЗИКЛМНОПРСТУЭЯABCDEFGHKLMNOPRSTUVZ#%&$@*!?<>";
   let index = 0;
+  let run = 0; // номер текущей анимации — смена языка обрывает старую
+
+  // при смене языка — сразу первое слово на новом языке
+  const syncWord = () => { run++; index = 0; el.textContent = t("hero.words")[0]; };
+  syncWord();
+  window.i18n.onChange(syncWord);
+  if (reduceMotion) return;
 
   function scrambleTo(word) {
     const from = el.textContent;
@@ -153,8 +162,10 @@ const lerp = (a, b, t) => a + (b - a) * t;
       queue.push({ from: from[i] || "", to: word[i] || "", start, end: start + 10 + Math.floor(Math.random() * 14) });
     }
     let frame = 0;
+    const id = ++run;
 
     (function step() {
+      if (id !== run) return;
       let out = "";
       let done = 0;
       for (const q of queue) {
@@ -169,8 +180,9 @@ const lerp = (a, b, t) => a + (b - a) * t;
   }
 
   setInterval(() => {
-    index = (index + 1) % CONFIG.heroWords.length;
-    scrambleTo(CONFIG.heroWords[index]);
+    const words = t("hero.words");
+    index = (index + 1) % words.length;
+    scrambleTo(words[index]);
   }, 2800);
 })();
 
@@ -363,7 +375,8 @@ const lerp = (a, b, t) => a + (b - a) * t;
 
   slides.forEach((_, i) => {
     const b = document.createElement("button");
-    b.setAttribute("aria-label", `Отзыв ${i + 1}`);
+    b.setAttribute("aria-label", `${t("aria.review")} ${i + 1}`);
+    window.i18n.onChange(() => b.setAttribute("aria-label", `${t("aria.review")} ${i + 1}`));
     b.dataset.cursor = "hover";
     b.addEventListener("click", () => { go(i); restart(); });
     dotsWrap.appendChild(b);
@@ -424,17 +437,17 @@ function toast(text) {
       if (!ok) { void wrap.offsetWidth; wrap.classList.add("is-error"); valid = false; }
     });
 
-    if (!valid) { toast("Заполните имя и контакт для связи"); return; }
+    if (!valid) { toast(t("form.error")); return; }
 
-    const subject = `Заявка с портфолио — ${data.get("name")}`;
+    const subject = `${t("mail.subject")} — ${data.get("name")}`;
     const body =
-      `Имя: ${data.get("name")}\n` +
-      `Контакт: ${data.get("contact")}\n` +
-      `Бюджет: ${data.get("budget")}\n\n` +
+      `${t("mail.name")}: ${data.get("name")}\n` +
+      `${t("mail.contact")}: ${data.get("contact")}\n` +
+      `${t("mail.budget")}: ${t("form.b" + data.get("budget"))}\n\n` +
       `${data.get("message") || ""}`;
 
     window.location.href = `mailto:${CONFIG.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    toast("Спасибо! Отвечу в течение пары часов ✦");
+    toast(t("form.ok"));
     formEl.reset();
   });
 })();
