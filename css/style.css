@@ -646,6 +646,10 @@ body.is-ready .line__inner { transform: translateY(0); }
 
 .section__head { margin-bottom: 64px; max-width: 900px; }
 
+/* «Услуги» идут сразу после цифр — меньше отступ сверху */
+.section.services { padding-top: 64px; }
+@media (max-width: 600px) { .section.services { padding-top: 48px; } }
+
 .section__tag {
   display: inline-block;
   font-size: 13px;
