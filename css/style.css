@@ -1142,6 +1142,76 @@ body.is-ready .line__inner { transform: translateY(0); }
 .footer__row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; color: var(--muted); font-size: 14px; }
 .footer__up:hover { color: var(--accent); }
 
+/* ===================== Переход между языками ===================== */
+.lang-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 190;
+  pointer-events: none;
+}
+
+.lang-curtain.is-in { pointer-events: auto; }
+
+.lang-curtain__panel {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(100% 0 0 0);
+}
+
+.lang-curtain__panel--back { background: var(--accent-2); }
+
+.lang-curtain__panel--front {
+  background: var(--accent);
+  color: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* въезд снизу: сначала фиолетовая, следом лаймовая */
+.is-in .lang-curtain__panel { clip-path: inset(0 0 0 0); transition: clip-path 0.6s cubic-bezier(0.76, 0, 0.24, 1); }
+.is-in .lang-curtain__panel--front { transition-delay: 0.08s; }
+
+/* выезд вверх: в обратном порядке */
+.is-in.is-out .lang-curtain__panel { clip-path: inset(0 0 100% 0); transition: clip-path 0.6s cubic-bezier(0.76, 0, 0.24, 1); }
+.is-in.is-out .lang-curtain__panel--back { transition-delay: 0.08s; }
+.is-in.is-out .lang-curtain__panel--front { transition-delay: 0s; }
+
+.lang-curtain__word {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(44px, 11vw, 160px);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  opacity: 0;
+  transform: translateY(60px);
+}
+
+.lang-curtain__code {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.4em;
+  opacity: 0;
+}
+
+.is-in .lang-curtain__word { animation: curtainWord 1.3s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both; }
+.is-in .lang-curtain__code { animation: curtainCode 1.3s ease 0.3s both; }
+
+@keyframes curtainWord {
+  0%   { opacity: 0; transform: translateY(60px); }
+  30%  { opacity: 1; transform: translateY(0); }
+  55%  { opacity: 1; transform: translateY(0); }
+  75%, 100% { opacity: 0; transform: translateY(-40px); }
+}
+
+@keyframes curtainCode {
+  0%   { opacity: 0; }
+  30%, 55% { opacity: 0.7; }
+  75%, 100% { opacity: 0; }
+}
+
 /* ===================== Toast ===================== */
 .toast {
   position: fixed;

@@ -199,8 +199,7 @@
     try { localStorage.setItem(KEY, lang); } catch (e) { /* без сохранения */ }
   }
 
-  function set(next) {
-    if (!LANGS.includes(next) || next === lang) return;
+  function commit(next) {
     lang = next;
     save();
     // убираем ?lang= из адреса, чтобы он не перебивал выбор при обновлении страницы
@@ -211,6 +210,46 @@
     }
     apply();
     listeners.forEach((fn) => fn(lang));
+  }
+
+  /* ---------- Переход между языками: шторка с названием языка ---------- */
+  const NAMES = { ru: "Русский", en: "English", es: "Español" };
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let curtain = null;
+  let busy = false;
+
+  function getCurtain() {
+    if (curtain) return curtain;
+    curtain = document.createElement("div");
+    curtain.className = "lang-curtain";
+    curtain.setAttribute("aria-hidden", "true");
+    curtain.innerHTML = '<div class="lang-curtain__panel lang-curtain__panel--back"></div>' +
+      '<div class="lang-curtain__panel lang-curtain__panel--front">' +
+      '<span class="lang-curtain__code"></span><span class="lang-curtain__word"></span></div>';
+    document.body.appendChild(curtain);
+    return curtain;
+  }
+
+  function set(next) {
+    if (!LANGS.includes(next) || next === lang || busy) return;
+    if (reduceMotion) { commit(next); return; }
+
+    busy = true;
+    const el = getCurtain();
+    el.querySelector(".lang-curtain__word").textContent = NAMES[next];
+    el.querySelector(".lang-curtain__code").textContent = next.toUpperCase();
+    el.className = "lang-curtain";
+    void el.offsetWidth;                 // сброс, чтобы анимация стартовала заново
+    el.classList.add("is-in");
+
+    setTimeout(() => {                   // экран закрыт — меняем тексты
+      commit(next);
+      el.classList.add("is-out");
+    }, 750);
+    setTimeout(() => {                   // шторка ушла — возвращаем в исходное положение
+      el.className = "lang-curtain";
+      busy = false;
+    }, 1450);
   }
 
   /* ---------- Выпадающее окошко выбора языка ---------- */
