@@ -687,7 +687,9 @@ body.is-ready .line__inner { transform: translateY(0); }
 
 .section__head { margin-bottom: 64px; max-width: 900px; }
 
-/* «Услуги» идут сразу после цифр — меньше отступ сверху */
+.section__lead { max-width: 640px; margin-top: 20px; font-size: 18px; color: var(--muted); }
+
+/* «Услуги» идут сразу после бегущей строки — меньше отступ сверху */
 .section.services { padding-top: 64px; }
 @media (max-width: 600px) { .section.services { padding-top: 48px; } }
 
