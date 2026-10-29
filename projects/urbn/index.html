@@ -572,6 +572,25 @@ body::before{
   .card-actions .select{min-width:80px;padding-right:30px;background-position:right 11px center}
 }
 
+/* ---------- language-switch curtain ---------- */
+.lang-curtain{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1000;pointer-events:none}
+.lang-curtain.is-in{pointer-events:auto}
+.lang-curtain__panel{position:absolute;top:0;right:0;bottom:0;left:0;-webkit-clip-path:inset(100% 0 0 0);clip-path:inset(100% 0 0 0)}
+.lang-curtain__panel--back{background:var(--deep)}
+.lang-curtain__panel--front{background:var(--pink);color:#1a0610;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 16px;text-align:center}
+.lang-curtain__panel--front > * + *{margin-top:12px}
+.is-in .lang-curtain__panel{-webkit-clip-path:inset(0 0 0 0);clip-path:inset(0 0 0 0);transition:-webkit-clip-path .6s cubic-bezier(.76,0,.24,1),clip-path .6s cubic-bezier(.76,0,.24,1)}
+.is-in .lang-curtain__panel--front{transition-delay:.08s}
+.is-in.is-out .lang-curtain__panel{-webkit-clip-path:inset(0 0 100% 0);clip-path:inset(0 0 100% 0)}
+.is-in.is-out .lang-curtain__panel--back{transition-delay:.08s}
+.is-in.is-out .lang-curtain__panel--front{transition-delay:0s}
+.lang-curtain__word{font-family:var(--display);font-weight:900;font-size:clamp(40px,11vw,160px);line-height:1;letter-spacing:-.04em;text-transform:uppercase;opacity:0;transform:translateY(60px)}
+.lang-curtain__code{font-family:var(--body);font-size:13px;font-weight:800;letter-spacing:.4em;opacity:0}
+.is-in .lang-curtain__word{animation:curtainWord 1.3s cubic-bezier(.22,1,.36,1) .25s both}
+.is-in .lang-curtain__code{animation:curtainCode 1.3s ease .3s both}
+@keyframes curtainWord{0%{opacity:0;transform:translateY(60px)}30%,55%{opacity:1;transform:translateY(0)}75%,100%{opacity:0;transform:translateY(-40px)}}
+@keyframes curtainCode{0%{opacity:0}30%,55%{opacity:.7}75%,100%{opacity:0}}
+
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;transition-delay:0s!important}
@@ -1915,7 +1934,43 @@ body::before{
     renderOrderNo();
   }
 
+  /* language-switch curtain (user-initiated switches only) */
+  const LANG_NAMES = { ru: 'Русский', en: 'English', es: 'Español' };
+  let curtain = null;
+  let langBusy = false;
+  function getCurtain() {
+    if (curtain) return curtain;
+    curtain = document.createElement('div');
+    curtain.className = 'lang-curtain';
+    curtain.setAttribute('aria-hidden', 'true');
+    curtain.innerHTML = '<div class="lang-curtain__panel lang-curtain__panel--back"></div>' +
+      '<div class="lang-curtain__panel lang-curtain__panel--front">' +
+      '<span class="lang-curtain__code"></span><span class="lang-curtain__word"></span></div>';
+    document.body.appendChild(curtain);
+    return curtain;
+  }
   function setLang(next) {
+    if (!LANGS.includes(next) || next === lang || langBusy) return;
+    if (reduceMotion) { commitLang(next); return; }
+    langBusy = true;
+    const el = getCurtain();
+    const word = el.querySelector('.lang-curtain__word');
+    word.textContent = LANG_NAMES[next];
+    word.setAttribute('lang', next);
+    el.querySelector('.lang-curtain__code').textContent = next.toUpperCase();
+    el.className = 'lang-curtain';
+    void el.offsetWidth; // restart transitions/animations
+    el.classList.add('is-in');
+    setTimeout(() => { // screen fully covered — re-render hidden, then wipe out upward
+      try { commitLang(next); } finally { el.classList.add('is-out'); }
+    }, 750);
+    setTimeout(() => { // reset without transition
+      el.className = 'lang-curtain';
+      langBusy = false;
+    }, 1450);
+  }
+
+  function commitLang(next) {
     if (!LANGS.includes(next) || next === lang) return;
     lang = next;
     try { localStorage.setItem(LANG_KEY, lang); } catch (e) { /* storage unavailable */ }

@@ -140,6 +140,33 @@ section{position:relative}
   .lang-pop,.lang.open .lang-pop{transform:none;transition:none}
   .lang-chev{transition:none}
 }
+/* Language switch curtain (created by JS; above header, mobile nav, popover, demo pill) */
+.lang-curtain{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1000;pointer-events:none}
+.lang-curtain.is-in{pointer-events:auto}
+.lang-curtain__panel{position:absolute;top:0;right:0;bottom:0;left:0;-webkit-clip-path:inset(100% 0 0 0);clip-path:inset(100% 0 0 0)}
+.lang-curtain__panel--back{background:linear-gradient(160deg,#2b1203,#8a3b0b)}
+.lang-curtain__panel--front{
+  background:linear-gradient(135deg,#ff9a3d,#ff5c3d);color:#2b1203;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 16px;text-align:center
+}
+.lang-curtain__panel--front > * + *{margin-top:12px}
+.is-in .lang-curtain__panel{-webkit-clip-path:inset(0 0 0 0);clip-path:inset(0 0 0 0);transition:-webkit-clip-path .6s cubic-bezier(.76,0,.24,1),clip-path .6s cubic-bezier(.76,0,.24,1)}
+.is-in .lang-curtain__panel--front{transition-delay:.08s}
+.is-in.is-out .lang-curtain__panel{-webkit-clip-path:inset(0 0 100% 0);clip-path:inset(0 0 100% 0)}
+.is-in.is-out .lang-curtain__panel--back{transition-delay:.08s}
+.is-in.is-out .lang-curtain__panel--front{transition-delay:0s}
+.lang-curtain__word{
+  display:block;font-family:var(--serif);font-style:italic;font-weight:600;
+  font-size:clamp(56px,13vw,180px);line-height:1;letter-spacing:-.01em;
+  opacity:0;transform:translateY(60px)
+}
+.lang-curtain__code{display:block;font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:.4em;padding-left:.4em;opacity:0}
+.is-in .lang-curtain__word{-webkit-animation:curtainWord 1.3s cubic-bezier(.22,1,.36,1) .25s both;animation:curtainWord 1.3s cubic-bezier(.22,1,.36,1) .25s both}
+.is-in .lang-curtain__code{-webkit-animation:curtainCode 1.3s ease .3s both;animation:curtainCode 1.3s ease .3s both}
+@-webkit-keyframes curtainWord{0%{opacity:0;transform:translateY(60px)}30%,55%{opacity:1;transform:translateY(0)}75%,100%{opacity:0;transform:translateY(-40px)}}
+@keyframes curtainWord{0%{opacity:0;transform:translateY(60px)}30%,55%{opacity:1;transform:translateY(0)}75%,100%{opacity:0;transform:translateY(-40px)}}
+@-webkit-keyframes curtainCode{0%{opacity:0}30%,55%{opacity:.75}75%,100%{opacity:0}}
+@keyframes curtainCode{0%{opacity:0}30%,55%{opacity:.75}75%,100%{opacity:0}}
 
 /* Hero */
 .hero{min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:150px 0 90px;overflow:hidden}
@@ -1607,11 +1634,45 @@ section{position:relative}
     if (state.date) refresh();
     renderMsg(); renderTicket(); renderOpen();
   };
+  /* ---------- Language switch curtain (user-initiated switches only) ---------- */
+  let curtain = null;
+  let langBusy = false;
+  const getCurtain = () => {
+    if (curtain) return curtain;
+    curtain = document.createElement('div');
+    curtain.className = 'lang-curtain';
+    curtain.setAttribute('aria-hidden', 'true');
+    curtain.innerHTML = '<div class="lang-curtain__panel lang-curtain__panel--back"></div>' +
+      '<div class="lang-curtain__panel lang-curtain__panel--front">' +
+      '<span class="lang-curtain__code"></span><span class="lang-curtain__word"></span></div>';
+    document.body.appendChild(curtain);
+    return curtain;
+  };
+  const switchLang = next => {
+    if (!LANGS.includes(next) || next === lang || langBusy) return;
+    saveLang(next);
+    if (reduceMotion) { applyLang(next); return; }
+    langBusy = true;
+    const el = getCurtain();
+    const word = el.querySelector('.lang-curtain__word');
+    word.textContent = LANG_NAME[next];
+    word.setAttribute('lang', next);
+    el.querySelector('.lang-curtain__code').textContent = next.toUpperCase();
+    el.className = 'lang-curtain';
+    void el.offsetWidth; // restart transitions/animations
+    el.classList.add('is-in');
+    setTimeout(() => { // screen fully covered: swap texts, then wipe out upward
+      applyLang(next);
+      el.classList.add('is-out');
+    }, 750);
+    setTimeout(() => { // reset without transition
+      el.className = 'lang-curtain';
+      langBusy = false;
+    }, 1450);
+  };
   langBtns.forEach(b => b.addEventListener('click', () => {
-    if (b.dataset.lang !== lang) {
-      saveLang(b.dataset.lang);
-      applyLang(b.dataset.lang);
-    }
+    if (langBusy) return;
+    switchLang(b.dataset.lang);
     setLangOpen(false, true);
   }));
 

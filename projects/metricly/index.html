@@ -379,7 +379,26 @@ th.num button{flex-direction:row-reverse}
   .head-actions .btn{flex:1;justify-content:center}
   .back-pill{left:12px;bottom:12px;font-size:12px}
 }
+/* ---------- language-switch curtain (mirrors .lang-curtain on the portfolio main page) ---------- */
+.lang-curtain{position:fixed;top:0;right:0;bottom:0;left:0;z-index:200;pointer-events:none}
+.lang-curtain.is-in{pointer-events:auto}
+.lang-curtain__panel{position:absolute;top:0;right:0;bottom:0;left:0;-webkit-clip-path:inset(100% 0 0 0);clip-path:inset(100% 0 0 0)}
+.lang-curtain__panel--back{background:var(--teal)}
+.lang-curtain__panel--front{background:#1fd1a1;background:linear-gradient(135deg,var(--lime),var(--em));color:var(--deep);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:0 16px;text-align:center}
+.is-in .lang-curtain__panel{-webkit-clip-path:inset(0 0 0 0);clip-path:inset(0 0 0 0);transition:-webkit-clip-path .6s cubic-bezier(.76,0,.24,1),clip-path .6s cubic-bezier(.76,0,.24,1)}
+.is-in .lang-curtain__panel--front{transition-delay:.08s}
+.is-in.is-out .lang-curtain__panel{-webkit-clip-path:inset(0 0 100% 0);clip-path:inset(0 0 100% 0)}
+.is-in.is-out .lang-curtain__panel--back{transition-delay:.08s}
+.is-in.is-out .lang-curtain__panel--front{transition-delay:0s}
+.lang-curtain__word{font-family:var(--font);font-weight:800;font-size:clamp(44px,11vw,160px);letter-spacing:-.04em;line-height:1;opacity:0;transform:translateY(60px)}
+.lang-curtain__code{font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.4em;opacity:0}
+.is-in .lang-curtain__word{animation:curtainWord 1.3s cubic-bezier(.22,1,.36,1) .25s both}
+.is-in .lang-curtain__code{animation:curtainCode 1.3s ease .3s both}
+@keyframes curtainWord{0%{opacity:0;transform:translateY(60px)}30%,55%{opacity:1;transform:translateY(0)}75%,100%{opacity:0;transform:translateY(-40px)}}
+@keyframes curtainCode{0%{opacity:0}30%,55%{opacity:.7}75%,100%{opacity:0}}
+
 @media (prefers-reduced-motion:reduce){
+  .lang-curtain{display:none}
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
   .lang-pop,.lang-pop.open{transform:none;transition:none!important}
@@ -1505,8 +1524,41 @@ langPop.addEventListener('click', e => {
   const b = e.target.closest('button[data-lang]');
   if (!b) return;
   closeLang(true);
-  setLang(b.dataset.lang, { persist: true });
+  switchLang(b.dataset.lang);
 });
+
+/* language-switch curtain: user-initiated switches only (init / ?lang= call setLang directly) */
+let curtain = null, curtainBusy = false;
+function getCurtain() {
+  if (curtain) return curtain;
+  curtain = document.createElement('div');
+  curtain.className = 'lang-curtain';
+  curtain.setAttribute('aria-hidden', 'true');
+  curtain.innerHTML = '<div class="lang-curtain__panel lang-curtain__panel--back"></div>' +
+    '<div class="lang-curtain__panel lang-curtain__panel--front">' +
+    '<span class="lang-curtain__code"></span><span class="lang-curtain__word"></span></div>';
+  document.body.appendChild(curtain);
+  return curtain;
+}
+function switchLang(next) {
+  if (!LANGS.includes(next) || next === lang || curtainBusy) return;
+  if (reduced) { setLang(next, { persist: true }); return; }
+  curtainBusy = true;
+  const el = getCurtain();
+  el.querySelector('.lang-curtain__word').textContent = LANG_NAMES[next];
+  el.querySelector('.lang-curtain__code').textContent = next.toUpperCase();
+  el.className = 'lang-curtain';
+  void el.offsetWidth;                         // restart the transition from the hidden state
+  el.classList.add('is-in');
+  setTimeout(() => {                           // screen fully covered: swap texts, re-render charts/table
+    setLang(next, { persist: true });
+    el.classList.add('is-out');
+  }, 750);
+  setTimeout(() => {                           // curtain gone: reset without transition
+    el.className = 'lang-curtain';
+    curtainBusy = false;
+  }, 1450);
+}
 langPop.addEventListener('keydown', e => {
   const i = langOpts.indexOf(document.activeElement);
   if (e.key === 'ArrowDown') { e.preventDefault(); langOpts[(i + 1) % langOpts.length].focus(); }
