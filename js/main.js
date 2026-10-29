@@ -453,5 +453,44 @@ function toast(text) {
   });
 })();
 
+/* ---------- Преимущества: список слева, подробности справа ---------- */
+(function advantages() {
+  const items = $$(".adv__item");
+  const panel = $("#advPanel");
+  if (!items.length || !panel) return;
+  const inner = $("#advPanelInner");
+  let current = 1;
+
+  function render(i, animate) {
+    current = i;
+    items.forEach((it) => {
+      const active = +it.dataset.adv === i;
+      it.classList.toggle("is-active", active);
+      it.setAttribute("aria-selected", String(active));
+    });
+    const fill = () => {
+      $("#advLabel").textContent = `${t(`adv${i}.t`)} (${i})`;
+      $("#advText").textContent = t(`adv${i}.p`);
+      $("#advList").innerHTML = t(`adv${i}.list`);
+    };
+    if (!animate || reduceMotion) { fill(); return; }
+    inner.classList.add("is-switching");
+    setTimeout(() => { fill(); inner.classList.remove("is-switching"); }, 180);
+  }
+
+  items.forEach((it) => {
+    const i = +it.dataset.adv;
+    it.addEventListener("click", () => {
+      if (i !== current) render(i, true);
+      // на телефоне панель под списком — подкручиваем к ней
+      if (innerWidth <= 900) panel.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest" });
+    });
+    if (finePointer) it.addEventListener("mouseenter", () => { if (i !== current) render(i, true); });
+  });
+
+  render(1, false);
+  window.i18n.onChange(() => render(current, false));
+})();
+
 /* ---------- Год в подвале ---------- */
 $("#year").textContent = new Date().getFullYear();
