@@ -47,7 +47,9 @@
       <nav class="nav" id="nav" data-i18n-aria="aria.nav" aria-label="Основная навигация">
         <a href="#services" class="nav__link" data-cursor="hover" data-i18n="nav.services">Услуги</a>
         <a href="#process" class="nav__link" data-cursor="hover" data-i18n="nav.process">Процесс</a>
-        <a href="#works" class="nav__link" data-cursor="hover" data-i18n="nav.works">Работы</a>
+        <!-- СКРЫТО (пункт меню Работы):
+<a href="#works" class="nav__link" data-cursor="hover" data-i18n="nav.works">Работы</a>
+      -->
         <a href="#reviews" class="nav__link" data-cursor="hover" data-i18n="nav.reviews">Отзывы</a>
         <a href="#contact" class="nav__link nav__link--mobile-cta" data-cursor="hover" data-i18n="cta.discuss">Обсудить проект</a>
       </nav>
@@ -85,10 +87,12 @@
       <div class="hero__grid" aria-hidden="true"></div>
 
       <div class="container hero__content">
-        <div class="status reveal">
+        <!-- СКРЫТО (статус заказов):
+<div class="status reveal">
           <span class="status__dot"></span>
           <span data-i18n="hero.status">Открыты для заказов — <b>2 свободных слота</b> в этом месяце</span>
         </div>
+      -->
 
         <h1 class="hero__title">
           <span class="line"><span class="line__inner" data-i18n="hero.l1">Создаём сайты,</span></span>
@@ -107,9 +111,11 @@
             <span data-i18n="hero.cta1">Получить расчёт за 24 часа</span>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <a href="#works" class="btn btn--ghost magnetic" data-cursor="hover">
+          <!-- СКРЫТО (кнопка Смотреть кейсы):
+<a href="#works" class="btn btn--ghost magnetic" data-cursor="hover">
             <span data-i18n="hero.cta2">Смотреть кейсы</span>
           </a>
+      -->
         </div>
 
         <ul class="hero__trust reveal">
@@ -276,7 +282,8 @@
     </section>
 
     <!-- ===== Работы ===== -->
-    <section class="section works" id="works">
+    <!-- СКРЫТО (кейсы):
+<section class="section works" id="works">
       <div class="container">
         <div class="section__head">
           <span class="section__tag reveal" data-i18n="works.tag">03 — Избранные работы</span>
@@ -364,12 +371,13 @@
         </div>
       </div>
     </section>
+      -->
 
     <!-- ===== Отзывы ===== -->
     <section class="section reviews" id="reviews">
       <div class="container">
         <div class="section__head">
-          <span class="section__tag reveal" data-i18n="reviews.tag">04 — Отзывы</span>
+          <span class="section__tag reveal" data-i18n="reviews.tag">03 — Отзывы</span>
           <h2 class="section__title reveal" data-i18n="reviews.title">Клиенты <span class="gradient-text">говорят сами</span></h2>
         </div>
 
@@ -405,7 +413,7 @@
       <div class="contact__glow" aria-hidden="true"></div>
       <div class="container contact__inner">
         <div class="contact__left">
-          <span class="section__tag reveal" data-i18n="contact.tag">05 — Связаться</span>
+          <span class="section__tag reveal" data-i18n="contact.tag">04 — Связаться</span>
           <h2 class="contact__title reveal" data-i18n="contact.title">Давайте сделаем<br>что-то <span class="gradient-text">громкое</span></h2>
           <p class="contact__text reveal" data-i18n="contact.text">Расскажите о проекте — ответим в течение пары часов и пришлём примерную оценку стоимости и сроков. Это бесплатно и ни к чему не обязывает.</p>
 
