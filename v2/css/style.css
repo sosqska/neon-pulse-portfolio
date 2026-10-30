@@ -1055,3 +1055,26 @@ body.modal-open .fab { opacity: 0; pointer-events: none; }
   .roll__track { display: block; transition: transform 0.6s cubic-bezier(0.76, 0, 0.24, 1); }
   .roll__item { display: block; height: 1.12em; line-height: 1.12em; white-space: nowrap; }
 }
+
+/* =========================================================
+   Компьютер: первый экран по центру
+   ========================================================= */
+@media (min-width: 641px) {
+  .hero__inner { text-align: center; }
+  .hero .eyebrow { justify-content: center; }
+  .hero__title { align-items: center; margin-bottom: 40px; }
+  .hl--2, .hl--3 { padding-left: 0; }
+  .hero-word { text-align: center; }               /* ширина слова постоянная — строка не «гуляет» */
+  .hero__bottom { display: flex; flex-direction: column; align-items: center; gap: 0; }
+  .hero__side { justify-self: auto; max-width: 560px; }
+  .hero__actions { justify-content: center; }
+  .hero__scroll { position: absolute; left: 50%; bottom: 28px; transform: translateX(-50%); flex-direction: column; gap: 10px; }
+  .hero__scroll-line { order: 2; height: 40px; }
+  .hero { padding-bottom: 120px; }
+}
+
+@media (min-width: 641px) {
+  .hero__scroll { display: none; }
+  .hero__title { width: 100%; }
+  .badge { top: auto; bottom: 26%; right: 7%; }
+}

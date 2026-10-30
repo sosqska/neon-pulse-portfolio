@@ -70,8 +70,13 @@ function splitWords(el) {
     probe.remove();
     const pad = mobileMQ.matches ? 0.5 : 0.12; // плашка на телефоне добавляет внутренние отступы (в em)
     const fs = parseFloat(getComputedStyle(node).fontSize);
-    const avail = line.clientWidth - parseFloat(getComputedStyle(line).paddingLeft) - 6 - pad * fs;
-    if (max > avail) node.style.fontSize = (avail / max).toFixed(3) + "em";
+    // доступная ширина — по всему заголовку (строка при центровке сжимается до ширины слова)
+    const title = node.closest(".hero__title");
+    const avail = title.clientWidth - parseFloat(getComputedStyle(line).paddingLeft) - 6 - pad * fs;
+    const scale = max > avail ? avail / max : 1;
+    if (scale < 1) node.style.fontSize = scale.toFixed(3) + "em";
+    // на компьютере слово по центру — фиксируем ширину по самому длинному, чтобы строка не прыгала
+    node.style.minWidth = mobileMQ.matches ? "" : Math.ceil(max * scale) + "px";
   }
 
   /* --- телефон: барабан --- */
