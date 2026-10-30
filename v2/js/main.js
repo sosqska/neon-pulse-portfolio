@@ -45,40 +45,76 @@ function splitWords(el) {
   window.i18n.onChange(() => run(true));
 })();
 
-/* ---------- меняющееся слово в заголовке (эффект «расшифровки», как в v1) ---------- */
-(function scrambleWord() {
-  let index = 0;
-  let run = 0; // номер текущей анимации — смена языка обрывает старую
+/* ---------- меняющееся слово в заголовке ----------
+   Компьютер: эффект «расшифровки», как в v1.
+   Телефон: слова прокручиваются вверх в плашке, как барабан.
+   Размер слова один на весь язык — подобран по самому длинному слову, чтобы ничего не прыгало. */
+(function changingWord() {
+  const mobileMQ = window.matchMedia("(max-width: 640px)");
   const el = () => document.getElementById("heroWord");
+  let index = 0;
+  let run = 0;      // номер анимации «расшифровки» — новая обрывает старую
+  let timer = null;
 
-  // длинное слово уменьшается, чтобы строка всегда влезала в ширину экрана
-  function fit() {
+  // один размер для всех слов языка: самое длинное слово должно влезть в строку
+  function fitAll() {
     const node = el();
     if (!node) return;
     const line = node.closest(".hl");
     node.style.fontSize = "";
-    const avail = line.clientWidth - parseFloat(getComputedStyle(line).paddingLeft) - 4;
-    const need = node.getBoundingClientRect().width;
-    if (need > avail) node.style.fontSize = (avail / need).toFixed(3) + "em";
+    const probe = document.createElement("span");
+    probe.className = "hero-word__probe";
+    line.appendChild(probe);
+    let max = 0;
+    t("hero.words").forEach((w) => { probe.textContent = w; max = Math.max(max, probe.getBoundingClientRect().width); });
+    probe.remove();
+    const pad = mobileMQ.matches ? 0.5 : 0.12; // плашка на телефоне добавляет внутренние отступы (в em)
+    const fs = parseFloat(getComputedStyle(node).fontSize);
+    const avail = line.clientWidth - parseFloat(getComputedStyle(line).paddingLeft) - 6 - pad * fs;
+    if (max > avail) node.style.fontSize = (avail / max).toFixed(3) + "em";
   }
-  fit();
-  if (document.fonts) document.fonts.ready.then(fit);
-  let rt;
-  addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(fit, 120); });
 
-  // после смены языка заголовок перерисован — начинаем с первого слова
-  window.i18n.onChange(() => { run++; index = 0; setTimeout(fit, 0); });
-  if (reduceMotion) return;
+  /* --- телефон: барабан --- */
+  function buildRoller() {
+    const node = el();
+    if (!node) return;
+    const words = t("hero.words");
+    node.classList.add("is-roll");
+    // в конце — копия первого слова, чтобы круг замыкался без рывка
+    node.innerHTML = `<span class="roll"><span class="roll__track">${words.concat(words[0]).map((w) => `<span class="roll__item">${w}</span>`).join("")}</span></span>`;
+    const roll = node.querySelector(".roll");
+    // ширина плашки — по самому длинному слову, чтобы она не дёргалась
+    let max = 0;
+    node.querySelectorAll(".roll__item").forEach((s) => { max = Math.max(max, s.getBoundingClientRect().width); });
+    roll.style.width = Math.ceil(max) + "px";
+  }
 
+  function stepRoller() {
+    const node = el();
+    const track = node && node.querySelector(".roll__track");
+    if (!track) return;
+    const count = t("hero.words").length;
+    index++;
+    track.style.transition = "";
+    track.style.transform = `translateY(${-index * 100 / (count + 1)}%)`;
+    if (index === count) {
+      // дошли до копии первого слова — незаметно возвращаемся в начало
+      setTimeout(() => {
+        track.style.transition = "none";
+        track.style.transform = "translateY(0)";
+        index = 0;
+        void track.offsetWidth;
+        track.style.transition = "";
+      }, 650);
+    }
+  }
+
+  /* --- компьютер: «расшифровка» --- */
   function scrambleTo(word) {
     const node = el();
     if (!node) return;
     const chars = t("hero.chars");
     const from = node.textContent;
-    // заранее подгоняем размер под новое слово, чтобы во время смены строка не вылезала
-    node.textContent = word;
-    fit();
-    node.textContent = from;
     const length = Math.max(from.length, word.length);
     const queue = [];
     for (let i = 0; i < length; i++) {
@@ -98,16 +134,42 @@ function splitWords(el) {
       node.textContent = out;
       frame++;
       if (done < queue.length) requestAnimationFrame(step);
-      else fit();
     })();
   }
 
-  // первое слово видно, пока заголовок проявляется; дальше меняем каждые 2.8 с
-  setTimeout(() => setInterval(() => {
+  function stepScramble() {
     const words = t("hero.words");
     index = (index + 1) % words.length;
     scrambleTo(words[index]);
-  }, 2800), 1200);
+  }
+
+  /* --- запуск / перезапуск (смена языка, поворот экрана) --- */
+  function setup() {
+    clearInterval(timer);
+    run++;
+    index = 0;
+    const node = el();
+    if (!node) return;
+    node.classList.remove("is-roll");
+    node.textContent = t("hero.words")[0];
+    fitAll();
+    if (mobileMQ.matches) buildRoller();
+    if (reduceMotion) return;
+    timer = setInterval(mobileMQ.matches ? stepRoller : stepScramble, mobileMQ.matches ? 2400 : 2800);
+  }
+
+  setTimeout(setup, 1200); // первое слово видно, пока заголовок проявляется
+  if (document.fonts) document.fonts.ready.then(() => setTimeout(setup, 1300));
+  window.i18n.onChange(() => setTimeout(setup, 0));
+  mobileMQ.addEventListener("change", setup);
+  // на телефоне resize срабатывает и при прокрутке (прячется адресная строка) — реагируем только на смену ширины
+  let rt, lastW = innerWidth;
+  addEventListener("resize", () => {
+    if (innerWidth === lastW) return;
+    lastW = innerWidth;
+    clearTimeout(rt);
+    rt = setTimeout(setup, 200);
+  });
 })();
 
 /* ---------- заявление: слова загораются при прокрутке ---------- */
