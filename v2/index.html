@@ -16,9 +16,19 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap"></noscript>
 
-  <link rel="stylesheet" href="css/style.css?v=3">
+  <link rel="stylesheet" href="css/style.css?v=4">
 </head>
 <body>
+
+  <!-- ===== Общий анимированный фон ===== -->
+  <div class="bg" aria-hidden="true">
+    <span class="bg__blob bg__blob--1"></span>
+    <span class="bg__blob bg__blob--2"></span>
+    <span class="bg__blob bg__blob--3"></span>
+    <span class="bg__blob bg__blob--4"></span>
+    <span class="bg__grid"></span>
+    <span class="bg__vignette"></span>
+  </div>
 
   <!-- ===== Шапка ===== -->
   <header class="header" id="header">
@@ -66,13 +76,12 @@
         </button>
       </div>
       <ol class="menu__list">
-        <li><a href="#works" data-menu-link><span class="mono">01</span><span data-i18n="nav.works">Работы</span></a></li>
-        <li><a href="#services" data-menu-link><span class="mono">02</span><span data-i18n="nav.services">Услуги</span></a></li>
-        <li><a href="#advantages" data-menu-link><span class="mono">03</span><span data-i18n="nav.adv">Преимущества</span></a></li>
-        <li><a href="#process" data-menu-link><span class="mono">04</span><span data-i18n="nav.process">Процесс</span></a></li>
-        <li><a href="#team" data-menu-link><span class="mono">05</span><span data-i18n="nav.team">Команда</span></a></li>
-        <li><a href="#reviews" data-menu-link><span class="mono">06</span><span data-i18n="nav.reviews">Отзывы</span></a></li>
-        <li><a href="#faq" data-menu-link><span class="mono">07</span><span data-i18n="nav.faq">Вопросы</span></a></li>
+        <li><a href="#services" data-menu-link><span class="mono">01</span><span data-i18n="nav.services">Услуги</span></a></li>
+        <li><a href="#works" data-menu-link><span class="mono">02</span><span data-i18n="nav.works">Работы</span></a></li>
+        <li><a href="#process" data-menu-link><span class="mono">03</span><span data-i18n="nav.process">Процесс</span></a></li>
+        <li><a href="#advantages" data-menu-link><span class="mono">04</span><span data-i18n="nav.adv">Преимущества</span></a></li>
+        <li><a href="#reviews" data-menu-link><span class="mono">05</span><span data-i18n="nav.reviews">Отзывы</span></a></li>
+        <li><a href="#faq" data-menu-link><span class="mono">06</span><span data-i18n="nav.faq">Вопросы</span></a></li>
       </ol>
       <div class="menu__bottom">
         <span class="mono dim" data-i18n="menu.contacts">Связаться напрямую</span>
@@ -86,12 +95,6 @@
 
     <!-- ===== Hero ===== -->
     <section class="hero">
-      <div class="hero__bg" aria-hidden="true">
-        <span class="hero__glow hero__glow--1"></span>
-        <span class="hero__glow hero__glow--2"></span>
-        <span class="hero__ring hero__ring--1"></span>
-        <span class="hero__ring hero__ring--2"></span>
-      </div>
 
       <div class="container hero__inner">
         <p class="mono eyebrow reveal" data-i18n="hero.eyebrow">Веб-студия · Сайты и лендинги под ключ</p>
@@ -284,48 +287,11 @@
       </div>
     </section>
 
-    <!-- ===== Преимущества ===== -->
-    <section class="section" id="advantages">
-      <div class="container">
-        <div class="head">
-          <p class="mono eyebrow reveal"><span class="eyebrow__num">03</span><span data-i18n="adv.tag">Преимущества</span></p>
-          <h2 class="title reveal" data-i18n="adv.title">Преимущества, которые вы почувствуете.</h2>
-        </div>
-        <div class="adv">
-          <div class="adv__list reveal" role="tablist">
-
-            <button type="button" class="adv__item is-active" data-adv="1" role="tab" aria-selected="true" aria-controls="advPanel">
-              <span class="mono adv__num">01</span><span class="adv__name" data-i18n="adv1.t">Ориентир на продажи</span>
-            </button>
-            <button type="button" class="adv__item" data-adv="2" role="tab" aria-selected="false" aria-controls="advPanel">
-              <span class="mono adv__num">02</span><span class="adv__name" data-i18n="adv2.t">Мультиязычность</span>
-            </button>
-            <button type="button" class="adv__item" data-adv="3" role="tab" aria-selected="false" aria-controls="advPanel">
-              <span class="mono adv__num">03</span><span class="adv__name" data-i18n="adv3.t">Обоснованные цены</span>
-            </button>
-            <button type="button" class="adv__item" data-adv="4" role="tab" aria-selected="false" aria-controls="advPanel">
-              <span class="mono adv__num">04</span><span class="adv__name" data-i18n="adv4.t">Любая валюта и география</span>
-            </button>
-            <button type="button" class="adv__item" data-adv="5" role="tab" aria-selected="false" aria-controls="advPanel">
-              <span class="mono adv__num">05</span><span class="adv__name" data-i18n="adv5.t">Гарантия и техподдержка</span>
-            </button>
-          </div>
-          <div class="adv__panel reveal" id="advPanel" role="tabpanel" aria-live="polite">
-            <div class="adv__inner" id="advInner">
-              <p class="mono dim adv__label" id="advLabel"></p>
-              <p class="adv__text" id="advText"></p>
-              <ul class="adv__bullets" id="advList"></ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- ===== Процесс ===== -->
     <section class="section" id="process">
       <div class="container">
         <div class="head">
-          <p class="mono eyebrow reveal"><span class="eyebrow__num">04</span><span data-i18n="process.tag">Процесс</span></p>
+          <p class="mono eyebrow reveal"><span class="eyebrow__num">03</span><span data-i18n="process.tag">Процесс</span></p>
           <h2 class="title reveal" data-i18n="process.title">Пять шагов до запуска.</h2>
         </div>
         <ol class="steps">
@@ -364,27 +330,39 @@
       </div>
     </section>
 
-    <!-- ===== Команда ===== -->
-    <section class="section" id="team">
+    <!-- ===== Преимущества ===== -->
+    <section class="section" id="advantages">
       <div class="container">
-        <div class="head head--split">
-          <div>
-            <p class="mono eyebrow reveal"><span class="eyebrow__num">05</span><span data-i18n="team.tag">Команда</span></p>
-            <h2 class="title reveal" data-i18n="team.title">Маленькая команда.</h2>
-          </div>
-          <p class="head__text reveal" data-i18n="team.text">Нас двое — и это плюс. Вы общаетесь напрямую с теми, кто делает ваш сайт: без менеджеров, испорченного телефона и наценок агентства.</p>
+        <div class="head">
+          <p class="mono eyebrow reveal"><span class="eyebrow__num">04</span><span data-i18n="adv.tag">Преимущества</span></p>
+          <h2 class="title reveal" data-i18n="adv.title">Преимущества, которые вы почувствуете.</h2>
         </div>
-        <div class="team">
-          <article class="member reveal">
-            <div class="member__photo" aria-hidden="true"><span>01</span></div>
-            <h3 class="member__role" data-i18n="team1.role">Дизайн и вёрстка</h3>
-            <p class="member__text" data-i18n="team1.d">Отвечает за то, как сайт выглядит и ощущается: структура, визуал, анимации.</p>
-          </article>
-          <article class="member reveal">
-            <div class="member__photo member__photo--2" aria-hidden="true"><span>02</span></div>
-            <h3 class="member__role" data-i18n="team2.role">Разработка и запуск</h3>
-            <p class="member__text" data-i18n="team2.d">Отвечает за то, как сайт работает: код, формы, скорость, публикация и поддержка.</p>
-          </article>
+        <div class="adv">
+          <div class="adv__list reveal" role="tablist">
+
+            <button type="button" class="adv__item is-active" data-adv="1" role="tab" aria-selected="true" aria-controls="advPanel">
+              <span class="mono adv__num">01</span><span class="adv__name" data-i18n="adv1.t">Ориентир на продажи</span>
+            </button>
+            <button type="button" class="adv__item" data-adv="2" role="tab" aria-selected="false" aria-controls="advPanel">
+              <span class="mono adv__num">02</span><span class="adv__name" data-i18n="adv2.t">Мультиязычность</span>
+            </button>
+            <button type="button" class="adv__item" data-adv="3" role="tab" aria-selected="false" aria-controls="advPanel">
+              <span class="mono adv__num">03</span><span class="adv__name" data-i18n="adv3.t">Обоснованные цены</span>
+            </button>
+            <button type="button" class="adv__item" data-adv="4" role="tab" aria-selected="false" aria-controls="advPanel">
+              <span class="mono adv__num">04</span><span class="adv__name" data-i18n="adv4.t">Любая валюта и география</span>
+            </button>
+            <button type="button" class="adv__item" data-adv="5" role="tab" aria-selected="false" aria-controls="advPanel">
+              <span class="mono adv__num">05</span><span class="adv__name" data-i18n="adv5.t">Гарантия и техподдержка</span>
+            </button>
+          </div>
+          <div class="adv__panel reveal" id="advPanel" role="tabpanel" aria-live="polite">
+            <div class="adv__inner" id="advInner">
+              <p class="mono dim adv__label" id="advLabel"></p>
+              <p class="adv__text" id="advText"></p>
+              <ul class="adv__bullets" id="advList"></ul>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -393,7 +371,7 @@
     <section class="section" id="reviews">
       <div class="container">
         <div class="head">
-          <p class="mono eyebrow reveal"><span class="eyebrow__num">06</span><span data-i18n="reviews.tag">Отзывы</span></p>
+          <p class="mono eyebrow reveal"><span class="eyebrow__num">05</span><span data-i18n="reviews.tag">Отзывы</span></p>
           <h2 class="title reveal" data-i18n="reviews.title">Клиенты скажут.</h2>
         </div>
         <div class="reviews">
@@ -424,7 +402,7 @@
     <section class="section" id="faq">
       <div class="container faq-wrap">
         <div class="head">
-          <p class="mono eyebrow reveal"><span class="eyebrow__num">07</span><span data-i18n="faq.tag">Вопросы</span></p>
+          <p class="mono eyebrow reveal"><span class="eyebrow__num">06</span><span data-i18n="faq.tag">Вопросы</span></p>
           <h2 class="title reveal" data-i18n="faq.title">Вопросы и ответы.</h2>
           <p class="head__text reveal" data-i18n="faq.text">Не нашли ответ? Напишите нам — ответим в течение пары часов.</p>
           <a class="faq__mail reveal" href="mailto:buzukdenis3@gmail.com">buzukdenis3@gmail.com ↗</a>
@@ -561,10 +539,9 @@
         </div>
         <div class="footer__col">
           <p class="mono dim" data-i18n="footer.studio">Студия</p>
-          <a href="#works" data-i18n="nav.works">Работы</a>
           <a href="#services" data-i18n="nav.services">Услуги</a>
+          <a href="#works" data-i18n="nav.works">Работы</a>
           <a href="#process" data-i18n="nav.process">Процесс</a>
-          <a href="#team" data-i18n="nav.team">Команда</a>
           <a href="#faq" data-i18n="nav.faq">Вопросы</a>
         </div>
         <div class="footer__col">
@@ -634,7 +611,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script defer src="js/i18n.js?v=3"></script>
-  <script defer src="js/main.js?v=3"></script>
+  <script defer src="js/i18n.js?v=4"></script>
+  <script defer src="js/main.js?v=4"></script>
 </body>
 </html>

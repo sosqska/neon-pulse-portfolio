@@ -28,6 +28,7 @@ html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
 body {
   background: var(--bg);
+  isolation: isolate;
   color: var(--text);
   font-family: var(--font);
   font-size: 16px;
@@ -241,16 +242,15 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 
 /* ---------- hero ---------- */
 .hero { position: relative; padding: 170px 0 60px; overflow: hidden; }
-.hero__bg { position: absolute; inset: 0; pointer-events: none; }
 
-.hero__glow { position: absolute; border-radius: 50%; filter: blur(110px); }
-.hero__glow--1 { width: 640px; height: 640px; top: -260px; left: 50%; margin-left: -320px; background: rgba(255, 255, 255, 0.07); animation: drift 18s ease-in-out infinite; }
-.hero__glow--2 { width: 420px; height: 420px; bottom: -160px; right: -120px; background: rgba(188, 255, 46, 0.06); animation: drift 22s ease-in-out infinite reverse; }
-@keyframes drift { 50% { transform: translate(60px, 40px) scale(1.1); } }
 
-.hero__ring { position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.06); }
-.hero__ring--1 { width: 1100px; height: 1100px; top: -520px; right: -380px; }
-.hero__ring--2 { width: 620px; height: 620px; bottom: -380px; left: -240px; }
+
+
+
+
+
+
+
 
 .hero__inner { position: relative; }
 .eyebrow { display: flex; align-items: center; gap: 10px; color: var(--muted); margin-bottom: 24px; }
@@ -490,26 +490,6 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .step__title { margin-top: 48px; margin-bottom: 10px; font-size: 22px; font-weight: 500; letter-spacing: -0.03em; line-height: 1.15; }
 .step__text { color: var(--muted); font-size: 14px; }
 
-/* ---------- команда ---------- */
-.team { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-.member { padding: 14px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface); }
-.member__photo {
-  display: flex;
-  align-items: flex-end;
-  aspect-ratio: 16 / 9;
-  padding: 22px;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  background:
-    radial-gradient(circle at 75% 25%, rgba(255, 255, 255, 0.16), transparent 55%),
-    linear-gradient(160deg, #262626, #121212);
-}
-
-.member__photo--2 { background: radial-gradient(circle at 25% 30%, rgba(188, 255, 46, 0.14), transparent 55%), linear-gradient(200deg, #262626, #121212); }
-.member__photo span { font-size: clamp(64px, 8vw, 112px); font-weight: 600; letter-spacing: -0.06em; line-height: 0.8; color: rgba(255, 255, 255, 0.9); }
-.member__role { padding: 0 8px; font-size: 24px; font-weight: 500; letter-spacing: -0.03em; margin-bottom: 6px; }
-.member__text { padding: 0 8px 10px; color: var(--muted); }
-
 /* ---------- отзывы ---------- */
 .reviews { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .review { position: relative; display: flex; flex-direction: column; gap: 22px; min-height: 300px; padding: 28px; border-radius: var(--radius); border: 1px dashed var(--line-2); background: var(--bg-2); }
@@ -629,7 +609,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   .head--split, .adv, .faq-wrap, .brief__inner { grid-template-columns: 1fr; }
   .faq-wrap .head { position: static; }
   .adv__panel { position: static; }
-  .works, .team { grid-template-columns: 1fr; }
+  .works { grid-template-columns: 1fr; }
   .stats { grid-template-columns: 1fr 1fr; }
   .stat:nth-child(3) { border-left: 0; }
   .stat:nth-child(n + 3) { border-top: 1px solid var(--line); }
@@ -886,3 +866,59 @@ body.modal-open .fab { opacity: 0; pointer-events: none; }
 
 /* окно никогда не листается вбок — вбок листается только строка вариантов */
 .modal__panel { overflow-x: hidden; }
+
+/* =========================================================
+   Общий анимированный фон на всю страницу
+   ========================================================= */
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: radial-gradient(120% 80% at 50% 0%, #161616 0%, #0e0e0e 55%, #0a0a0a 100%);
+}
+
+.bg__blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  will-change: transform;
+}
+
+.bg__blob--1 { width: 60vmax; height: 60vmax; left: -15vmax; top: -25vmax; background: rgba(255, 255, 255, 0.07); animation: blob1 26s ease-in-out infinite alternate; }
+.bg__blob--2 { width: 48vmax; height: 48vmax; right: -18vmax; top: 20vh;   background: rgba(188, 255, 46, 0.055); animation: blob2 32s ease-in-out infinite alternate; }
+.bg__blob--3 { width: 52vmax; height: 52vmax; left: 10vw;   bottom: -30vmax; background: rgba(255, 255, 255, 0.05); animation: blob3 38s ease-in-out infinite alternate; }
+.bg__blob--4 { width: 34vmax; height: 34vmax; left: 45vw;   top: 35vh;   background: rgba(160, 160, 170, 0.06); animation: blob4 22s ease-in-out infinite alternate; }
+
+@keyframes blob1 { to { transform: translate(28vw, 22vh) scale(1.15); } }
+@keyframes blob2 { to { transform: translate(-34vw, 30vh) scale(0.85); } }
+@keyframes blob3 { to { transform: translate(30vw, -35vh) scale(1.1); } }
+@keyframes blob4 { to { transform: translate(-30vw, -25vh) scale(1.3); } }
+
+/* тонкая сетка, медленно «дышит» */
+.bg__grid {
+  position: absolute;
+  inset: -2px;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 72px 72px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%);
+  animation: gridPan 40s linear infinite;
+}
+
+@keyframes gridPan { to { background-position: 72px 72px, 72px 72px; } }
+
+.bg__vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.55) 100%); }
+
+/* карточки чуть прозрачные — фон просвечивает и страница выглядит цельной */
+.stats, .review { background: rgba(11, 11, 11, 0.6); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.step, .adv__panel { background: rgba(19, 19, 19, 0.7); }
+.brief__inner { background: radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.06), transparent 45%), rgba(11, 11, 11, 0.65); }
+.footer { background: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bg__blob, .bg__grid { animation: none; }
+}
