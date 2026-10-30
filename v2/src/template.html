@@ -102,17 +102,16 @@
             <linearGradient id="ribbonGrad" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0" stop-color="#2c2c2c"/>
               <stop offset="0.55" stop-color="#1b1b1b"/>
-              <stop offset="1" stop-color="#2a3313"/>
+              <stop offset="1" stop-color="#262626"/>
             </linearGradient>
-            <filter id="ribbonBlur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter>
           </defs>
           <path class="ribbon__path" d="M 1250 120 C 980 80 900 420 700 430 C 520 440 560 180 400 220 C 230 262 260 620 80 700 C -20 744 -60 700 -80 690"
-                fill="none" stroke="url(#ribbonGrad)" stroke-width="120" stroke-linecap="round" filter="url(#ribbonBlur)"/>
+                fill="none" stroke="url(#ribbonGrad)" stroke-width="120" stroke-linecap="round"/>
           <path class="ribbon__line" d="M 1250 120 C 980 80 900 420 700 430 C 520 440 560 180 400 220 C 230 262 260 620 80 700 C -20 744 -60 700 -80 690"
                 fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.2" stroke-dasharray="6 14"/>
         </svg>
         <div class="orbit orbit--1"><span class="orbit__dot"></span></div>
-        <div class="orbit orbit--2"><span class="orbit__dot orbit__dot--lime"></span></div>
+        <div class="orbit orbit--2"><span class="orbit__dot"></span></div>
         <svg class="badge" viewBox="0 0 200 200">
           <defs><path id="badgeCircle" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
           <text><textPath href="#badgeCircle" startOffset="0" textLength="488" lengthAdjust="spacing">KEYBROSKI • WEB STUDIO • KEYBROSKI • WEB STUDIO •</textPath></text>
@@ -176,7 +175,7 @@
     <!-- ===== Процесс ===== -->
     <section class="section" id="process">
       <div class="container">
-        <div class="head">
+        <div class="head head--center">
           <p class="mono eyebrow reveal"><span class="eyebrow__num">03</span><span data-i18n="process.tag">{{process.tag}}</span></p>
           <h2 class="title reveal" data-i18n="process.title">{{process.title}}</h2>
         </div>
@@ -194,7 +193,7 @@
     <!-- ===== Преимущества ===== -->
     <section class="section" id="advantages">
       <div class="container">
-        <div class="head">
+        <div class="head head--center">
           <p class="mono eyebrow reveal"><span class="eyebrow__num">04</span><span data-i18n="adv.tag">{{adv.tag}}</span></p>
           <h2 class="title reveal" data-i18n="adv.title">{{adv.title}}</h2>
         </div>

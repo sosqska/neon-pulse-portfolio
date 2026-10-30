@@ -826,7 +826,7 @@ body.modal-open .fab { opacity: 0; pointer-events: none; }
 }
 
 .bg__blob--1 { width: 60vmax; height: 60vmax; left: -15vmax; top: -25vmax; background: rgba(255, 255, 255, 0.07); animation: blob1 26s ease-in-out infinite alternate; }
-.bg__blob--2 { width: 48vmax; height: 48vmax; right: -18vmax; top: 20vh;   background: rgba(188, 255, 46, 0.055); animation: blob2 32s ease-in-out infinite alternate; }
+.bg__blob--2 { width: 48vmax; height: 48vmax; right: -18vmax; top: 20vh;   background: rgba(255, 255, 255, 0.045); animation: blob2 32s ease-in-out infinite alternate; }
 .bg__blob--3 { width: 52vmax; height: 52vmax; left: 10vw;   bottom: -30vmax; background: rgba(255, 255, 255, 0.05); animation: blob3 38s ease-in-out infinite alternate; }
 .bg__blob--4 { width: 34vmax; height: 34vmax; left: 45vw;   top: 35vh;   background: rgba(160, 160, 170, 0.06); animation: blob4 22s ease-in-out infinite alternate; }
 
@@ -905,12 +905,12 @@ body.modal-open .fab { opacity: 0; pointer-events: none; }
 /* ---------- визуал на фоне ---------- */
 .hero__art { position: absolute; inset: 0; pointer-events: none; }
 
-.ribbon { position: absolute; inset: -10% -5%; width: 110%; height: 120%; opacity: 0.55; animation: ribbonFloat 14s ease-in-out infinite alternate; }
+.ribbon { position: absolute; inset: -10% -5%; width: 110%; height: 120%; opacity: 0.5; will-change: transform; transform: translateZ(0); backface-visibility: hidden; animation: ribbonFloat 14s ease-in-out infinite alternate; }
 .ribbon__path { stroke-dasharray: 3200; stroke-dashoffset: 3200; animation: ribbonDraw 3.2s var(--ease) 0.2s forwards; }
-.ribbon__line { animation: ribbonDash 30s linear infinite; }
+.ribbon__line { animation: none; }
 @keyframes ribbonDraw { to { stroke-dashoffset: 0; } }
 @keyframes ribbonDash { to { stroke-dashoffset: -400; } }
-@keyframes ribbonFloat { from { transform: translate(0, 0) rotate(0deg); } to { transform: translate(-2%, 3%) rotate(-2deg); } }
+@keyframes ribbonFloat { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-1.5%, 2.5%, 0); } }
 
 .orbit {
   position: absolute;
@@ -935,7 +935,7 @@ body.modal-open .fab { opacity: 0; pointer-events: none; }
 }
 
 .badge text { font-family: var(--mono); font-size: 12px; letter-spacing: 0; fill: rgba(255, 255, 255, 0.55); }
-.badge__dot { fill: var(--accent); }
+.badge__dot { fill: #fff; }
 
 @media (max-width: 1100px) {
   .badge { right: 5%; top: 16%; width: 120px; height: 120px; }
