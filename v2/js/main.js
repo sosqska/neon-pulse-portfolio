@@ -45,6 +45,71 @@ function splitWords(el) {
   window.i18n.onChange(() => run(true));
 })();
 
+/* ---------- меняющееся слово в заголовке (эффект «расшифровки», как в v1) ---------- */
+(function scrambleWord() {
+  let index = 0;
+  let run = 0; // номер текущей анимации — смена языка обрывает старую
+  const el = () => document.getElementById("heroWord");
+
+  // длинное слово уменьшается, чтобы строка всегда влезала в ширину экрана
+  function fit() {
+    const node = el();
+    if (!node) return;
+    const line = node.closest(".hl");
+    node.style.fontSize = "";
+    const avail = line.clientWidth - parseFloat(getComputedStyle(line).paddingLeft) - 4;
+    const need = node.getBoundingClientRect().width;
+    if (need > avail) node.style.fontSize = (avail / need).toFixed(3) + "em";
+  }
+  fit();
+  if (document.fonts) document.fonts.ready.then(fit);
+  let rt;
+  addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(fit, 120); });
+
+  // после смены языка заголовок перерисован — начинаем с первого слова
+  window.i18n.onChange(() => { run++; index = 0; setTimeout(fit, 0); });
+  if (reduceMotion) return;
+
+  function scrambleTo(word) {
+    const node = el();
+    if (!node) return;
+    const chars = t("hero.chars");
+    const from = node.textContent;
+    // заранее подгоняем размер под новое слово, чтобы во время смены строка не вылезала
+    node.textContent = word;
+    fit();
+    node.textContent = from;
+    const length = Math.max(from.length, word.length);
+    const queue = [];
+    for (let i = 0; i < length; i++) {
+      const start = Math.floor(Math.random() * 14);
+      queue.push({ from: from[i] || "", to: word[i] || "", start, end: start + 10 + Math.floor(Math.random() * 14) });
+    }
+    let frame = 0;
+    const id = ++run;
+    (function step() {
+      if (id !== run || !node.isConnected) return;
+      let out = "", done = 0;
+      for (const q of queue) {
+        if (frame >= q.end) { out += q.to; done++; }
+        else if (frame >= q.start) out += chars[Math.floor(Math.random() * chars.length)].toLowerCase();
+        else out += q.from;
+      }
+      node.textContent = out;
+      frame++;
+      if (done < queue.length) requestAnimationFrame(step);
+      else fit();
+    })();
+  }
+
+  // первое слово видно, пока заголовок проявляется; дальше меняем каждые 2.8 с
+  setTimeout(() => setInterval(() => {
+    const words = t("hero.words");
+    index = (index + 1) % words.length;
+    scrambleTo(words[index]);
+  }, 2800), 1200);
+})();
+
 /* ---------- заявление: слова загораются при прокрутке ---------- */
 (function statement() {
   const el = $("#statementTitle");

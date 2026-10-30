@@ -17,7 +17,7 @@
   "aria.menuOpen": "Otwórz menu",
   "aria.menuClose": "Zamknij menu",
   "hero.eyebrow": "Studio internetowe · Strony i landing page pod klucz",
-  "hero.title": "<span class=\"hl hl--1\">Strony, które</span><span class=\"hl hl--2 dim\">pracują</span><span class=\"hl hl--3\">dla&nbsp;Ciebie.</span>",
+  "hero.title": "<span class=\"hl hl--1\">Robimy strony,</span><span class=\"hl hl--2 dim\">które</span><span class=\"hl hl--3\"><span class=\"hero-word\" id=\"heroWord\">sprzedają</span></span>",
   "hero.text": "Jest nas dwoje: projekt i kod w jednych rękach. Tworzymy strony, które szybko startują, świetnie wyglądają i przyciągają klientów.",
   "hero.concept": "Koncept",
   "stat1.n": "6",
@@ -326,5 +326,12 @@
   "fab.text": "Zwykle odpowiadamy w ciągu kilku godzin.",
   "fab.brief": "Wypełnij brief",
   "form.prefill": "Chcę stronę w stylu {name}.",
-  "hero.scroll": "Przewiń"
+  "hero.scroll": "Przewiń",
+  "hero.words": [
+    "sprzedają",
+    "przyciągają",
+    "zachwycają",
+    "zarabiają"
+  ],
+  "hero.chars": "AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻ#%&$@*!?<>"
 }

@@ -17,7 +17,7 @@
   "aria.menuOpen": "Открыть меню",
   "aria.menuClose": "Закрыть меню",
   "hero.eyebrow": "Веб-студия · Сайты и лендинги под ключ",
-  "hero.title": "<span class=\"hl hl--1\">Сайты, которые</span><span class=\"hl hl--2 dim\">работают</span><span class=\"hl hl--3\">на&nbsp;вас.</span>",
+  "hero.title": "<span class=\"hl hl--1\">Создаём сайты,</span><span class=\"hl hl--2 dim\">которые</span><span class=\"hl hl--3\"><span class=\"hero-word\" id=\"heroWord\">продают</span></span>",
   "hero.text": "Нас двое: дизайн и разработка в одних руках. Делаем сайты, которые быстро запускаются, хорошо выглядят и приводят клиентов.",
   "hero.concept": "Концепт",
   "stat1.n": "6",
@@ -326,5 +326,12 @@
   "fab.text": "Обычно отвечаем в течение пары часов.",
   "fab.brief": "Заполнить бриф",
   "form.prefill": "Хочу сайт в стиле {name}.",
-  "hero.scroll": "Листайте"
+  "hero.scroll": "Листайте",
+  "hero.words": [
+    "продают",
+    "цепляют",
+    "запоминаются",
+    "окупаются"
+  ],
+  "hero.chars": "АБВГДЕЗИКЛМНОПРСТУЭЯ#%&$@*!?<>"
 }

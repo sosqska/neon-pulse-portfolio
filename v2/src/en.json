@@ -17,7 +17,7 @@
   "aria.menuOpen": "Open menu",
   "aria.menuClose": "Close menu",
   "hero.eyebrow": "Web studio · Turnkey websites and landing pages",
-  "hero.title": "<span class=\"hl hl--1\">Websites that</span><span class=\"hl hl--2 dim\">work</span><span class=\"hl hl--3\">for&nbsp;you.</span>",
+  "hero.title": "<span class=\"hl hl--1\">We build sites</span><span class=\"hl hl--2 dim\">that</span><span class=\"hl hl--3\"><span class=\"hero-word\" id=\"heroWord\">sell</span></span>",
   "hero.text": "There are two of us: design and development under one roof. We build sites that launch fast, look great and bring in clients.",
   "hero.concept": "Concept",
   "stat1.n": "6",
@@ -326,5 +326,12 @@
   "fab.text": "We usually reply within a couple of hours.",
   "fab.brief": "Fill in the brief",
   "form.prefill": "I’d like a site in the style of {name}.",
-  "hero.scroll": "Scroll"
+  "hero.scroll": "Scroll",
+  "hero.words": [
+    "sell",
+    "hook",
+    "convert",
+    "stand out"
+  ],
+  "hero.chars": "ABCDEFGHKLMNOPRSTUVWXYZ#%&$@*!?<>"
 }

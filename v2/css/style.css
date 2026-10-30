@@ -980,3 +980,18 @@ body.modal-open .fab { opacity: 0; pointer-events: none; }
   mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
 }
 .hero + .section { padding-top: 40px; }
+
+/* меняющееся слово в заголовке */
+.hero-word { position: relative; display: inline-block; white-space: nowrap; }
+.hero-word::after {
+  content: "";
+  display: inline-block;
+  width: 0.06em;
+  height: 0.8em;
+  margin-left: 0.06em;
+  background: var(--text);
+  vertical-align: -0.04em;
+  animation: caret 1s steps(1) infinite;
+}
+@keyframes caret { 50% { opacity: 0; } }
+@media (max-width: 640px) { .hl--3 { white-space: nowrap; padding-left: 14%; } }
