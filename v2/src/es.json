@@ -17,9 +17,8 @@
   "aria.menuOpen": "Abrir menú",
   "aria.menuClose": "Cerrar menú",
   "hero.eyebrow": "Estudio web · Sitios web y landings llave en mano",
-  "hero.title": "Sitios web que <span class=\"dim\">trabajan</span> para&nbsp;ti.",
+  "hero.title": "<span class=\"hl hl--1\">Webs que</span><span class=\"hl hl--2 dim\">trabajan</span><span class=\"hl hl--3\">para&nbsp;ti.</span>",
   "hero.text": "Somos dos: diseño y desarrollo en las mismas manos. Creamos sitios que se lanzan rápido, se ven genial y atraen clientes.",
-  "hero.fresh": "Trabajos recientes",
   "hero.concept": "Concepto",
   "stat1.n": "6",
   "stat1.t": "tipos de sitios",
@@ -326,5 +325,6 @@
   "fab.title": "Escríbenos",
   "fab.text": "Normalmente respondemos en un par de horas.",
   "fab.brief": "Rellenar el briefing",
-  "form.prefill": "Quiero una web al estilo de {name}."
+  "form.prefill": "Quiero una web al estilo de {name}.",
+  "hero.scroll": "Desliza"
 }

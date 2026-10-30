@@ -17,9 +17,8 @@
   "aria.menuOpen": "Відкрити меню",
   "aria.menuClose": "Закрити меню",
   "hero.eyebrow": "Веб-студія · Сайти та лендинги під ключ",
-  "hero.title": "Сайти, що <span class=\"dim\">працюють</span> на&nbsp;вас.",
+  "hero.title": "<span class=\"hl hl--1\">Сайти, що</span><span class=\"hl hl--2 dim\">працюють</span><span class=\"hl hl--3\">на&nbsp;вас.</span>",
   "hero.text": "Нас двоє: дизайн і розробка в одних руках. Робимо сайти, які швидко запускаються, гарно виглядають і приводять клієнтів.",
-  "hero.fresh": "Свіжі роботи",
   "hero.concept": "Концепт",
   "stat1.n": "6",
   "stat1.t": "видів сайтів",
@@ -326,5 +325,6 @@
   "fab.title": "Напишіть нам",
   "fab.text": "Зазвичай відповідаємо протягом кількох годин.",
   "fab.brief": "Заповнити бриф",
-  "form.prefill": "Хочу сайт у стилі {name}."
+  "form.prefill": "Хочу сайт у стилі {name}.",
+  "hero.scroll": "Гортайте"
 }

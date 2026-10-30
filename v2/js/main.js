@@ -37,7 +37,9 @@ function splitWords(el) {
   const run = (instant) => {
     const words = splitWords(el);
     words.forEach((w, i) => w.style.setProperty("--d", (instant ? 0 : 0.15 + i * 0.09) + "s"));
-    requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add("is-in")));
+    el.classList.remove("is-in");
+    void el.offsetWidth; // фиксируем стартовое состояние — затем запускаем проявление
+    el.classList.add("is-in");
   };
   run(reduceMotion);
   window.i18n.onChange(() => run(true));

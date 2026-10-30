@@ -16,7 +16,7 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap"></noscript>
 
-  <link rel="stylesheet" href="css/style.css?v=4">
+  <link rel="stylesheet" href="css/style.css?v=7">
 </head>
 <body>
 
@@ -95,26 +95,46 @@
 
     <!-- ===== Hero ===== -->
     <section class="hero">
+      <!-- визуал на фоне первого экрана -->
+      <div class="hero__art" aria-hidden="true">
+        <svg class="ribbon" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="ribbonGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#2c2c2c"/>
+              <stop offset="0.55" stop-color="#1b1b1b"/>
+              <stop offset="1" stop-color="#2a3313"/>
+            </linearGradient>
+            <filter id="ribbonBlur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter>
+          </defs>
+          <path class="ribbon__path" d="M 1250 120 C 980 80 900 420 700 430 C 520 440 560 180 400 220 C 230 262 260 620 80 700 C -20 744 -60 700 -80 690"
+                fill="none" stroke="url(#ribbonGrad)" stroke-width="120" stroke-linecap="round" filter="url(#ribbonBlur)"/>
+          <path class="ribbon__line" d="M 1250 120 C 980 80 900 420 700 430 C 520 440 560 180 400 220 C 230 262 260 620 80 700 C -20 744 -60 700 -80 690"
+                fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.2" stroke-dasharray="6 14"/>
+        </svg>
+        <div class="orbit orbit--1"><span class="orbit__dot"></span></div>
+        <div class="orbit orbit--2"><span class="orbit__dot orbit__dot--lime"></span></div>
+        <svg class="badge" viewBox="0 0 200 200">
+          <defs><path id="badgeCircle" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
+          <text><textPath href="#badgeCircle" startOffset="0" textLength="488" lengthAdjust="spacing">KEYBROSKI • WEB STUDIO • KEYBROSKI • WEB STUDIO •</textPath></text>
+          <circle cx="100" cy="100" r="5" class="badge__dot"/>
+        </svg>
+      </div>
 
       <div class="container hero__inner">
         <p class="mono eyebrow reveal" data-i18n="hero.eyebrow">Веб-студия · Сайты и лендинги под ключ</p>
-        <h1 class="hero__title blur-in" data-i18n="hero.title">Сайты, которые <span class="dim">работают</span> на&nbsp;вас.</h1>
-        <p class="hero__text reveal" data-i18n="hero.text">Нас двое: дизайн и разработка в одних руках. Делаем сайты, которые быстро запускаются, хорошо выглядят и приводят клиентов.</p>
-        <div class="hero__actions reveal">
-          <a href="#brief" data-modal="brief" class="btn btn--white">
-            <span data-i18n="cta.start">Начать проект</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-          <a href="#works" class="btn btn--ghost"><span data-i18n="cta.works">Смотреть работы</span></a>
-        </div>
+        <h1 class="hero__title blur-in" data-i18n="hero.title"><span class="hl hl--1">Сайты, которые</span><span class="hl hl--2 dim">работают</span><span class="hl hl--3">на&nbsp;вас.</span></h1>
 
-        <div class="fresh reveal">
-          <p class="mono dim fresh__label" data-i18n="hero.fresh">Свежие работы</p>
-          <div class="fresh__row">
-            <a class="fresh__card" href="../projects/novapay/index.html" data-project="1"><span class="fresh__thumb thumb--1"></span><span><b>NovaPay</b><small class="mono" data-i18n="hero.concept">Концепт</small></span></a>
-            <a class="fresh__card" href="../projects/urbn/index.html" data-project="2"><span class="fresh__thumb thumb--2"></span><span><b>URBN</b><small class="mono" data-i18n="hero.concept">Концепт</small></span></a>
-            <a class="fresh__card" href="../projects/metricly/index.html" data-project="3"><span class="fresh__thumb thumb--3"></span><span><b>Metricly</b><small class="mono" data-i18n="hero.concept">Концепт</small></span></a>
-            <a class="fresh__card" href="../projects/ember/index.html" data-project="4"><span class="fresh__thumb thumb--4"></span><span><b>Ember</b><small class="mono" data-i18n="hero.concept">Концепт</small></span></a>
+        <div class="hero__bottom">
+          <a href="#services" class="hero__scroll reveal">
+            <span class="hero__scroll-line" aria-hidden="true"></span>
+            <span class="mono" data-i18n="hero.scroll">Листайте</span>
+          </a>
+          <div class="hero__side">
+            <p class="hero__text reveal" data-i18n="hero.text">Нас двое: дизайн и разработка в одних руках. Делаем сайты, которые быстро запускаются, хорошо выглядят и приводят клиентов.</p>
+            <div class="hero__actions reveal">
+              <a href="#brief" data-modal="brief" class="btn btn--white"><span data-i18n="cta.start">Начать проект</span> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <a href="#works" class="btn btn--ghost"><span data-i18n="cta.works">Смотреть работы</span></a>
+            </div>
           </div>
         </div>
       </div>
@@ -611,7 +631,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script defer src="js/i18n.js?v=4"></script>
-  <script defer src="js/main.js?v=4"></script>
+  <script defer src="js/i18n.js?v=7"></script>
+  <script defer src="js/main.js?v=7"></script>
 </body>
 </html>
