@@ -966,3 +966,17 @@ body.modal-open .fab { opacity: 0; pointer-events: none; }
   .ribbon, .ribbon__line, .orbit, .badge, .hero__scroll-line::after { animation: none; }
   .ribbon__path { stroke-dashoffset: 0; animation: none; }
 }
+
+/* шапка раздела по центру */
+.head--center { text-align: center; }
+.head--center .eyebrow { justify-content: center; }
+.head--center .title { margin-inline: auto; }
+
+/* визуал первого экрана плавно растворяется книзу — без шва со следующим блоком */
+.hero { overflow: visible; }
+.hero__art {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
+}
+.hero + .section { padding-top: 40px; }
