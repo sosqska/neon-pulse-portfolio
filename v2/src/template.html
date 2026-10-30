@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="meta.title">{{meta.title}}</title>
+  <meta name="description" data-i18n-content="meta.desc" content="{{meta.desc}}">
+  <meta name="theme-color" content="#0e0e0e">
+  <meta property="og:title" content="KeyBroski — web studio">
+  <meta property="og:description" content="{{meta.desc}}">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230e0e0e'/><text x='50' y='66' font-family='Arial' font-weight='700' font-size='48' fill='white' text-anchor='middle'>KB</text></svg>">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap"></noscript>
+
+  <link rel="stylesheet" href="css/style.css?v={{VERSION}}">
+</head>
+<body>
+
+  <!-- ===== Шапка ===== -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="#top" class="logo" aria-label="KeyBroski">
+        <span class="logo__dot"></span>KeyBroski
+      </a>
+
+      <div class="header__actions">
+        <div class="lang" id="lang">
+          <button type="button" class="lang__toggle" id="langToggle" aria-haspopup="true" aria-expanded="false" aria-controls="langMenu" data-i18n-aria="aria.lang" aria-label="{{aria.lang}}">
+            <span class="lang__current" id="langCurrent">RU</span>
+            <svg class="lang__chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="lang__menu" id="langMenu" hidden>
+            <button type="button" class="lang__btn" data-lang="ru"><span>Русский</span><small>RU</small></button>
+            <button type="button" class="lang__btn" data-lang="uk"><span>Українська</span><small>UK</small></button>
+            <button type="button" class="lang__btn" data-lang="en"><span>English</span><small>EN</small></button>
+            <button type="button" class="lang__btn" data-lang="es"><span>Español</span><small>ES</small></button>
+            <button type="button" class="lang__btn" data-lang="pl"><span>Polski</span><small>PL</small></button>
+          </div>
+        </div>
+
+        <a href="#brief" data-modal="brief" class="btn btn--white btn--sm header__start">
+          <span data-i18n="cta.start">{{cta.start}}</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+
+        <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu" data-i18n-aria="aria.menuOpen" aria-label="{{aria.menuOpen}}">
+          <span class="menu-btn__label" data-i18n="menu.open">{{menu.open}}</span>
+          <span class="menu-btn__icon" aria-hidden="true"><i></i><i></i></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Меню на весь экран ===== -->
+  <div class="menu" id="menu" aria-hidden="true">
+    <div class="menu__backdrop" data-menu-close></div>
+    <nav class="menu__panel" aria-label="Menu">
+      <div class="menu__top">
+        <span class="mono dim" data-i18n="menu.open">{{menu.open}}</span>
+        <button type="button" class="menu__close" data-menu-close data-i18n-aria="aria.menuClose" aria-label="{{aria.menuClose}}">
+          <span data-i18n="menu.close">{{menu.close}}</span> ✕
+        </button>
+      </div>
+      <ol class="menu__list">
+        <li><a href="#works" data-menu-link><span class="mono">01</span><span data-i18n="nav.works">{{nav.works}}</span></a></li>
+        <li><a href="#services" data-menu-link><span class="mono">02</span><span data-i18n="nav.services">{{nav.services}}</span></a></li>
+        <li><a href="#advantages" data-menu-link><span class="mono">03</span><span data-i18n="nav.adv">{{nav.adv}}</span></a></li>
+        <li><a href="#process" data-menu-link><span class="mono">04</span><span data-i18n="nav.process">{{nav.process}}</span></a></li>
+        <li><a href="#team" data-menu-link><span class="mono">05</span><span data-i18n="nav.team">{{nav.team}}</span></a></li>
+        <li><a href="#reviews" data-menu-link><span class="mono">06</span><span data-i18n="nav.reviews">{{nav.reviews}}</span></a></li>
+        <li><a href="#faq" data-menu-link><span class="mono">07</span><span data-i18n="nav.faq">{{nav.faq}}</span></a></li>
+      </ol>
+      <div class="menu__bottom">
+        <span class="mono dim" data-i18n="menu.contacts">{{menu.contacts}}</span>
+        <a href="https://t.me/KeyBroski" target="_blank" rel="noopener">Telegram · @KeyBroski ↗</a>
+        <a href="mailto:buzukdenis3@gmail.com">buzukdenis3@gmail.com ↗</a>
+      </div>
+    </nav>
+  </div>
+
+  <main id="top">
+
+    <!-- ===== Hero ===== -->
+    <section class="hero">
+      <div class="hero__bg" aria-hidden="true">
+        <span class="hero__glow hero__glow--1"></span>
+        <span class="hero__glow hero__glow--2"></span>
+        <span class="hero__ring hero__ring--1"></span>
+        <span class="hero__ring hero__ring--2"></span>
+      </div>
+
+      <div class="container hero__inner">
+        <p class="mono eyebrow reveal" data-i18n="hero.eyebrow">{{hero.eyebrow}}</p>
+        <h1 class="hero__title blur-in" data-i18n="hero.title">{{hero.title}}</h1>
+        <p class="hero__text reveal" data-i18n="hero.text">{{hero.text}}</p>
+        <div class="hero__actions reveal">
+          <a href="#brief" data-modal="brief" class="btn btn--white">
+            <span data-i18n="cta.start">{{cta.start}}</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#works" class="btn btn--ghost"><span data-i18n="cta.works">{{cta.works}}</span></a>
+        </div>
+
+        <div class="fresh reveal">
+          <p class="mono dim fresh__label" data-i18n="hero.fresh">{{hero.fresh}}</p>
+          <div class="fresh__row">
+            <a class="fresh__card" href="../projects/novapay/index.html" data-project="1"><span class="fresh__thumb thumb--1"></span><span><b>NovaPay</b><small class="mono" data-i18n="hero.concept">{{hero.concept}}</small></span></a>
+            <a class="fresh__card" href="../projects/urbn/index.html" data-project="2"><span class="fresh__thumb thumb--2"></span><span><b>URBN</b><small class="mono" data-i18n="hero.concept">{{hero.concept}}</small></span></a>
+            <a class="fresh__card" href="../projects/metricly/index.html" data-project="3"><span class="fresh__thumb thumb--3"></span><span><b>Metricly</b><small class="mono" data-i18n="hero.concept">{{hero.concept}}</small></span></a>
+            <a class="fresh__card" href="../projects/ember/index.html" data-project="4"><span class="fresh__thumb thumb--4"></span><span><b>Ember</b><small class="mono" data-i18n="hero.concept">{{hero.concept}}</small></span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Честные цифры ===== -->
+    <section class="container stats reveal" aria-label="Facts">
+      <div class="stat"><b data-i18n="stat1.n">{{stat1.n}}</b><span data-i18n="stat1.t">{{stat1.t}}</span></div>
+      <div class="stat"><b data-i18n="stat2.n">{{stat2.n}}</b><span data-i18n="stat2.t">{{stat2.t}}</span></div>
+      <div class="stat"><b data-i18n="stat3.n">{{stat3.n}}</b><span data-i18n="stat3.t">{{stat3.t}}</span></div>
+      <div class="stat"><b data-i18n="stat4.n">{{stat4.n}}</b><span data-i18n="stat4.t">{{stat4.t}}</span></div>
+    </section>
+
+    <!-- ===== Заявление ===== -->
+    <section class="statement">
+      <div class="container">
+        <h2 class="statement__title" id="statementTitle" data-i18n="statement.title">{{statement.title}}</h2>
+        <p class="statement__text reveal" data-i18n="statement.text">{{statement.text}}</p>
+      </div>
+    </section>
+
+    <!-- ===== Услуги ===== -->
+    <section class="section" id="services">
+      <div class="container">
+        <div class="head">
+          <p class="mono eyebrow reveal"><span class="eyebrow__num">01</span><span data-i18n="services.tag">{{services.tag}}</span></p>
+          <h2 class="title reveal" data-i18n="services.title">{{services.title}}</h2>
+        </div>
+        <div class="acc reveal" id="servicesAcc">
+{{SERVICES}}
+        </div>
+        <a href="#brief" data-modal="brief" class="more-row reveal">
+          <span data-i18n="services.more">{{services.more}}</span>
+          <span class="more-row__cta"><span data-i18n="services.moreCta">{{services.moreCta}}</span> →</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===== Работы ===== -->
+    <section class="section" id="works">
+      <div class="container">
+        <div class="head head--split">
+          <div>
+            <p class="mono eyebrow reveal"><span class="eyebrow__num">02</span><span data-i18n="works.tag">{{works.tag}}</span></p>
+            <h2 class="title reveal" data-i18n="works.title">{{works.title}}</h2>
+          </div>
+          <p class="head__text reveal" data-i18n="works.text">{{works.text}}</p>
+        </div>
+        <div class="works">
+{{WORKS}}
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Преимущества ===== -->
+    <section class="section" id="advantages">
+      <div class="container">
+        <div class="head">
+          <p class="mono eyebrow reveal"><span class="eyebrow__num">03</span><span data-i18n="adv.tag">{{adv.tag}}</span></p>
+          <h2 class="title reveal" data-i18n="adv.title">{{adv.title}}</h2>
+        </div>
+        <div class="adv">
+          <div class="adv__list reveal" role="tablist">
+{{ADV_ITEMS}}
+          </div>
+          <div class="adv__panel reveal" id="advPanel" role="tabpanel" aria-live="polite">
+            <div class="adv__inner" id="advInner">
+              <p class="mono dim adv__label" id="advLabel"></p>
+              <p class="adv__text" id="advText"></p>
+              <ul class="adv__bullets" id="advList"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Процесс ===== -->
+    <section class="section" id="process">
+      <div class="container">
+        <div class="head">
+          <p class="mono eyebrow reveal"><span class="eyebrow__num">04</span><span data-i18n="process.tag">{{process.tag}}</span></p>
+          <h2 class="title reveal" data-i18n="process.title">{{process.title}}</h2>
+        </div>
+        <ol class="steps">
+{{STEPS}}
+        </ol>
+        <div class="center reveal">
+          <a href="#brief" data-modal="brief" class="btn btn--white"><span data-i18n="cta.start">{{cta.start}}</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Команда ===== -->
+    <section class="section" id="team">
+      <div class="container">
+        <div class="head head--split">
+          <div>
+            <p class="mono eyebrow reveal"><span class="eyebrow__num">05</span><span data-i18n="team.tag">{{team.tag}}</span></p>
+            <h2 class="title reveal" data-i18n="team.title">{{team.title}}</h2>
+          </div>
+          <p class="head__text reveal" data-i18n="team.text">{{team.text}}</p>
+        </div>
+        <div class="team">
+          <article class="member reveal">
+            <div class="member__photo" aria-hidden="true"><span>01</span></div>
+            <h3 class="member__role" data-i18n="team1.role">{{team1.role}}</h3>
+            <p class="member__text" data-i18n="team1.d">{{team1.d}}</p>
+          </article>
+          <article class="member reveal">
+            <div class="member__photo member__photo--2" aria-hidden="true"><span>02</span></div>
+            <h3 class="member__role" data-i18n="team2.role">{{team2.role}}</h3>
+            <p class="member__text" data-i18n="team2.d">{{team2.d}}</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Отзывы ===== -->
+    <section class="section" id="reviews">
+      <div class="container">
+        <div class="head">
+          <p class="mono eyebrow reveal"><span class="eyebrow__num">06</span><span data-i18n="reviews.tag">{{reviews.tag}}</span></p>
+          <h2 class="title reveal" data-i18n="reviews.title">{{reviews.title}}</h2>
+        </div>
+        <div class="reviews">
+{{REVIEWS}}
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Вопросы ===== -->
+    <section class="section" id="faq">
+      <div class="container faq-wrap">
+        <div class="head">
+          <p class="mono eyebrow reveal"><span class="eyebrow__num">07</span><span data-i18n="faq.tag">{{faq.tag}}</span></p>
+          <h2 class="title reveal" data-i18n="faq.title">{{faq.title}}</h2>
+          <p class="head__text reveal" data-i18n="faq.text">{{faq.text}}</p>
+          <a class="faq__mail reveal" href="mailto:buzukdenis3@gmail.com">buzukdenis3@gmail.com ↗</a>
+        </div>
+        <div class="acc acc--faq reveal">
+{{FAQ}}
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Бриф ===== -->
+    <section class="section brief" id="brief">
+      <div class="container brief__inner">
+        <div class="brief__left">
+          <p class="mono eyebrow reveal"><span data-i18n="brief.tag">{{brief.tag}}</span></p>
+          <h2 class="brief__title reveal" data-i18n="brief.title">{{brief.title}}</h2>
+          <ul class="brief__list reveal">
+            <li data-i18n="brief.b1">{{brief.b1}}</li>
+            <li data-i18n="brief.b2">{{brief.b2}}</li>
+            <li data-i18n="brief.b3">{{brief.b3}}</li>
+          </ul>
+          <a class="brief__tg reveal" href="https://t.me/KeyBroski" target="_blank" rel="noopener">
+            <span class="mono dim" data-i18n="brief.orTg">{{brief.orTg}}</span>
+            <b>@KeyBroski ↗</b>
+          </a>
+        </div>
+
+        <form class="form reveal" id="briefForm" novalidate>
+          <div class="field">
+            <input type="text" id="fName" name="name" placeholder=" " required autocomplete="name">
+            <label for="fName" data-i18n="form.name">{{form.name}}</label>
+          </div>
+          <div class="field">
+            <input type="text" id="fContact" name="contact" placeholder=" " required>
+            <label for="fContact" data-i18n="form.contact">{{form.contact}}</label>
+          </div>
+          <fieldset class="chips">
+            <legend class="mono dim" data-i18n="form.service">{{form.service}}</legend>
+            <div class="chips__row">{{SERVICE_CHIPS}}
+            </div>
+          </fieldset>
+          <fieldset class="chips">
+            <legend class="mono dim" data-i18n="form.budget">{{form.budget}}</legend>
+            <div class="chips__row">{{BUDGET_CHIPS}}
+            </div>
+          </fieldset>
+          <div class="field">
+            <textarea id="fMessage" name="message" rows="3" placeholder=" "></textarea>
+            <label for="fMessage" data-i18n="form.message">{{form.message}}</label>
+          </div>
+          <button type="submit" class="btn btn--white btn--block"><span data-i18n="form.submit">{{form.submit}}</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <p class="form__note" data-i18n="form.note">{{form.note}}</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Подвал ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="#top" class="logo"><span class="logo__dot"></span>KeyBroski</a>
+          <a class="footer__mail" href="mailto:buzukdenis3@gmail.com">buzukdenis3@gmail.com</a>
+        </div>
+        <div class="footer__col">
+          <p class="mono dim" data-i18n="footer.studio">{{footer.studio}}</p>
+          <a href="#works" data-i18n="nav.works">{{nav.works}}</a>
+          <a href="#services" data-i18n="nav.services">{{nav.services}}</a>
+          <a href="#process" data-i18n="nav.process">{{nav.process}}</a>
+          <a href="#team" data-i18n="nav.team">{{nav.team}}</a>
+          <a href="#faq" data-i18n="nav.faq">{{nav.faq}}</a>
+        </div>
+        <div class="footer__col">
+          <p class="mono dim" data-i18n="footer.services">{{footer.services}}</p>
+{{FOOTER_SERVICES}}
+        </div>
+        <div class="footer__col">
+          <p class="mono dim" data-i18n="footer.contact">{{footer.contact}}</p>
+          <a href="https://t.me/KeyBroski" target="_blank" rel="noopener">Telegram ↗</a>
+          <a href="mailto:buzukdenis3@gmail.com">Email ↗</a>
+        </div>
+      </div>
+      <div class="footer__big" aria-hidden="true">KeyBroski</div>
+      <div class="footer__bottom">
+        <span>© <span id="year">2026</span> KeyBroski. <span data-i18n="footer.made">{{footer.made}}</span></span>
+        <a href="#top" data-i18n="footer.up">{{footer.up}}</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== Окно брифа ===== -->
+  <div class="modal" id="modalBrief" role="dialog" aria-modal="true" aria-labelledby="mbTitle" hidden>
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__panel modal__panel--brief">
+      <button type="button" class="modal__close" data-close data-i18n-aria="modal.close" aria-label="{{modal.close}}">✕</button>
+      <p class="mono eyebrow"><span data-i18n="brief.tag">{{brief.tag}}</span></p>
+      <h2 class="modal__title" id="mbTitle" data-i18n="modal.briefTitle">{{modal.briefTitle}}</h2>
+      <p class="modal__text" data-i18n="modal.briefText">{{modal.briefText}}</p>
+      <div id="modalFormSlot"></div>
+      <a class="modal__tg" href="https://t.me/KeyBroski" target="_blank" rel="noopener"><span class="mono dim" data-i18n="brief.orTg">{{brief.orTg}}</span> <b>@KeyBroski ↗</b></a>
+    </div>
+  </div>
+
+  <!-- ===== Окно проекта ===== -->
+  <div class="modal" id="modalProject" role="dialog" aria-modal="true" aria-labelledby="mpTitle" hidden>
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__panel modal__panel--project">
+      <button type="button" class="modal__close" data-close data-i18n-aria="modal.close" aria-label="{{modal.close}}">✕</button>
+      <div id="projectSlot"></div>
+      <div class="modal__actions">
+        <a class="btn btn--white" id="projectOpen" href="#" target="_blank" rel="noopener"><span data-i18n="works.open">{{works.open}}</span> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <button type="button" class="btn btn--ghost" id="projectLike"><span data-i18n="works.like">{{works.like}}</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Плавающая кнопка «Связаться» ===== -->
+  <div class="fab" id="fab">
+    <div class="fab__card" id="fabCard" role="dialog" aria-labelledby="fabTitle" hidden>
+      <p class="fab__title" id="fabTitle" data-i18n="fab.title">{{fab.title}}</p>
+      <p class="fab__text" data-i18n="fab.text">{{fab.text}}</p>
+      <a class="fab__link" href="https://t.me/KeyBroski" target="_blank" rel="noopener"><span>Telegram</span><span class="dim">@KeyBroski ↗</span></a>
+      <a class="fab__link" href="mailto:buzukdenis3@gmail.com"><span>Email</span><span class="dim">buzukdenis3@gmail.com ↗</span></a>
+      <button type="button" class="btn btn--white btn--block btn--sm" data-modal="brief"><span data-i18n="fab.brief">{{fab.brief}}</span> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+    <button type="button" class="fab__btn" id="fabBtn" aria-expanded="false" aria-controls="fabCard">
+      <span class="fab__pulse" aria-hidden="true"></span>
+      <span data-i18n="fab.label">{{fab.label}}</span>
+    </button>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script defer src="js/i18n.js?v={{VERSION}}"></script>
+  <script defer src="js/main.js?v={{VERSION}}"></script>
+</body>
+</html>

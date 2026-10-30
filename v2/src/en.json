@@ -1,0 +1,330 @@
+{
+  "meta.title": "KeyBroski — Web Studio | Turnkey Websites & Landing Pages",
+  "meta.desc": "A two-person web dev team: business card sites, landing pages, promo sites, portals and event websites. Design and development under one roof.",
+  "nav.works": "Work",
+  "nav.services": "Services",
+  "nav.adv": "Advantages",
+  "nav.process": "Process",
+  "nav.team": "Team",
+  "nav.reviews": "Reviews",
+  "nav.faq": "FAQ",
+  "cta.start": "Start a project",
+  "cta.works": "See our work",
+  "menu.open": "Menu",
+  "menu.close": "Close",
+  "menu.contacts": "Contact us directly",
+  "aria.lang": "Choose language",
+  "aria.menuOpen": "Open menu",
+  "aria.menuClose": "Close menu",
+  "hero.eyebrow": "Web studio · Turnkey websites and landing pages",
+  "hero.title": "Websites that <span class=\"dim\">work</span> for&nbsp;you.",
+  "hero.text": "There are two of us: design and development under one roof. We build sites that launch fast, look great and bring in clients.",
+  "hero.fresh": "Latest work",
+  "hero.concept": "Concept",
+  "stat1.n": "6",
+  "stat1.t": "types of websites",
+  "stat2.n": "from 3",
+  "stat2.t": "days to launch",
+  "stat3.n": "5",
+  "stat3.t": "languages on this site",
+  "stat4.n": "2",
+  "stat4.t": "people — direct, no managers",
+  "statement.title": "Clients decide in&nbsp;seconds.",
+  "statement.text": "A website has a couple of seconds to hook someone. We make sure those seconds are enough.",
+  "services.tag": "Services",
+  "services.title": "One team. Six types of websites.",
+  "sv1.t": "Business card site",
+  "sv1.d": "A few pages about you or your company: who you are, what you do and how to reach you.",
+  "sv1.price": "from $500",
+  "sv1.time": "3–7 days",
+  "sv1.tags": [
+    "1–3 pages",
+    "Contacts and map",
+    "Responsive",
+    "Forms"
+  ],
+  "sv2.t": "Event website",
+  "sv2.d": "A conference, festival or concert: schedule, speakers, registration and ticket sales.",
+  "sv2.price": "from $500",
+  "sv2.time": "7–10 days",
+  "sv2.tags": [
+    "Schedule",
+    "Speakers",
+    "Registration",
+    "Tickets"
+  ],
+  "sv3.t": "Landing page",
+  "sv3.d": "A single high-converting page for a product or ad campaign.",
+  "sv3.price": "from $500",
+  "sv3.time": "5–10 days",
+  "sv3.tags": [
+    "Conversion structure",
+    "Lead forms",
+    "Analytics",
+    "Animations"
+  ],
+  "sv4.t": "Promo site",
+  "sv4.d": "A bold site for a product launch or campaign — with animations and a wow factor.",
+  "sv4.price": "from $500",
+  "sv4.time": "7–14 days",
+  "sv4.tags": [
+    "Scroll animations",
+    "3D effects",
+    "Product launch",
+    "Campaigns"
+  ],
+  "sv5.t": "Info portal",
+  "sv5.d": "A content-heavy site: articles, categories, catalogs and search.",
+  "sv5.price": "from $500",
+  "sv5.time": "20–30 days",
+  "sv5.tags": [
+    "Articles",
+    "Categories",
+    "Search",
+    "Admin panel"
+  ],
+  "sv6.t": "Brand site",
+  "sv6.d": "Builds your brand image: the atmosphere, story and aesthetic of your company.",
+  "sv6.price": "from $500",
+  "sv6.time": "14–20 days",
+  "sv6.tags": [
+    "Brand story",
+    "Atmosphere",
+    "Photo and video",
+    "Animations"
+  ],
+  "services.more": "Don't see your option?",
+  "services.moreCta": "Let's discuss your project",
+  "works.tag": "Work",
+  "works.title": "Concept projects.",
+  "works.text": "Demo sites we built ourselves to show what we can do. Everything is live — open them and click around.",
+  "works.open": "Open demo",
+  "w1.cat": "Fintech",
+  "w1.title": "NovaPay",
+  "w1.desc": "A promo landing page for a payment service, with a 3D card and a fee calculator.",
+  "w1.tags": [
+    "Landing",
+    "3D",
+    "Calculator"
+  ],
+  "w2.cat": "E-commerce",
+  "w2.title": "URBN",
+  "w2.desc": "A streetwear store with a fast cart and one-click checkout.",
+  "w2.tags": [
+    "Store",
+    "Cart",
+    "Filters"
+  ],
+  "w3.cat": "SaaS",
+  "w3.title": "Metricly",
+  "w3.desc": "A sales analytics dashboard with live charts and access roles.",
+  "w3.tags": [
+    "Web app",
+    "Charts",
+    "Roles"
+  ],
+  "w4.cat": "Restaurant",
+  "w4.title": "Ember",
+  "w4.desc": "A gastro bar website with online table booking and a menu with animated dishes.",
+  "w4.tags": [
+    "Booking",
+    "Menu",
+    "Animations"
+  ],
+  "adv.tag": "Advantages",
+  "adv.title": "Advantages you'll feel.",
+  "adv1.t": "Built to sell",
+  "adv1.p": "A beautiful site that brings no leads is just an expensive picture. We design every page around one goal: turning a visitor into a client.",
+  "adv1.list": [
+    [
+      "Conversion-driven structure",
+      "We arrange blocks to lead visitors from the first screen to your lead form."
+    ],
+    [
+      "Clear calls to action",
+      "Buttons and forms sit right where the customer wants to buy."
+    ],
+    [
+      "Fast loading",
+      "We optimize images, fonts and code so nobody leaves while waiting."
+    ],
+    [
+      "Analytics",
+      "We set up analytics with goals so you can see where leads come from."
+    ]
+  ],
+  "adv2.t": "Multilingual",
+  "adv2.p": "Want to work with clients from other countries? We'll build your site in several languages from day one — just like the one you're reading now.",
+  "adv2.list": [
+    [
+      "Language switcher",
+      "An easy language picker that remembers each visitor's choice."
+    ],
+    [
+      "Auto-detection",
+      "The site opens in the language of the visitor's browser."
+    ],
+    [
+      "Adapted copy",
+      "We tailor the text to each language instead of just running it through a translator."
+    ],
+    [
+      "SEO for every language",
+      "Separate titles and descriptions so your site gets found in search across countries."
+    ]
+  ],
+  "adv3.t": "Fair pricing",
+  "adv3.p": "You pay for concrete results, not big words. We calculate the cost honestly and up front.",
+  "adv3.list": [
+    [
+      "Transparent estimate",
+      "Before we start, we spell out what makes up the price."
+    ],
+    [
+      "Fixed cost",
+      "The price doesn't change along the way unless the scope does."
+    ],
+    [
+      "No middlemen",
+      "You work directly with us — no agency markup."
+    ],
+    [
+      "Pay in stages",
+      "Pay in parts as the project progresses."
+    ]
+  ],
+  "adv4.t": "Any currency, anywhere",
+  "adv4.p": "We work with clients from any country and accept payment in the currency that suits you.",
+  "adv4.list": [
+    [
+      "Dollars, euros, rubles",
+      "We invoice in whichever currency is convenient for you."
+    ],
+    [
+      "Flexible payment options",
+      "Card transfer, invoice payment or via freelance marketplaces."
+    ],
+    [
+      "Any time zone",
+      "We adapt to your schedule for calls and discussions."
+    ],
+    [
+      "Online communication",
+      "Telegram, email or video call — whatever works best for you."
+    ]
+  ],
+  "adv5.t": "Warranty and support",
+  "adv5.p": "We don't vanish after handoff. A site has to keep working — and we stand behind that.",
+  "adv5.list": [
+    [
+      "Work guarantee",
+      "We fix any bugs found after launch for free."
+    ],
+    [
+      "One month of support",
+      "For the first month after delivery, we help with edits and questions at no charge."
+    ],
+    [
+      "Training",
+      "We show you how to update text and images on the site yourself."
+    ],
+    [
+      "Ongoing development",
+      "We can keep improving and maintaining your site long term."
+    ]
+  ],
+  "process.tag": "Process",
+  "process.title": "Five steps to launch.",
+  "p1.h": "Discussing the idea",
+  "p1.p": "We hop on a call and dig into your goals, audience and competitors. We set the timeline and budget — free of charge.",
+  "p2.h": "Prototype",
+  "p2.p": "We map out page structure and the user journey. You see how the site will work before any design begins.",
+  "p3.h": "Design",
+  "p3.p": "We craft a unique look for your brand and get your approval on every screen.",
+  "p4.h": "Development",
+  "p4.p": "We code it, build it and bring it to life with animations. You see progress every 2–3 days.",
+  "p5.h": "Testing and launch",
+  "p5.p": "We check it on phones, tablets and across browsers — then we launch.",
+  "team.tag": "Team",
+  "team.title": "A small team.",
+  "team.text": "There are two of us — and that's a plus. You talk directly to the people building your site: no managers, no game of telephone, no agency markup.",
+  "team1.role": "Design and front-end",
+  "team1.d": "Owns how the site looks and feels: structure, visuals, animations.",
+  "team2.role": "Development and launch",
+  "team2.d": "Owns how the site works: code, forms, speed, publishing and support.",
+  "reviews.tag": "Reviews",
+  "reviews.title": "Clients will tell.",
+  "reviews.badge": "Review spot",
+  "r1.q": "Our first client's review will appear here. Maybe yours?",
+  "r1.n": "Your name",
+  "r1.r": "your project",
+  "r2.q": "A spot for a review of your landing page, promo site or event website.",
+  "r2.n": "Soon",
+  "r2.r": "next client",
+  "r3.q": "We're just starting to collect reviews — and each one is worth its weight in gold to us.",
+  "r3.n": "KeyBroski",
+  "r3.r": "team",
+  "faq.tag": "FAQ",
+  "faq.title": "Questions and answers.",
+  "faq.text": "Didn't find your answer? Message us — we'll reply within a couple of hours.",
+  "q1": "Do you only do the design, or the whole website?",
+  "a1": "The whole thing: design, front-end, programming and launch. You get a finished, working site, not just a mockup.",
+  "q2": "How long does a project take?",
+  "a2": "From 3–7 days for a business card site to 20–30 days for a portal. We give an exact timeline after a short brief.",
+  "q3": "How much does a website cost?",
+  "a3": "From $500. The price depends on the scope of work. We lock it in before we start and don't change it unless the scope changes.",
+  "q4": "What do you need from us to start?",
+  "a4": "A short brief: what your business is, who the site is for and which sites you like. Texts and photos if you have them; if not, we'll help.",
+  "q5": "Can the site be in several languages?",
+  "a5": "Yes. This site is the example: five languages with a switcher and browser language auto-detection.",
+  "q6": "What happens after launch?",
+  "a6": "A month of free support, a warranty on bugs and training on managing your site. After that, we can keep maintaining the project.",
+  "q7": "How does payment work?",
+  "a7": "In stages and in a currency that suits you: card transfer, invoice payment or via freelance marketplaces.",
+  "brief.tag": "Brief",
+  "brief.title": "Time to launch.",
+  "brief.b1": "We reply within a couple of hours",
+  "brief.b2": "Cost and timeline estimate — free",
+  "brief.b3": "We work directly, no middlemen",
+  "brief.orTg": "Or message us on Telegram",
+  "form.name": "What should we call you?",
+  "form.contact": "Telegram, phone or email",
+  "form.service": "What do you need",
+  "form.s1": "Business card",
+  "form.s2": "Landing page",
+  "form.s3": "Promo site",
+  "form.s4": "Event website",
+  "form.s5": "Info portal",
+  "form.s6": "Brand site",
+  "form.s7": "Not decided yet",
+  "form.budget": "Budget",
+  "form.b1": "$500–1k",
+  "form.b2": "$1k–2k",
+  "form.b3": "$2k–5k",
+  "form.b4": "$5k+",
+  "form.message": "A few words about your project (optional)",
+  "form.submit": "Send brief",
+  "form.note": "By clicking the button, you agree to the processing of your contact details.",
+  "form.error": "Please enter your name and a contact",
+  "form.ok": "Thank you! We'll reply within a couple of hours ✦",
+  "mail.subject": "Brief from the KeyBroski website",
+  "mail.name": "Name",
+  "mail.contact": "Contact",
+  "mail.service": "Services",
+  "mail.budget": "Budget",
+  "footer.studio": "Studio",
+  "footer.services": "Services",
+  "footer.contact": "Contact",
+  "footer.made": "Made with ♥ and coffee.",
+  "footer.up": "Back to top ↑",
+  "modal.briefTitle": "Tell us what you need.",
+  "modal.briefText": "Fill in a short brief — we’ll reply within a couple of hours with a cost and timeline estimate.",
+  "modal.close": "Close",
+  "works.like": "I want one like this",
+  "services.order": "Order",
+  "fab.label": "Contact",
+  "fab.title": "Message us",
+  "fab.text": "We usually reply within a couple of hours.",
+  "fab.brief": "Fill in the brief",
+  "form.prefill": "I’d like a site in the style of {name}."
+}

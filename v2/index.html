@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="meta.title">KeyBroski — веб-студия | Сайты и лендинги под ключ</title>
+  <meta name="description" data-i18n-content="meta.desc" content="Команда из двух веб-разработчиков: сайты-визитки, лендинги, промо-сайты, порталы и сайты мероприятий. Дизайн и разработка в одних руках.">
+  <meta name="theme-color" content="#0e0e0e">
+  <meta property="og:title" content="KeyBroski — web studio">
+  <meta property="og:description" content="Команда из двух веб-разработчиков: сайты-визитки, лендинги, промо-сайты, порталы и сайты мероприятий. Дизайн и разработка в одних руках.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230e0e0e'/><text x='50' y='66' font-family='Arial' font-weight='700' font-size='48' fill='white' text-anchor='middle'>KB</text></svg>">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap"></noscript>
+
+  <link rel="stylesheet" href="css/style.css?v=3">
+</head>
+<body>
+
+  <!-- ===== Шапка ===== -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="#top" class="logo" aria-label="KeyBroski">
+        <span class="logo__dot"></span>KeyBroski
+      </a>
+
+      <div class="header__actions">
+        <div class="lang" id="lang">
+          <button type="button" class="lang__toggle" id="langToggle" aria-haspopup="true" aria-expanded="false" aria-controls="langMenu" data-i18n-aria="aria.lang" aria-label="Выбрать язык">
+            <span class="lang__current" id="langCurrent">RU</span>
+            <svg class="lang__chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="lang__menu" id="langMenu" hidden>
+            <button type="button" class="lang__btn" data-lang="ru"><span>Русский</span><small>RU</small></button>
+            <button type="button" class="lang__btn" data-lang="uk"><span>Українська</span><small>UK</small></button>
+            <button type="button" class="lang__btn" data-lang="en"><span>English</span><small>EN</small></button>
+            <button type="button" class="lang__btn" data-lang="es"><span>Español</span><small>ES</small></button>
+            <button type="button" class="lang__btn" data-lang="pl"><span>Polski</span><small>PL</small></button>
+          </div>
+        </div>
+
+        <a href="#brief" data-modal="brief" class="btn btn--white btn--sm header__start">
+          <span data-i18n="cta.start">Начать проект</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+
+        <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu" data-i18n-aria="aria.menuOpen" aria-label="Открыть меню">
+          <span class="menu-btn__label" data-i18n="menu.open">Меню</span>
+          <span class="menu-btn__icon" aria-hidden="true"><i></i><i></i></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Меню на весь экран ===== -->
+  <div class="menu" id="menu" aria-hidden="true">
+    <div class="menu__backdrop" data-menu-close></div>
+    <nav class="menu__panel" aria-label="Menu">
+      <div class="menu__top">
+        <span class="mono dim" data-i18n="menu.open">Меню</span>
+        <button type="button" class="menu__close" data-menu-close data-i18n-aria="aria.menuClose" aria-label="Закрыть меню">
+          <span data-i18n="menu.close">Закрыть</span> ✕
+        </button>
+      </div>
+      <ol class="menu__list">
+        <li><a href="#works" data-menu-link><span class="mono">01</span><span data-i18n="nav.works">Работы</span></a></li>
+        <li><a href="#services" data-menu-link><span class="mono">02</span><span data-i18n="nav.services">Услуги</span></a></li>
+        <li><a href="#advantages" data-menu-link><span class="mono">03</span><span data-i18n="nav.adv">Преимущества</span></a></li>
+        <li><a href="#process" data-menu-link><span class="mono">04</span><span data-i18n="nav.process">Процесс</span></a></li>
+        <li><a href="#team" data-menu-link><span class="mono">05</span><span data-i18n="nav.team">Команда</span></a></li>
+        <li><a href="#reviews" data-menu-link><span class="mono">06</span><span data-i18n="nav.reviews">Отзывы</span></a></li>
+        <li><a href="#faq" data-menu-link><span class="mono">07</span><span data-i18n="nav.faq">Вопросы</span></a></li>
+      </ol>
+      <div class="menu__bottom">
+        <span class="mono dim" data-i18n="menu.contacts">Связаться напрямую</span>
+        <a href="https://t.me/KeyBroski" target="_blank" rel="noopener">Telegram · @KeyBroski ↗</a>
+        <a href="mailto:buzukdenis3@gmail.com">buzukdenis3@gmail.com ↗</a>
+      </div>
+    </nav>
+  </div>
+
+  <main id="top">
+
+    <!-- ===== Hero ===== -->
+    <section class="hero">
+      <div class="hero__bg" aria-hidden="true">
+        <span class="hero__glow hero__glow--1"></span>
+        <span class="hero__glow hero__glow--2"></span>
+        <span class="hero__ring hero__ring--1"></span>
+        <span class="hero__ring hero__ring--2"></span>
+      </div>
+
+      <div class="container hero__inner">
+        <p class="mono eyebrow reveal" data-i18n="hero.eyebrow">Веб-студия · Сайты и лендинги под ключ</p>
+        <h1 class="hero__title blur-in" data-i18n="hero.title">Сайты, которые <span class="dim">работают</span> на&nbsp;вас.</h1>
+        <p class="hero__text reveal" data-i18n="hero.text">Нас двое: дизайн и разработка в одних руках. Делаем сайты, которые быстро запускаются, хорошо выглядят и приводят клиентов.</p>
+        <div class="hero__actions reveal">
+          <a href="#brief" data-modal="brief" class="btn btn--white">
+            <span data-i18n="cta.start">Начать проект</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#works" class="btn btn--ghost"><span data-i18n="cta.works">Смотреть работы</span></a>
+        </div>
+
+        <div class="fresh reveal">
+          <p class="mono dim fresh__label" data-i18n="hero.fresh">Свежие работы</p>
+          <div class="fresh__row">
+            <a class="fresh__card" href="../projects/novapay/index.html" data-project="1"><span class="fresh__thumb thumb--1"></span><span><b>NovaPay</b><small class="mono" data-i18n="hero.concept">Концепт</small></span></a>
+            <a class="fresh__card" href="../projects/urbn/index.html" data-project="2"><span class="fresh__thumb thumb--2"></span><span><b>URBN</b><small class="mono" data-i18n="hero.concept">Концепт</small></span></a>
+            <a class="fresh__card" href="../projects/metricly/index.html" data-project="3"><span class="fresh__thumb thumb--3"></span><span><b>Metricly</b><small class="mono" data-i18n="hero.concept">Концепт</small></span></a>
+            <a class="fresh__card" href="../projects/ember/index.html" data-project="4"><span class="fresh__thumb thumb--4"></span><span><b>Ember</b><small class="mono" data-i18n="hero.concept">Концепт</small></span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Честные цифры ===== -->
+    <section class="container stats reveal" aria-label="Facts">
+      <div class="stat"><b data-i18n="stat1.n">6</b><span data-i18n="stat1.t">видов сайтов</span></div>
+      <div class="stat"><b data-i18n="stat2.n">от 3</b><span data-i18n="stat2.t">дней на запуск</span></div>
+      <div class="stat"><b data-i18n="stat3.n">5</b><span data-i18n="stat3.t">языков на этом сайте</span></div>
+      <div class="stat"><b data-i18n="stat4.n">2</b><span data-i18n="stat4.t">человека — напрямую, без менеджеров</span></div>
+    </section>
+
+    <!-- ===== Заявление ===== -->
+    <section class="statement">
+      <div class="container">
+        <h2 class="statement__title" id="statementTitle" data-i18n="statement.title">Клиенты решают за&nbsp;секунды.</h2>
+        <p class="statement__text reveal" data-i18n="statement.text">У сайта есть пара секунд, чтобы зацепить. Мы делаем так, чтобы этих секунд хватило.</p>
+      </div>
+    </section>
+
+    <!-- ===== Услуги ===== -->
+    <section class="section" id="services">
+      <div class="container">
+        <div class="head">
+          <p class="mono eyebrow reveal"><span class="eyebrow__num">01</span><span data-i18n="services.tag">Услуги</span></p>
+          <h2 class="title reveal" data-i18n="services.title">Одна команда. Шесть видов сайтов.</h2>
+        </div>
+        <div class="acc reveal" id="servicesAcc">
+
+          <div class="acc__item">
+            <button type="button" class="acc__head" aria-expanded="false">
+              <span class="mono acc__num">01</span>
+              <span class="acc__title" data-i18n="sv1.t">Сайт-визитка</span>
+              <span class="acc__meta"><span data-i18n="sv1.price">от 500 $</span><span class="dim" data-i18n="sv1.time">3–7 дней</span></span>
+              <span class="acc__plus" aria-hidden="true"></span>
+            </button>
+            <div class="acc__body"><div class="acc__body-inner">
+              <p data-i18n="sv1.d">Пара страниц о вас или компании: кто вы, чем занимаетесь и как связаться.</p>
+              <div class="acc__row"><div class="tags" data-i18n-tags="sv1.tags"><span>1–3 страницы</span><span>Контакты и карта</span><span>Адаптив</span><span>Формы</span></div>
+              <button type="button" class="btn btn--white btn--sm acc__order" data-modal="brief" data-service="s1"><span data-i18n="services.order">Заказать</span> ↗</button></div>
+            </div></div>
+          </div>
+          <div class="acc__item">
+            <button type="button" class="acc__head" aria-expanded="false">
+              <span class="mono acc__num">02</span>
+              <span class="acc__title" data-i18n="sv2.t">Сайт мероприятия</span>
+              <span class="acc__meta"><span data-i18n="sv2.price">от 500 $</span><span class="dim" data-i18n="sv2.time">7–10 дней</span></span>
+              <span class="acc__plus" aria-hidden="true"></span>
+            </button>
+            <div class="acc__body"><div class="acc__body-inner">
+              <p data-i18n="sv2.d">Конференция, фестиваль или концерт: программа, спикеры, регистрация и продажа билетов.</p>
+              <div class="acc__row"><div class="tags" data-i18n-tags="sv2.tags"><span>Программа</span><span>Спикеры</span><span>Регистрация</span><span>Билеты</span></div>
+              <button type="button" class="btn btn--white btn--sm acc__order" data-modal="brief" data-service="s4"><span data-i18n="services.order">Заказать</span> ↗</button></div>
+            </div></div>
+          </div>
+          <div class="acc__item">
+            <button type="button" class="acc__head" aria-expanded="false">
+              <span class="mono acc__num">03</span>
+              <span class="acc__title" data-i18n="sv3.t">Лендинг</span>
+              <span class="acc__meta"><span data-i18n="sv3.price">от 500 $</span><span class="dim" data-i18n="sv3.time">5–10 дней</span></span>
+              <span class="acc__plus" aria-hidden="true"></span>
+            </button>
+            <div class="acc__body"><div class="acc__body-inner">
+              <p data-i18n="sv3.d">Одна продающая страница под продукт или рекламную кампанию.</p>
+              <div class="acc__row"><div class="tags" data-i18n-tags="sv3.tags"><span>Продающая структура</span><span>Формы заявок</span><span>Аналитика</span><span>Анимации</span></div>
+              <button type="button" class="btn btn--white btn--sm acc__order" data-modal="brief" data-service="s2"><span data-i18n="services.order">Заказать</span> ↗</button></div>
+            </div></div>
+          </div>
+          <div class="acc__item">
+            <button type="button" class="acc__head" aria-expanded="false">
+              <span class="mono acc__num">04</span>
+              <span class="acc__title" data-i18n="sv4.t">Промо-сайт</span>
+              <span class="acc__meta"><span data-i18n="sv4.price">от 500 $</span><span class="dim" data-i18n="sv4.time">7–14 дней</span></span>
+              <span class="acc__plus" aria-hidden="true"></span>
+            </button>
+            <div class="acc__body"><div class="acc__body-inner">
+              <p data-i18n="sv4.d">Яркий сайт под запуск продукта или акцию — с анимациями и вау-эффектом.</p>
+              <div class="acc__row"><div class="tags" data-i18n-tags="sv4.tags"><span>Скролл-анимации</span><span>3D-эффекты</span><span>Запуск продукта</span><span>Акции</span></div>
+              <button type="button" class="btn btn--white btn--sm acc__order" data-modal="brief" data-service="s3"><span data-i18n="services.order">Заказать</span> ↗</button></div>
+            </div></div>
+          </div>
+          <div class="acc__item">
+            <button type="button" class="acc__head" aria-expanded="false">
+              <span class="mono acc__num">05</span>
+              <span class="acc__title" data-i18n="sv5.t">Инфо-портал</span>
+              <span class="acc__meta"><span data-i18n="sv5.price">от 500 $</span><span class="dim" data-i18n="sv5.time">20–30 дней</span></span>
+              <span class="acc__plus" aria-hidden="true"></span>
+            </button>
+            <div class="acc__body"><div class="acc__body-inner">
+              <p data-i18n="sv5.d">Сайт с большим объёмом контента: статьи, рубрики, каталоги и поиск.</p>
+              <div class="acc__row"><div class="tags" data-i18n-tags="sv5.tags"><span>Статьи</span><span>Рубрики</span><span>Поиск</span><span>Админка</span></div>
+              <button type="button" class="btn btn--white btn--sm acc__order" data-modal="brief" data-service="s5"><span data-i18n="services.order">Заказать</span> ↗</button></div>
+            </div></div>
+          </div>
+          <div class="acc__item">
+            <button type="button" class="acc__head" aria-expanded="false">
+              <span class="mono acc__num">06</span>
+              <span class="acc__title" data-i18n="sv6.t">Имиджевый сайт</span>
+              <span class="acc__meta"><span data-i18n="sv6.price">от 500 $</span><span class="dim" data-i18n="sv6.time">14–20 дней</span></span>
+              <span class="acc__plus" aria-hidden="true"></span>
+            </button>
+            <div class="acc__body"><div class="acc__body-inner">
+              <p data-i18n="sv6.d">Создаёт образ бренда: атмосфера, история и эстетика вашей компании.</p>
+              <div class="acc__row"><div class="tags" data-i18n-tags="sv6.tags"><span>История бренда</span><span>Атмосфера</span><span>Фото и видео</span><span>Анимации</span></div>
+              <button type="button" class="btn btn--white btn--sm acc__order" data-modal="brief" data-service="s6"><span data-i18n="services.order">Заказать</span> ↗</button></div>
+            </div></div>
+          </div>
+        </div>
+        <a href="#brief" data-modal="brief" class="more-row reveal">
+          <span data-i18n="services.more">Не нашли свой вариант?</span>
+          <span class="more-row__cta"><span data-i18n="services.moreCta">Обсудим ваш проект</span> →</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===== Работы ===== -->
+    <section class="section" id="works">
+      <div class="container">
+        <div class="head head--split">
+          <div>
+            <p class="mono eyebrow reveal"><span class="eyebrow__num">02</span><span data-i18n="works.tag">Работы</span></p>
+            <h2 class="title reveal" data-i18n="works.title">Концепт-проекты.</h2>
+          </div>
+          <p class="head__text reveal" data-i18n="works.text">Демо-сайты, которые мы сделали сами, чтобы показать, что умеем. Всё живое — можно открыть и потыкать.</p>
+        </div>
+        <div class="works">
+
+          <a class="work reveal" href="../projects/novapay/index.html" data-project="1">
+            <div class="work__visual work__visual--1"><div class="mock"><div class="mock__bar"><i></i><i></i><i></i></div><div class="mock__body"><div class="mock__lines"><i></i><i></i><i class="short"></i></div><div class="mock__card3d"></div><div class="mock__btn"></div></div></div></div>
+            <div class="work__meta mono"><span data-i18n="w1.cat">Финтех</span><span>2026</span><span class="work__badge" data-i18n="hero.concept">Концепт</span></div>
+            <h3 class="work__title" data-i18n="w1.title">NovaPay</h3>
+            <p class="work__desc" data-i18n="w1.desc">Промо-лендинг платёжного сервиса с 3D-картой и калькулятором комиссий.</p>
+            <div class="work__foot">
+              <div class="tags" data-i18n-tags="w1.tags"><span>Лендинг</span><span>3D</span><span>Калькулятор</span></div>
+              <span class="work__open"><span data-i18n="works.open">Открыть демо</span> ↗</span>
+            </div>
+          </a>
+          <a class="work reveal" href="../projects/urbn/index.html" data-project="2">
+            <div class="work__visual work__visual--2"><div class="mock"><div class="mock__bar"><i></i><i></i><i></i></div><div class="mock__body mock__body--grid"><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div>
+            <div class="work__meta mono"><span data-i18n="w2.cat">E-commerce</span><span>2026</span><span class="work__badge" data-i18n="hero.concept">Концепт</span></div>
+            <h3 class="work__title" data-i18n="w2.title">URBN</h3>
+            <p class="work__desc" data-i18n="w2.desc">Магазин streetwear с быстрой корзиной и оплатой в один клик.</p>
+            <div class="work__foot">
+              <div class="tags" data-i18n-tags="w2.tags"><span>Магазин</span><span>Корзина</span><span>Фильтры</span></div>
+              <span class="work__open"><span data-i18n="works.open">Открыть демо</span> ↗</span>
+            </div>
+          </a>
+          <a class="work reveal" href="../projects/metricly/index.html" data-project="3">
+            <div class="work__visual work__visual--3"><div class="mock"><div class="mock__bar"><i></i><i></i><i></i></div><div class="mock__body mock__body--dash"><div class="mock__side"></div><div class="mock__bars"><i style="--h:40%"></i><i style="--h:65%"></i><i style="--h:50%"></i><i style="--h:85%"></i><i style="--h:70%"></i><i style="--h:95%"></i></div></div></div></div>
+            <div class="work__meta mono"><span data-i18n="w3.cat">SaaS</span><span>2026</span><span class="work__badge" data-i18n="hero.concept">Концепт</span></div>
+            <h3 class="work__title" data-i18n="w3.title">Metricly</h3>
+            <p class="work__desc" data-i18n="w3.desc">Дашборд аналитики продаж с живыми графиками и ролями доступа.</p>
+            <div class="work__foot">
+              <div class="tags" data-i18n-tags="w3.tags"><span>Веб-приложение</span><span>Графики</span><span>Роли</span></div>
+              <span class="work__open"><span data-i18n="works.open">Открыть демо</span> ↗</span>
+            </div>
+          </a>
+          <a class="work reveal" href="../projects/ember/index.html" data-project="4">
+            <div class="work__visual work__visual--4"><div class="mock"><div class="mock__bar"><i></i><i></i><i></i></div><div class="mock__body mock__body--food"><div class="mock__plate"></div><div class="mock__lines"><i></i><i class="short"></i></div></div></div></div>
+            <div class="work__meta mono"><span data-i18n="w4.cat">Ресторан</span><span>2026</span><span class="work__badge" data-i18n="hero.concept">Концепт</span></div>
+            <h3 class="work__title" data-i18n="w4.title">Ember</h3>
+            <p class="work__desc" data-i18n="w4.desc">Сайт гастробара с онлайн-бронированием столов и меню с анимацией блюд.</p>
+            <div class="work__foot">
+              <div class="tags" data-i18n-tags="w4.tags"><span>Бронирование</span><span>Меню</span><span>Анимации</span></div>
+              <span class="work__open"><span data-i18n="works.open">Открыть демо</span> ↗</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Преимущества ===== -->
+    <section class="section" id="advantages">
+      <div class="container">
+        <div class="head">
+          <p class="mono eyebrow reveal"><span class="eyebrow__num">03</span><span data-i18n="adv.tag">Преимущества</span></p>
+          <h2 class="title reveal" data-i18n="adv.title">Преимущества, которые вы почувствуете.</h2>
+        </div>
+        <div class="adv">
+          <div class="adv__list reveal" role="tablist">
+
+            <button type="button" class="adv__item is-active" data-adv="1" role="tab" aria-selected="true" aria-controls="advPanel">
+              <span class="mono adv__num">01</span><span class="adv__name" data-i18n="adv1.t">Ориентир на продажи</span>
+            </button>
+            <button type="button" class="adv__item" data-adv="2" role="tab" aria-selected="false" aria-controls="advPanel">
+              <span class="mono adv__num">02</span><span class="adv__name" data-i18n="adv2.t">Мультиязычность</span>
+            </button>
+            <button type="button" class="adv__item" data-adv="3" role="tab" aria-selected="false" aria-controls="advPanel">
+              <span class="mono adv__num">03</span><span class="adv__name" data-i18n="adv3.t">Обоснованные цены</span>
+            </button>
+            <button type="button" class="adv__item" data-adv="4" role="tab" aria-selected="false" aria-controls="advPanel">
+              <span class="mono adv__num">04</span><span class="adv__name" data-i18n="adv4.t">Любая валюта и география</span>
+            </button>
+            <button type="button" class="adv__item" data-adv="5" role="tab" aria-selected="false" aria-controls="advPanel">
+              <span class="mono adv__num">05</span><span class="adv__name" data-i18n="adv5.t">Гарантия и техподдержка</span>
+            </button>
+          </div>
+          <div class="adv__panel reveal" id="advPanel" role="tabpanel" aria-live="polite">
+            <div class="adv__inner" id="advInner">
+              <p class="mono dim adv__label" id="advLabel"></p>
+              <p class="adv__text" id="advText"></p>
+              <ul class="adv__bullets" id="advList"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Процесс ===== -->
+    <section class="section" id="process">
+      <div class="container">
+        <div class="head">
+          <p class="mono eyebrow reveal"><span class="eyebrow__num">04</span><span data-i18n="process.tag">Процесс</span></p>
+          <h2 class="title reveal" data-i18n="process.title">Пять шагов до запуска.</h2>
+        </div>
+        <ol class="steps">
+
+          <li class="step reveal">
+            <span class="mono step__num">01</span>
+            <h3 class="step__title" data-i18n="p1.h">Обсуждение идеи</h3>
+            <p class="step__text" data-i18n="p1.p">Созваниваемся, разбираемся в задаче, аудитории и конкурентах. Фиксируем сроки и бюджет — бесплатно.</p>
+          </li>
+          <li class="step reveal">
+            <span class="mono step__num">02</span>
+            <h3 class="step__title" data-i18n="p2.h">Прототип</h3>
+            <p class="step__text" data-i18n="p2.p">Собираем структуру страниц и путь пользователя. Видно, как будет работать сайт, ещё до дизайна.</p>
+          </li>
+          <li class="step reveal">
+            <span class="mono step__num">03</span>
+            <h3 class="step__title" data-i18n="p3.h">Дизайн</h3>
+            <p class="step__text" data-i18n="p3.p">Рисуем уникальный визуал под ваш бренд и согласовываем с вами каждый экран.</p>
+          </li>
+          <li class="step reveal">
+            <span class="mono step__num">04</span>
+            <h3 class="step__title" data-i18n="p4.h">Вёрстка</h3>
+            <p class="step__text" data-i18n="p4.p">Верстаем, программируем и оживляем сайт анимациями. Показываем результаты каждые 2–3 дня.</p>
+          </li>
+          <li class="step reveal">
+            <span class="mono step__num">05</span>
+            <h3 class="step__title" data-i18n="p5.h">Тестирование и запуск</h3>
+            <p class="step__text" data-i18n="p5.p">Проверяем на телефонах, планшетах и в разных браузерах — и запускаем.</p>
+          </li>
+        </ol>
+        <div class="center reveal">
+          <a href="#brief" data-modal="brief" class="btn btn--white"><span data-i18n="cta.start">Начать проект</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Команда ===== -->
+    <section class="section" id="team">
+      <div class="container">
+        <div class="head head--split">
+          <div>
+            <p class="mono eyebrow reveal"><span class="eyebrow__num">05</span><span data-i18n="team.tag">Команда</span></p>
+            <h2 class="title reveal" data-i18n="team.title">Маленькая команда.</h2>
+          </div>
+          <p class="head__text reveal" data-i18n="team.text">Нас двое — и это плюс. Вы общаетесь напрямую с теми, кто делает ваш сайт: без менеджеров, испорченного телефона и наценок агентства.</p>
+        </div>
+        <div class="team">
+          <article class="member reveal">
+            <div class="member__photo" aria-hidden="true"><span>01</span></div>
+            <h3 class="member__role" data-i18n="team1.role">Дизайн и вёрстка</h3>
+            <p class="member__text" data-i18n="team1.d">Отвечает за то, как сайт выглядит и ощущается: структура, визуал, анимации.</p>
+          </article>
+          <article class="member reveal">
+            <div class="member__photo member__photo--2" aria-hidden="true"><span>02</span></div>
+            <h3 class="member__role" data-i18n="team2.role">Разработка и запуск</h3>
+            <p class="member__text" data-i18n="team2.d">Отвечает за то, как сайт работает: код, формы, скорость, публикация и поддержка.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Отзывы ===== -->
+    <section class="section" id="reviews">
+      <div class="container">
+        <div class="head">
+          <p class="mono eyebrow reveal"><span class="eyebrow__num">06</span><span data-i18n="reviews.tag">Отзывы</span></p>
+          <h2 class="title reveal" data-i18n="reviews.title">Клиенты скажут.</h2>
+        </div>
+        <div class="reviews">
+
+          <figure class="review reveal">
+            <span class="mono review__badge" data-i18n="reviews.badge">Место для отзыва</span>
+            <blockquote data-i18n="r1.q">Здесь появится отзыв нашего первого клиента. Может быть, вашего?</blockquote>
+            <figcaption><span class="review__avatar" aria-hidden="true">?</span><span><b data-i18n="r1.n">Ваше имя</b><small data-i18n="r1.r">ваш проект</small></span></figcaption>
+            <span class="mono review__pager">01 / 03</span>
+          </figure>
+          <figure class="review reveal">
+            <span class="mono review__badge" data-i18n="reviews.badge">Место для отзыва</span>
+            <blockquote data-i18n="r2.q">Место для отзыва о вашем лендинге, промо-сайте или сайте мероприятия.</blockquote>
+            <figcaption><span class="review__avatar" aria-hidden="true">?</span><span><b data-i18n="r2.n">Скоро</b><small data-i18n="r2.r">следующий клиент</small></span></figcaption>
+            <span class="mono review__pager">02 / 03</span>
+          </figure>
+          <figure class="review reveal">
+            <span class="mono review__badge" data-i18n="reviews.badge">Место для отзыва</span>
+            <blockquote data-i18n="r3.q">Мы только начинаем собирать отзывы — и каждый для нас на вес золота.</blockquote>
+            <figcaption><span class="review__avatar" aria-hidden="true">K</span><span><b data-i18n="r3.n">KeyBroski</b><small data-i18n="r3.r">команда</small></span></figcaption>
+            <span class="mono review__pager">03 / 03</span>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Вопросы ===== -->
+    <section class="section" id="faq">
+      <div class="container faq-wrap">
+        <div class="head">
+          <p class="mono eyebrow reveal"><span class="eyebrow__num">07</span><span data-i18n="faq.tag">Вопросы</span></p>
+          <h2 class="title reveal" data-i18n="faq.title">Вопросы и ответы.</h2>
+          <p class="head__text reveal" data-i18n="faq.text">Не нашли ответ? Напишите нам — ответим в течение пары часов.</p>
+          <a class="faq__mail reveal" href="mailto:buzukdenis3@gmail.com">buzukdenis3@gmail.com ↗</a>
+        </div>
+        <div class="acc acc--faq reveal">
+
+          <div class="acc__item">
+            <button type="button" class="acc__head" aria-expanded="false">
+              <span class="mono acc__num">01</span>
+              <span class="acc__title acc__title--q" data-i18n="q1">Вы только рисуете дизайн или делаете сайт целиком?</span>
+              <span class="acc__plus" aria-hidden="true"></span>
+            </button>
+            <div class="acc__body"><div class="acc__body-inner"><p data-i18n="a1">Целиком: дизайн, вёрстка, программирование и запуск. Отдаём готовый работающий сайт, а не только макет.</p></div></div>
+          </div>
+          <div class="acc__item">
+            <button type="button" class="acc__head" aria-expanded="false">
+              <span class="mono acc__num">02</span>
+              <span class="acc__title acc__title--q" data-i18n="q2">Сколько длится проект?</span>
+              <span class="acc__plus" aria-hidden="true"></span>
+            </button>
+            <div class="acc__body"><div class="acc__body-inner"><p data-i18n="a2">От 3–7 дней для сайта-визитки до 20–30 дней для портала. Точный срок называем после короткого брифа.</p></div></div>
+          </div>
+          <div class="acc__item">
+            <button type="button" class="acc__head" aria-expanded="false">
+              <span class="mono acc__num">03</span>
+              <span class="acc__title acc__title--q" data-i18n="q3">Сколько стоит сайт?</span>
+              <span class="acc__plus" aria-hidden="true"></span>
+            </button>
+            <div class="acc__body"><div class="acc__body-inner"><p data-i18n="a3">От 500 $. Цена зависит от объёма работы. Фиксируем её до старта и не меняем, если не меняется задача.</p></div></div>
+          </div>
+          <div class="acc__item">
+            <button type="button" class="acc__head" aria-expanded="false">
+              <span class="mono acc__num">04</span>
+              <span class="acc__title acc__title--q" data-i18n="q4">Что нужно от нас для старта?</span>
+              <span class="acc__plus" aria-hidden="true"></span>
+            </button>
+            <div class="acc__body"><div class="acc__body-inner"><p data-i18n="a4">Короткий бриф: что за бизнес, для кого сайт и какие сайты вам нравятся. Тексты и фото — если есть; если нет, поможем.</p></div></div>
+          </div>
+          <div class="acc__item">
+            <button type="button" class="acc__head" aria-expanded="false">
+              <span class="mono acc__num">05</span>
+              <span class="acc__title acc__title--q" data-i18n="q5">Можно сделать сайт на нескольких языках?</span>
+              <span class="acc__plus" aria-hidden="true"></span>
+            </button>
+            <div class="acc__body"><div class="acc__body-inner"><p data-i18n="a5">Да. Этот сайт — пример: пять языков с переключателем и автоопределением языка браузера.</p></div></div>
+          </div>
+          <div class="acc__item">
+            <button type="button" class="acc__head" aria-expanded="false">
+              <span class="mono acc__num">06</span>
+              <span class="acc__title acc__title--q" data-i18n="q6">Что происходит после запуска?</span>
+              <span class="acc__plus" aria-hidden="true"></span>
+            </button>
+            <div class="acc__body"><div class="acc__body-inner"><p data-i18n="a6">Месяц бесплатной поддержки, гарантия на ошибки и обучение работе с сайтом. Дальше можем сопровождать проект.</p></div></div>
+          </div>
+          <div class="acc__item">
+            <button type="button" class="acc__head" aria-expanded="false">
+              <span class="mono acc__num">07</span>
+              <span class="acc__title acc__title--q" data-i18n="q7">Как проходит оплата?</span>
+              <span class="acc__plus" aria-hidden="true"></span>
+            </button>
+            <div class="acc__body"><div class="acc__body-inner"><p data-i18n="a7">Этапами и в удобной для вас валюте: перевод на карту, оплата по счёту или через биржи фриланса.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Бриф ===== -->
+    <section class="section brief" id="brief">
+      <div class="container brief__inner">
+        <div class="brief__left">
+          <p class="mono eyebrow reveal"><span data-i18n="brief.tag">Бриф</span></p>
+          <h2 class="brief__title reveal" data-i18n="brief.title">Пора запускать.</h2>
+          <ul class="brief__list reveal">
+            <li data-i18n="brief.b1">Ответим в течение пары часов</li>
+            <li data-i18n="brief.b2">Оценка стоимости и сроков — бесплатно</li>
+            <li data-i18n="brief.b3">Работаем напрямую, без посредников</li>
+          </ul>
+          <a class="brief__tg reveal" href="https://t.me/KeyBroski" target="_blank" rel="noopener">
+            <span class="mono dim" data-i18n="brief.orTg">Или напишите в Telegram</span>
+            <b>@KeyBroski ↗</b>
+          </a>
+        </div>
+
+        <form class="form reveal" id="briefForm" novalidate>
+          <div class="field">
+            <input type="text" id="fName" name="name" placeholder=" " required autocomplete="name">
+            <label for="fName" data-i18n="form.name">Как к вам обращаться?</label>
+          </div>
+          <div class="field">
+            <input type="text" id="fContact" name="contact" placeholder=" " required>
+            <label for="fContact" data-i18n="form.contact">Telegram, телефон или email</label>
+          </div>
+          <fieldset class="chips">
+            <legend class="mono dim" data-i18n="form.service">Что нужно сделать</legend>
+            <div class="chips__row">
+            <label class="chip"><input type="checkbox" name="service" value="s1"><span data-i18n="form.s1">Визитка</span></label>
+            <label class="chip"><input type="checkbox" name="service" value="s2"><span data-i18n="form.s2">Лендинг</span></label>
+            <label class="chip"><input type="checkbox" name="service" value="s3"><span data-i18n="form.s3">Промо-сайт</span></label>
+            <label class="chip"><input type="checkbox" name="service" value="s4"><span data-i18n="form.s4">Сайт мероприятия</span></label>
+            <label class="chip"><input type="checkbox" name="service" value="s5"><span data-i18n="form.s5">Инфо-портал</span></label>
+            <label class="chip"><input type="checkbox" name="service" value="s6"><span data-i18n="form.s6">Имиджевый сайт</span></label>
+            <label class="chip"><input type="checkbox" name="service" value="s7"><span data-i18n="form.s7">Ещё не решили</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="chips">
+            <legend class="mono dim" data-i18n="form.budget">Бюджет</legend>
+            <div class="chips__row">
+            <label class="chip"><input type="radio" name="budget" value="b1" checked><span data-i18n="form.b1">500–1000 $</span></label>
+            <label class="chip"><input type="radio" name="budget" value="b2"><span data-i18n="form.b2">1000–2000 $</span></label>
+            <label class="chip"><input type="radio" name="budget" value="b3"><span data-i18n="form.b3">2000–5000 $</span></label>
+            <label class="chip"><input type="radio" name="budget" value="b4"><span data-i18n="form.b4">5000 $+</span></label>
+            </div>
+          </fieldset>
+          <div class="field">
+            <textarea id="fMessage" name="message" rows="3" placeholder=" "></textarea>
+            <label for="fMessage" data-i18n="form.message">Пара слов о проекте (необязательно)</label>
+          </div>
+          <button type="submit" class="btn btn--white btn--block"><span data-i18n="form.submit">Отправить бриф</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <p class="form__note" data-i18n="form.note">Нажимая кнопку, вы соглашаетесь на обработку контактных данных.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Подвал ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="#top" class="logo"><span class="logo__dot"></span>KeyBroski</a>
+          <a class="footer__mail" href="mailto:buzukdenis3@gmail.com">buzukdenis3@gmail.com</a>
+        </div>
+        <div class="footer__col">
+          <p class="mono dim" data-i18n="footer.studio">Студия</p>
+          <a href="#works" data-i18n="nav.works">Работы</a>
+          <a href="#services" data-i18n="nav.services">Услуги</a>
+          <a href="#process" data-i18n="nav.process">Процесс</a>
+          <a href="#team" data-i18n="nav.team">Команда</a>
+          <a href="#faq" data-i18n="nav.faq">Вопросы</a>
+        </div>
+        <div class="footer__col">
+          <p class="mono dim" data-i18n="footer.services">Услуги</p>
+
+          <a href="#services" data-i18n="sv1.t">Сайт-визитка</a>
+          <a href="#services" data-i18n="sv2.t">Сайт мероприятия</a>
+          <a href="#services" data-i18n="sv3.t">Лендинг</a>
+          <a href="#services" data-i18n="sv4.t">Промо-сайт</a>
+          <a href="#services" data-i18n="sv5.t">Инфо-портал</a>
+          <a href="#services" data-i18n="sv6.t">Имиджевый сайт</a>
+        </div>
+        <div class="footer__col">
+          <p class="mono dim" data-i18n="footer.contact">Связь</p>
+          <a href="https://t.me/KeyBroski" target="_blank" rel="noopener">Telegram ↗</a>
+          <a href="mailto:buzukdenis3@gmail.com">Email ↗</a>
+        </div>
+      </div>
+      <div class="footer__big" aria-hidden="true">KeyBroski</div>
+      <div class="footer__bottom">
+        <span>© <span id="year">2026</span> KeyBroski. <span data-i18n="footer.made">Сделано с ♥ и кофе.</span></span>
+        <a href="#top" data-i18n="footer.up">Наверх ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== Окно брифа ===== -->
+  <div class="modal" id="modalBrief" role="dialog" aria-modal="true" aria-labelledby="mbTitle" hidden>
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__panel modal__panel--brief">
+      <button type="button" class="modal__close" data-close data-i18n-aria="modal.close" aria-label="Закрыть">✕</button>
+      <p class="mono eyebrow"><span data-i18n="brief.tag">Бриф</span></p>
+      <h2 class="modal__title" id="mbTitle" data-i18n="modal.briefTitle">Расскажите, что вам нужно.</h2>
+      <p class="modal__text" data-i18n="modal.briefText">Заполните короткий бриф — ответим в течение пары часов с оценкой стоимости и сроков.</p>
+      <div id="modalFormSlot"></div>
+      <a class="modal__tg" href="https://t.me/KeyBroski" target="_blank" rel="noopener"><span class="mono dim" data-i18n="brief.orTg">Или напишите в Telegram</span> <b>@KeyBroski ↗</b></a>
+    </div>
+  </div>
+
+  <!-- ===== Окно проекта ===== -->
+  <div class="modal" id="modalProject" role="dialog" aria-modal="true" aria-labelledby="mpTitle" hidden>
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__panel modal__panel--project">
+      <button type="button" class="modal__close" data-close data-i18n-aria="modal.close" aria-label="Закрыть">✕</button>
+      <div id="projectSlot"></div>
+      <div class="modal__actions">
+        <a class="btn btn--white" id="projectOpen" href="#" target="_blank" rel="noopener"><span data-i18n="works.open">Открыть демо</span> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <button type="button" class="btn btn--ghost" id="projectLike"><span data-i18n="works.like">Хочу такой же</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Плавающая кнопка «Связаться» ===== -->
+  <div class="fab" id="fab">
+    <div class="fab__card" id="fabCard" role="dialog" aria-labelledby="fabTitle" hidden>
+      <p class="fab__title" id="fabTitle" data-i18n="fab.title">Напишите нам</p>
+      <p class="fab__text" data-i18n="fab.text">Обычно отвечаем в течение пары часов.</p>
+      <a class="fab__link" href="https://t.me/KeyBroski" target="_blank" rel="noopener"><span>Telegram</span><span class="dim">@KeyBroski ↗</span></a>
+      <a class="fab__link" href="mailto:buzukdenis3@gmail.com"><span>Email</span><span class="dim">buzukdenis3@gmail.com ↗</span></a>
+      <button type="button" class="btn btn--white btn--block btn--sm" data-modal="brief"><span data-i18n="fab.brief">Заполнить бриф</span> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+    <button type="button" class="fab__btn" id="fabBtn" aria-expanded="false" aria-controls="fabCard">
+      <span class="fab__pulse" aria-hidden="true"></span>
+      <span data-i18n="fab.label">Связаться</span>
+    </button>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script defer src="js/i18n.js?v=3"></script>
+  <script defer src="js/main.js?v=3"></script>
+</body>
+</html>

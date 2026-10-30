@@ -1,0 +1,330 @@
+{
+  "meta.title": "KeyBroski — estudio web | Sitios web y landings llave en mano",
+  "meta.desc": "Un equipo de dos desarrolladores web: sitios de presentación, landings, sitios promocionales, portales y sitios para eventos. Diseño y desarrollo en las mismas manos.",
+  "nav.works": "Trabajos",
+  "nav.services": "Servicios",
+  "nav.adv": "Ventajas",
+  "nav.process": "Proceso",
+  "nav.team": "Equipo",
+  "nav.reviews": "Opiniones",
+  "nav.faq": "Preguntas",
+  "cta.start": "Empezar proyecto",
+  "cta.works": "Ver trabajos",
+  "menu.open": "Menú",
+  "menu.close": "Cerrar",
+  "menu.contacts": "Contacto directo",
+  "aria.lang": "Elegir idioma",
+  "aria.menuOpen": "Abrir menú",
+  "aria.menuClose": "Cerrar menú",
+  "hero.eyebrow": "Estudio web · Sitios web y landings llave en mano",
+  "hero.title": "Sitios web que <span class=\"dim\">trabajan</span> para&nbsp;ti.",
+  "hero.text": "Somos dos: diseño y desarrollo en las mismas manos. Creamos sitios que se lanzan rápido, se ven genial y atraen clientes.",
+  "hero.fresh": "Trabajos recientes",
+  "hero.concept": "Concepto",
+  "stat1.n": "6",
+  "stat1.t": "tipos de sitios",
+  "stat2.n": "desde 3",
+  "stat2.t": "días para el lanzamiento",
+  "stat3.n": "5",
+  "stat3.t": "idiomas en este sitio",
+  "stat4.n": "2",
+  "stat4.t": "personas — trato directo, sin gestores",
+  "statement.title": "Los clientes deciden en&nbsp;segundos.",
+  "statement.text": "Un sitio tiene un par de segundos para captar la atención. Nosotros hacemos que esos segundos basten.",
+  "services.tag": "Servicios",
+  "services.title": "Un equipo. Seis tipos de sitios.",
+  "sv1.t": "Sitio de presentación",
+  "sv1.d": "Un par de páginas sobre ti o tu empresa: quién eres, a qué te dedicas y cómo contactarte.",
+  "sv1.price": "desde 500 $",
+  "sv1.time": "3–7 días",
+  "sv1.tags": [
+    "1–3 páginas",
+    "Contacto y mapa",
+    "Adaptable",
+    "Formularios"
+  ],
+  "sv2.t": "Sitio de evento",
+  "sv2.d": "Conferencia, festival o concierto: programa, ponentes, registro y venta de entradas.",
+  "sv2.price": "desde 500 $",
+  "sv2.time": "7–10 días",
+  "sv2.tags": [
+    "Programa",
+    "Ponentes",
+    "Registro",
+    "Entradas"
+  ],
+  "sv3.t": "Landing",
+  "sv3.d": "Una página de venta para un producto o una campaña publicitaria.",
+  "sv3.price": "desde 500 $",
+  "sv3.time": "5–10 días",
+  "sv3.tags": [
+    "Estructura de venta",
+    "Formularios de contacto",
+    "Analítica",
+    "Animaciones"
+  ],
+  "sv4.t": "Sitio promocional",
+  "sv4.d": "Un sitio llamativo para el lanzamiento de un producto o una promoción, con animaciones y efecto wow.",
+  "sv4.price": "desde 500 $",
+  "sv4.time": "7–14 días",
+  "sv4.tags": [
+    "Animaciones al hacer scroll",
+    "Efectos 3D",
+    "Lanzamiento de producto",
+    "Promociones"
+  ],
+  "sv5.t": "Portal informativo",
+  "sv5.d": "Un sitio con gran volumen de contenido: artículos, secciones, catálogos y búsqueda.",
+  "sv5.price": "desde 500 $",
+  "sv5.time": "20–30 días",
+  "sv5.tags": [
+    "Artículos",
+    "Secciones",
+    "Búsqueda",
+    "Panel de administración"
+  ],
+  "sv6.t": "Sitio de imagen",
+  "sv6.d": "Construye la imagen de la marca: la atmósfera, la historia y la estética de tu empresa.",
+  "sv6.price": "desde 500 $",
+  "sv6.time": "14–20 días",
+  "sv6.tags": [
+    "Historia de marca",
+    "Atmósfera",
+    "Foto y vídeo",
+    "Animaciones"
+  ],
+  "services.more": "¿No encuentras tu opción?",
+  "services.moreCta": "Hablemos de tu proyecto",
+  "works.tag": "Trabajos",
+  "works.title": "Proyectos conceptuales.",
+  "works.text": "Sitios demo que hicimos nosotros mismos para mostrar lo que sabemos hacer. Todo funciona: ábrelos y pruébalos.",
+  "works.open": "Abrir demo",
+  "w1.cat": "Fintech",
+  "w1.title": "NovaPay",
+  "w1.desc": "Landing promocional de un servicio de pagos con tarjeta 3D y calculadora de comisiones.",
+  "w1.tags": [
+    "Landing",
+    "3D",
+    "Calculadora"
+  ],
+  "w2.cat": "E-commerce",
+  "w2.title": "URBN",
+  "w2.desc": "Tienda de streetwear con carrito rápido y pago en un clic.",
+  "w2.tags": [
+    "Tienda",
+    "Carrito",
+    "Filtros"
+  ],
+  "w3.cat": "SaaS",
+  "w3.title": "Metricly",
+  "w3.desc": "Panel de analítica de ventas con gráficos en vivo y roles de acceso.",
+  "w3.tags": [
+    "Aplicación web",
+    "Gráficos",
+    "Roles"
+  ],
+  "w4.cat": "Restaurante",
+  "w4.title": "Ember",
+  "w4.desc": "Sitio de un gastrobar con reserva de mesas online y carta con platos animados.",
+  "w4.tags": [
+    "Reservas",
+    "Carta",
+    "Animaciones"
+  ],
+  "adv.tag": "Ventajas",
+  "adv.title": "Ventajas que sentirás.",
+  "adv1.t": "Enfoque en ventas",
+  "adv1.p": "Un sitio bonito que no genera solicitudes es solo una imagen cara. Diseñamos cada página con un único objetivo: que el visitante se convierta en cliente.",
+  "adv1.list": [
+    [
+      "Estructura de venta",
+      "Ordenamos los bloques para guiar al visitante desde la primera pantalla hasta la solicitud."
+    ],
+    [
+      "Llamadas a la acción claras",
+      "Los botones y formularios están donde al cliente le entran ganas de comprar."
+    ],
+    [
+      "Carga rápida",
+      "Optimizamos imágenes, fuentes y código para que nadie se vaya sin esperar."
+    ],
+    [
+      "Analítica",
+      "Conectamos analítica con objetivos para que veas de dónde llegan las solicitudes."
+    ]
+  ],
+  "adv2.t": "Multilingüe",
+  "adv2.p": "¿Quieres trabajar con clientes de otros países? Haremos tu sitio en varios idiomas a la vez, como este que estás leyendo ahora.",
+  "adv2.list": [
+    [
+      "Selector de idioma",
+      "Una forma cómoda de elegir idioma, que se recuerda para cada visitante."
+    ],
+    [
+      "Detección automática",
+      "El sitio se abre solo en el idioma del navegador del cliente."
+    ],
+    [
+      "Textos adaptados",
+      "Adaptamos los textos a cada idioma, no solo los pasamos por un traductor."
+    ],
+    [
+      "SEO para cada idioma",
+      "Títulos y descripciones propios para que te encuentren en buscadores de distintos países."
+    ]
+  ],
+  "adv3.t": "Precios justificados",
+  "adv3.p": "Pagas por un resultado concreto, no por palabras grandilocuentes. Calculamos el coste con honestidad y por adelantado.",
+  "adv3.list": [
+    [
+      "Presupuesto transparente",
+      "Antes de empezar detallamos de qué se compone el precio."
+    ],
+    [
+      "Coste fijo",
+      "El precio no cambia durante el proyecto si no cambia la tarea."
+    ],
+    [
+      "Sin intermediarios",
+      "Trabajas directamente con nosotros, sin sobrecostes de agencia."
+    ],
+    [
+      "Pago por etapas",
+      "Pagas por partes a medida que avanza el proyecto."
+    ]
+  ],
+  "adv4.t": "Cualquier moneda y país",
+  "adv4.p": "Trabajamos con clientes de cualquier país y aceptamos pagos en la moneda que te resulte más cómoda.",
+  "adv4.list": [
+    [
+      "Dólares, euros, rublos",
+      "Emitimos la factura en la moneda que prefieras."
+    ],
+    [
+      "Métodos de pago cómodos",
+      "Transferencia a tarjeta, pago por factura o a través de plataformas freelance."
+    ],
+    [
+      "Cualquier zona horaria",
+      "Nos adaptamos a tu horario para llamadas y reuniones."
+    ],
+    [
+      "Contacto online",
+      "Telegram, email o videollamada: como prefieras."
+    ]
+  ],
+  "adv5.t": "Garantía y soporte técnico",
+  "adv5.p": "No desaparecemos después de la entrega. El sitio tiene que funcionar, y de eso nos encargamos nosotros.",
+  "adv5.list": [
+    [
+      "Garantía del trabajo",
+      "Corregimos gratis los errores que aparezcan tras el lanzamiento."
+    ],
+    [
+      "Un mes de soporte",
+      "Durante el primer mes tras la entrega te ayudamos gratis con cambios y dudas."
+    ],
+    [
+      "Formación",
+      "Te enseñamos a cambiar textos e imágenes del sitio por tu cuenta."
+    ],
+    [
+      "Desarrollo continuo",
+      "Podemos seguir mejorando y manteniendo el sitio de forma permanente."
+    ]
+  ],
+  "process.tag": "Proceso",
+  "process.title": "Cinco pasos hasta el lanzamiento.",
+  "p1.h": "Hablamos de tu idea",
+  "p1.p": "Hacemos una llamada y analizamos la tarea, el público y la competencia. Acordamos plazos y presupuesto, sin coste.",
+  "p2.h": "Prototipo",
+  "p2.p": "Montamos la estructura de las páginas y el recorrido del usuario. Ves cómo funcionará el sitio antes de pasar al diseño.",
+  "p3.h": "Diseño",
+  "p3.p": "Creamos un diseño único para tu marca y validamos contigo cada pantalla.",
+  "p4.h": "Maquetación",
+  "p4.p": "Maquetamos, programamos y damos vida al sitio con animaciones. Te mostramos avances cada 2–3 días.",
+  "p5.h": "Pruebas y lanzamiento",
+  "p5.p": "Lo comprobamos en móviles, tablets y distintos navegadores, y lo lanzamos.",
+  "team.tag": "Equipo",
+  "team.title": "Un equipo pequeño.",
+  "team.text": "Somos dos, y eso es una ventaja. Hablas directamente con quienes hacen tu sitio: sin gestores, sin teléfono descompuesto y sin sobrecostes de agencia.",
+  "team1.role": "Diseño y maquetación",
+  "team1.d": "Se encarga de cómo se ve y se siente el sitio: estructura, diseño visual, animaciones.",
+  "team2.role": "Desarrollo y lanzamiento",
+  "team2.d": "Se encarga de cómo funciona el sitio: código, formularios, velocidad, publicación y soporte.",
+  "reviews.tag": "Opiniones",
+  "reviews.title": "Los clientes opinarán.",
+  "reviews.badge": "Espacio para tu opinión",
+  "r1.q": "Aquí aparecerá la opinión de nuestro primer cliente. ¿Quizá la tuya?",
+  "r1.n": "Tu nombre",
+  "r1.r": "tu proyecto",
+  "r2.q": "Espacio para una opinión sobre tu landing, sitio promocional o sitio de evento.",
+  "r2.n": "Próximamente",
+  "r2.r": "el siguiente cliente",
+  "r3.q": "Estamos empezando a reunir opiniones, y cada una vale oro para nosotros.",
+  "r3.n": "KeyBroski",
+  "r3.r": "equipo",
+  "faq.tag": "Preguntas",
+  "faq.title": "Preguntas y respuestas.",
+  "faq.text": "¿No encuentras la respuesta? Escríbenos: respondemos en un par de horas.",
+  "q1": "¿Hacen solo el diseño o el sitio completo?",
+  "a1": "El sitio completo: diseño, maquetación, programación y lanzamiento. Entregamos un sitio listo y funcionando, no solo una maqueta.",
+  "q2": "¿Cuánto dura un proyecto?",
+  "a2": "Desde 3–7 días para un sitio de presentación hasta 20–30 días para un portal. Te damos el plazo exacto tras un breve briefing.",
+  "q3": "¿Cuánto cuesta un sitio?",
+  "a3": "Desde 500 $. El precio depende del volumen de trabajo. Lo fijamos antes de empezar y no lo cambiamos si la tarea no cambia.",
+  "q4": "¿Qué se necesita para empezar?",
+  "a4": "Un breve briefing: qué negocio tienes, para quién es el sitio y qué sitios te gustan. Textos y fotos, si los tienes; si no, te ayudamos.",
+  "q5": "¿Se puede hacer un sitio en varios idiomas?",
+  "a5": "Sí. Este sitio es un ejemplo: cinco idiomas con selector y detección automática del idioma del navegador.",
+  "q6": "¿Qué pasa después del lanzamiento?",
+  "a6": "Un mes de soporte gratuito, garantía frente a errores y formación para manejar el sitio. Después podemos seguir acompañando el proyecto.",
+  "q7": "¿Cómo se paga?",
+  "a7": "Por etapas y en la moneda que prefieras: transferencia a tarjeta, pago por factura o a través de plataformas freelance.",
+  "brief.tag": "Briefing",
+  "brief.title": "Es hora de lanzar.",
+  "brief.b1": "Respondemos en un par de horas",
+  "brief.b2": "Estimación de coste y plazos, gratis",
+  "brief.b3": "Trabajamos directamente, sin intermediarios",
+  "brief.orTg": "O escríbenos por Telegram",
+  "form.name": "¿Cómo te llamas?",
+  "form.contact": "Telegram, teléfono o email",
+  "form.service": "Qué necesitas",
+  "form.s1": "Sitio de presentación",
+  "form.s2": "Landing",
+  "form.s3": "Sitio promocional",
+  "form.s4": "Sitio de evento",
+  "form.s5": "Portal informativo",
+  "form.s6": "Sitio de imagen",
+  "form.s7": "Aún no lo sé",
+  "form.budget": "Presupuesto",
+  "form.b1": "500–1000 $",
+  "form.b2": "1000–2000 $",
+  "form.b3": "2000–5000 $",
+  "form.b4": "5000 $+",
+  "form.message": "Cuéntanos algo sobre el proyecto (opcional)",
+  "form.submit": "Enviar briefing",
+  "form.note": "Al pulsar el botón, aceptas el tratamiento de tus datos de contacto.",
+  "form.error": "Rellena tu nombre y un contacto",
+  "form.ok": "¡Gracias! Te respondemos en un par de horas ✦",
+  "mail.subject": "Briefing desde el sitio de KeyBroski",
+  "mail.name": "Nombre",
+  "mail.contact": "Contacto",
+  "mail.service": "Servicios",
+  "mail.budget": "Presupuesto",
+  "footer.studio": "Estudio",
+  "footer.services": "Servicios",
+  "footer.contact": "Contacto",
+  "footer.made": "Hecho con ♥ y café.",
+  "footer.up": "Arriba ↑",
+  "modal.briefTitle": "Cuéntanos qué necesitas.",
+  "modal.briefText": "Rellena un breve briefing — te respondemos en un par de horas con una estimación de coste y plazos.",
+  "modal.close": "Cerrar",
+  "works.like": "Quiero uno así",
+  "services.order": "Encargar",
+  "fab.label": "Contacto",
+  "fab.title": "Escríbenos",
+  "fab.text": "Normalmente respondemos en un par de horas.",
+  "fab.brief": "Rellenar el briefing",
+  "form.prefill": "Quiero una web al estilo de {name}."
+}
