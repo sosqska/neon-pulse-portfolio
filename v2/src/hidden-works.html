@@ -1,0 +1,22 @@
+<!-- Скрытый раздел «Работы». Чтобы вернуть: вставить блок ниже в template.html
+     (перед «Процесс»), вернуть кнопку в hero, пункт меню и ссылку в подвале, затем node build.js N -->
+
+<!-- ===== Работы ===== -->
+    <section class="section" id="works">
+      <div class="container">
+        <div class="head head--split">
+          <div>
+            <p class="mono eyebrow reveal"><span class="eyebrow__num">03</span><span data-i18n="works.tag">{{works.tag}}</span></p>
+            <h2 class="title reveal" data-i18n="works.title">{{works.title}}</h2>
+          </div>
+          <p class="head__text reveal" data-i18n="works.text">{{works.text}}</p>
+        </div>
+        <div class="works">
+{{WORKS}}
+        </div>
+      </div>
+    </section>
+
+    
+<!-- Кнопка для первого экрана (в .hero__actions): -->
+<a href="#works" class="btn btn--ghost"><span data-i18n="cta.works">{{cta.works}}</span></a>
