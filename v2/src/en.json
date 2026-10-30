@@ -95,7 +95,7 @@
   "services.more": "Don't see your option?",
   "services.moreCta": "Let's discuss your project",
   "works.tag": "Work",
-  "works.title": "Concept projects.",
+  "works.title": "Our work.",
   "works.text": "Demo sites we built ourselves to show what we can do. Everything is live — open them and click around.",
   "works.open": "Open demo",
   "w1.cat": "Fintech",
@@ -333,5 +333,11 @@
     "convert",
     "stand out"
   ],
-  "hero.chars": "ABCDEFGHKLMNOPRSTUVWXYZ#%&$@*!?<>"
+  "hero.chars": "ABCDEFGHKLMNOPRSTUVWXYZ#%&$@*!?<>",
+  "works.all": "All work",
+  "wp.title": "All work.",
+  "wp.text": "Websites we’ve built. For now these are concept projects — live demos you can open and click around. Client work is coming soon.",
+  "wp.back": "Back to home",
+  "wp.next": "Your project could be here",
+  "wp.nextText": "Tell us about your idea — and the next case on this list will be yours."
 }

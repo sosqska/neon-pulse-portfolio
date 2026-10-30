@@ -95,7 +95,7 @@
   "services.more": "¿No encuentras tu opción?",
   "services.moreCta": "Hablemos de tu proyecto",
   "works.tag": "Trabajos",
-  "works.title": "Proyectos conceptuales.",
+  "works.title": "Nuestros proyectos.",
   "works.text": "Sitios demo que hicimos nosotros mismos para mostrar lo que sabemos hacer. Todo funciona: ábrelos y pruébalos.",
   "works.open": "Abrir demo",
   "w1.cat": "Fintech",
@@ -333,5 +333,11 @@
     "enamoran",
     "convierten"
   ],
-  "hero.chars": "ABCDEFGHIJLMNÑOPRSTUVZ#%&$@*!?<>"
+  "hero.chars": "ABCDEFGHIJLMNÑOPRSTUVZ#%&$@*!?<>",
+  "works.all": "Todos los proyectos",
+  "wp.title": "Todos los proyectos.",
+  "wp.text": "Webs que hemos hecho. Por ahora son proyectos concepto — demos vivas que puedes abrir y probar. Pronto aparecerán aquí trabajos para clientes.",
+  "wp.back": "Volver al inicio",
+  "wp.next": "Aquí puede estar tu proyecto",
+  "wp.nextText": "Cuéntanos tu idea — y el próximo caso de esta lista será el tuyo."
 }

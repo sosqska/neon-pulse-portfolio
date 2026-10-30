@@ -95,7 +95,7 @@
   "services.more": "Nie znalazłeś swojej opcji?",
   "services.moreCta": "Omówmy Twój projekt",
   "works.tag": "Realizacje",
-  "works.title": "Projekty koncepcyjne.",
+  "works.title": "Nasze realizacje.",
   "works.text": "Strony demo, które zrobiliśmy sami, żeby pokazać, co potrafimy. Wszystko działa — możesz otworzyć i poklikać.",
   "works.open": "Otwórz demo",
   "w1.cat": "Fintech",
@@ -333,5 +333,11 @@
     "zachwycają",
     "zarabiają"
   ],
-  "hero.chars": "AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻ#%&$@*!?<>"
+  "hero.chars": "AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻ#%&$@*!?<>",
+  "works.all": "Wszystkie realizacje",
+  "wp.title": "Wszystkie realizacje.",
+  "wp.text": "Strony, które zrobiliśmy. Na razie to projekty koncepcyjne — działające dema, które możesz otworzyć i sprawdzić. Wkrótce pojawią się tu realizacje dla klientów.",
+  "wp.back": "Strona główna",
+  "wp.next": "Tu może być Twój projekt",
+  "wp.nextText": "Opowiedz o swoim pomyśle — a kolejna realizacja na tej liście będzie Twoja."
 }

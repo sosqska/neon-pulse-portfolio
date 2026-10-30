@@ -49,9 +49,8 @@ const MOCKS = [
   `<div class="mock__body mock__body--dash"><div class="mock__side"></div><div class="mock__bars"><i style="--h:40%"></i><i style="--h:65%"></i><i style="--h:50%"></i><i style="--h:85%"></i><i style="--h:70%"></i><i style="--h:95%"></i></div></div>`,
   `<div class="mock__body mock__body--food"><div class="mock__plate"></div><div class="mock__lines"><i></i><i class="short"></i></div></div>`,
 ];
-let WORKS = "";
-for (let i = 1; i <= 4; i++) WORKS += `
-          <a class="work reveal" href="../projects/${SLUGS[i - 1]}/index.html" data-project="${i}">
+const workCards = (prefix, withModal) => { let s = ""; for (let i = 1; i <= 4; i++) s += `
+          <a class="work reveal" href="${prefix}projects/${SLUGS[i - 1]}/index.html"${withModal ? ` data-project="${i}"` : ""}>
             <div class="work__visual work__visual--${i}"><div class="mock"><div class="mock__bar"><i></i><i></i><i></i></div>${MOCKS[i - 1]}</div></div>
             <div class="work__meta mono"><span data-i18n="w${i}.cat">${ru[`w${i}.cat`]}</span><span>2026</span><span class="work__badge" data-i18n="hero.concept">${ru["hero.concept"]}</span></div>
             <h3 class="work__title" data-i18n="w${i}.title">${ru[`w${i}.title`]}</h3>
@@ -60,7 +59,9 @@ for (let i = 1; i <= 4; i++) WORKS += `
               <div class="tags" data-i18n-tags="w${i}.tags">${tags(`w${i}.tags`)}</div>
               <span class="work__open"><span data-i18n="works.open">${ru["works.open"]}</span> ↗</span>
             </div>
-          </a>`;
+          </a>`; return s; };
+const WORKS = workCards("../", true);
+const WORKS_PAGE = workCards("../../", false);
 
 let ADV_ITEMS = "";
 for (let i = 1; i <= 5; i++) ADV_ITEMS += `
@@ -109,7 +110,7 @@ for (let i = 1; i <= 6; i++) FOOTER_SERVICES += `
 
 /* ---------- сборка ---------- */
 let html = fs.readFileSync(path.join(SRC, "template.html"), "utf8");
-const blocks = { SERVICES, WORKS, ADV_ITEMS, STEPS, REVIEWS, FAQ, SERVICE_CHIPS, BUDGET_CHIPS, FOOTER_SERVICES, VERSION };
+const blocks = { SERVICES, WORKS, WORKS_PAGE, ADV_ITEMS, STEPS, REVIEWS, FAQ, SERVICE_CHIPS, BUDGET_CHIPS, FOOTER_SERVICES, VERSION };
 html = html.replace(/\{\{([A-Z_]+)\}\}/g, (m, k) => (k in blocks ? blocks[k] : m));
 html = html.replace(/\{\{([a-z0-9.]+)\}\}/gi, (m, k) => {
   if (!(k in ru)) throw new Error("unknown key in template: " + k);
@@ -121,6 +122,16 @@ if (left) throw new Error("unfilled: " + left.join(","));
 fs.mkdirSync(path.join(OUT, "js"), { recursive: true });
 fs.mkdirSync(path.join(OUT, "css"), { recursive: true });
 fs.writeFileSync(path.join(OUT, "index.html"), html);
+
+// страница «Все работы»
+let wp = fs.readFileSync(path.join(SRC, "template-works.html"), "utf8");
+wp = wp.replace(/\{\{([A-Z_]+)\}\}/g, (m, k) => (k in blocks ? blocks[k] : m));
+wp = wp.replace(/\{\{([a-z0-9.]+)\}\}/gi, (m, k) => {
+  if (!(k in ru)) throw new Error("unknown key in works template: " + k);
+  return k === "wp.text" || k === "wp.title" || k.startsWith("aria.") ? esc(ru[k]) : ru[k];
+});
+fs.mkdirSync(path.join(OUT, "works"), { recursive: true });
+fs.writeFileSync(path.join(OUT, "works/index.html"), wp);
 
 const runtime = fs.readFileSync(path.join(SRC, "i18n.runtime.js"), "utf8").replace("/*DICT*/", JSON.stringify(D));
 fs.writeFileSync(path.join(OUT, "js/i18n.js"), runtime);

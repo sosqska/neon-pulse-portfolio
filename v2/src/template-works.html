@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KeyBroski — {{wp.title}}</title>
+  <meta name="description" content="{{wp.text}}">
+  <meta name="theme-color" content="#0e0e0e">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230e0e0e'/><text x='50' y='66' font-family='Arial' font-weight='700' font-size='48' fill='white' text-anchor='middle'>KB</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap"></noscript>
+  <link rel="stylesheet" href="../css/style.css?v={{VERSION}}">
+</head>
+<body class="page-works">
+
+  <div class="bg" aria-hidden="true">
+    <span class="bg__blob bg__blob--1"></span>
+    <span class="bg__blob bg__blob--2"></span>
+    <span class="bg__blob bg__blob--3"></span>
+    <span class="bg__blob bg__blob--4"></span>
+    <span class="bg__grid"></span>
+    <span class="bg__vignette"></span>
+  </div>
+
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="../index.html" class="logo" aria-label="KeyBroski"><span class="logo__dot"></span>KeyBroski</a>
+      <div class="header__actions">
+        <div class="lang" id="lang">
+          <button type="button" class="lang__toggle" id="langToggle" aria-haspopup="true" aria-expanded="false" aria-controls="langMenu" data-i18n-aria="aria.lang" aria-label="{{aria.lang}}">
+            <span class="lang__current" id="langCurrent">RU</span>
+            <svg class="lang__chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="lang__menu" id="langMenu" hidden>
+            <button type="button" class="lang__btn" data-lang="ru"><span>Русский</span><small>RU</small></button>
+            <button type="button" class="lang__btn" data-lang="uk"><span>Українська</span><small>UK</small></button>
+            <button type="button" class="lang__btn" data-lang="en"><span>English</span><small>EN</small></button>
+            <button type="button" class="lang__btn" data-lang="es"><span>Español</span><small>ES</small></button>
+            <button type="button" class="lang__btn" data-lang="pl"><span>Polski</span><small>PL</small></button>
+          </div>
+        </div>
+        <a href="../index.html#brief" class="btn btn--white btn--sm header__start">
+          <span data-i18n="cta.start">{{cta.start}}</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="section works-page">
+    <div class="container">
+      <a href="../index.html" class="works-page__back mono"><span aria-hidden="true">←</span> <span data-i18n="wp.back">{{wp.back}}</span></a>
+      <div class="head head--center">
+        <p class="mono eyebrow reveal"><span data-i18n="works.tag">{{works.tag}}</span></p>
+        <h1 class="title reveal" data-i18n="wp.title">{{wp.title}}</h1>
+        <p class="head__text reveal" data-i18n="wp.text">{{wp.text}}</p>
+      </div>
+
+      <div class="works">
+{{WORKS_PAGE}}
+        <a class="work work--next reveal" href="../index.html#brief">
+          <div class="work__visual work__visual--next"><span class="work__plus" aria-hidden="true">+</span></div>
+          <h3 class="work__title" data-i18n="wp.next">{{wp.next}}</h3>
+          <p class="work__desc" data-i18n="wp.nextText">{{wp.nextText}}</p>
+          <span class="work__open"><span data-i18n="cta.start">{{cta.start}}</span> ↗</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom">
+        <span>© <span id="year">2026</span> KeyBroski. <span data-i18n="footer.made">{{footer.made}}</span></span>
+        <a href="https://t.me/KeyBroski" target="_blank" rel="noopener">Telegram · @KeyBroski ↗</a>
+      </div>
+    </div>
+  </footer>
+
+  <script defer src="../js/i18n.js?v={{VERSION}}"></script>
+  <script>
+    // появление карточек при прокрутке и год в подвале
+    document.addEventListener("DOMContentLoaded", function () {
+      document.getElementById("year").textContent = new Date().getFullYear();
+      var els = [].slice.call(document.querySelectorAll(".reveal"));
+      if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) { els.forEach(function (e) { e.classList.add("is-in"); }); return; }
+      var io = new IntersectionObserver(function (en) { en.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); } }); }, { threshold: 0.12 });
+      els.forEach(function (e) { io.observe(e); });
+    });
+  </script>
+</body>
+</html>
