@@ -31,7 +31,7 @@
   "statement.title": "Los clientes deciden en&nbsp;segundos.",
   "statement.text": "Un sitio tiene un par de segundos para captar la atención. Nosotros hacemos que esos segundos basten.",
   "services.tag": "Servicios",
-  "services.title": "Un equipo. Seis tipos de sitios.",
+  "services.title": "<span class=\"dim\">Un equipo.</span> Seis tipos de webs.",
   "sv1.t": "Sitio de presentación",
   "sv1.d": "Un par de páginas sobre ti o tu empresa: quién eres, a qué te dedicas y cómo contactarte.",
   "sv1.price": "desde 500 $",
@@ -339,5 +339,15 @@
   "wp.text": "Webs que hemos hecho. Por ahora son proyectos concepto — demos vivas que puedes abrir y probar. Pronto aparecerán aquí trabajos para clientes.",
   "wp.back": "Volver al inicio",
   "wp.next": "Aquí puede estar tu proyecto",
-  "wp.nextText": "Cuéntanos tu idea — y el próximo caso de esta lista será el tuyo."
+  "wp.nextText": "Cuéntanos tu idea — y el próximo caso de esta lista será el tuyo.",
+  "marquee.items": [
+    "Landing pages",
+    "Diseño UI/UX",
+    "React",
+    "Animaciones",
+    "Tiendas online",
+    "Next.js",
+    "SEO",
+    "Responsive"
+  ]
 }

@@ -138,15 +138,24 @@
       </div>
     </section>
 
+    <!-- ===== Бегущая строка ===== -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker__track">
+        <div class="ticker__group" data-i18n="marquee">{{marquee}}</div>
+        <div class="ticker__group" data-i18n="marquee">{{marquee}}</div>
+      </div>
+    </div>
+
     <!-- ===== Услуги ===== -->
     <section class="section" id="services">
       <div class="container">
-        <div class="head head--center">
+        <div class="head head--svc">
           <p class="mono eyebrow reveal"><span class="eyebrow__num">01</span><span data-i18n="services.tag">{{services.tag}}</span></p>
           <h2 class="title reveal" data-i18n="services.title">{{services.title}}</h2>
         </div>
-        <div class="acc reveal" id="servicesAcc">
+        <div class="srows reveal" id="srows">
 {{SERVICES}}
+          <div class="spreview" id="spreview" aria-hidden="true"><div class="spreview__card"></div><span class="spreview__pill" data-i18n="services.order">{{services.order}}</span></div>
         </div>
         <a href="#brief" data-modal="brief" class="more-row reveal">
           <span data-i18n="services.more">{{services.more}}</span>

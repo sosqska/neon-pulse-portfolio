@@ -31,7 +31,7 @@
   "statement.title": "Klienci decydują w&nbsp;kilka sekund.",
   "statement.text": "Strona ma kilka sekund, by zainteresować. Dbamy o to, żeby wystarczyło.",
   "services.tag": "Usługi",
-  "services.title": "Jeden zespół. Sześć rodzajów stron.",
+  "services.title": "<span class=\"dim\">Jeden zespół.</span> Sześć rodzajów stron.",
   "sv1.t": "Strona wizytówka",
   "sv1.d": "Kilka podstron o Tobie lub firmie: kim jesteś, czym się zajmujesz i jak się z Tobą skontaktować.",
   "sv1.price": "od 500 $",
@@ -339,5 +339,15 @@
   "wp.text": "Strony, które zrobiliśmy. Na razie to projekty koncepcyjne — działające dema, które możesz otworzyć i sprawdzić. Wkrótce pojawią się tu realizacje dla klientów.",
   "wp.back": "Strona główna",
   "wp.next": "Tu może być Twój projekt",
-  "wp.nextText": "Opowiedz o swoim pomyśle — a kolejna realizacja na tej liście będzie Twoja."
+  "wp.nextText": "Opowiedz o swoim pomyśle — a kolejna realizacja na tej liście będzie Twoja.",
+  "marquee.items": [
+    "Landing page",
+    "Projektowanie UI/UX",
+    "React",
+    "Animacje",
+    "Sklepy internetowe",
+    "Next.js",
+    "SEO",
+    "Responsywność"
+  ]
 }

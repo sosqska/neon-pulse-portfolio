@@ -238,9 +238,57 @@ function splitWords(el) {
       });
     });
   });
-  // первая услуга открыта сразу, чтобы было видно, что строки раскрываются
-  const first = $("#servicesAcc .acc__item");
-  if (first) { first.classList.add("is-open"); $(".acc__head", first).setAttribute("aria-expanded", "true"); }
+})();
+
+/* ---------- услуги: строки с большими названиями + превью за курсором ---------- */
+(function serviceRows() {
+  const wrap = $("#srows");
+  if (!wrap) return;
+  const rows = $$(".srow", wrap);
+  const preview = $("#spreview");
+  const card = preview && $(".spreview__card", preview);
+  // цвет превью для каждого вида сайта
+  const tints = [
+    "radial-gradient(circle at 30% 20%, #6f6f76, #1a1a1d)",
+    "radial-gradient(circle at 70% 30%, #7b5cff, #1a1238)",
+    "radial-gradient(circle at 30% 30%, #ff5c8a, #2a0a17)",
+    "radial-gradient(circle at 60% 20%, #ff9a3d, #2b1203)",
+    "radial-gradient(circle at 30% 70%, #1fd1a1, #04201b)",
+    "radial-gradient(circle at 50% 30%, #9a9aa3, #141416)",
+  ];
+
+  function activate(row) {
+    rows.forEach((r) => {
+      const on = r === row;
+      r.classList.toggle("is-active", on);
+      $(".srow__head", r).setAttribute("aria-expanded", String(on));
+    });
+    if (card) card.style.setProperty("--pv", tints[(+row.dataset.srow - 1) % tints.length]);
+  }
+
+  rows.forEach((r) => {
+    $(".srow__head", r).addEventListener("click", () => activate(r));
+    if (finePointer) r.addEventListener("mouseenter", () => activate(r));
+  });
+  activate(rows[0]);
+
+  // превью плавно догоняет курсор (только мышь)
+  if (!preview || !finePointer || reduceMotion) return;
+  let x = 0, y = 0, tx = 0, ty = 0, raf = null;
+  const loop = () => {
+    x += (tx - x) * 0.14;
+    y += (ty - y) * 0.14;
+    preview.style.transform = `translate(${x}px, ${y}px)`;
+    raf = Math.abs(tx - x) + Math.abs(ty - y) > 0.5 ? requestAnimationFrame(loop) : null;
+  };
+  wrap.addEventListener("mousemove", (e) => {
+    const r = wrap.getBoundingClientRect();
+    tx = e.clientX - r.left - 150;   // центр карточки под курсором
+    ty = e.clientY - r.top - 110;
+    if (!wrap.classList.contains("is-hover")) { x = tx; y = ty; wrap.classList.add("is-hover"); }
+    if (!raf) raf = requestAnimationFrame(loop);
+  });
+  wrap.addEventListener("mouseleave", () => wrap.classList.remove("is-hover"));
 })();
 
 /* ---------- появление при прокрутке ---------- */

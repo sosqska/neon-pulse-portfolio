@@ -31,7 +31,7 @@
   "statement.title": "Clients decide in&nbsp;seconds.",
   "statement.text": "A website has a couple of seconds to hook someone. We make sure those seconds are enough.",
   "services.tag": "Services",
-  "services.title": "One team. Six types of websites.",
+  "services.title": "<span class=\"dim\">One team.</span> Six types of websites.",
   "sv1.t": "Business card site",
   "sv1.d": "A few pages about you or your company: who you are, what you do and how to reach you.",
   "sv1.price": "from $500",
@@ -339,5 +339,15 @@
   "wp.text": "Websites we’ve built. For now these are concept projects — live demos you can open and click around. Client work is coming soon.",
   "wp.back": "Back to home",
   "wp.next": "Your project could be here",
-  "wp.nextText": "Tell us about your idea — and the next case on this list will be yours."
+  "wp.nextText": "Tell us about your idea — and the next case on this list will be yours.",
+  "marquee.items": [
+    "Landing pages",
+    "UI/UX design",
+    "React",
+    "Animation",
+    "Online stores",
+    "Next.js",
+    "SEO",
+    "Responsive"
+  ]
 }

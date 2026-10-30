@@ -15,6 +15,9 @@ for (const l of LANGS) for (let i = 1; i <= 5; i++) {
   if (Array.isArray(D[l][k])) D[l][k] = D[l][k].map(([b, d]) => `<li><b>${b}.</b> ${d}</li>`).join("");
 }
 
+// бегущая строка: массив → HTML
+for (const l of LANGS) D[l]["marquee"] = D[l]["marquee.items"].map((s) => `<span>${s}</span><i>✦</i>`).join("");
+
 // проверка ключей
 for (const l of LANGS.slice(1)) {
   const miss = Object.keys(ru).filter((k) => !(k in D[l]));
@@ -27,19 +30,21 @@ const pad = (n) => String(n).padStart(2, "0");
 
 /* ---------- блоки ---------- */
 let SERVICES = "";
+const SVC_CHIP = ["s1", "s4", "s2", "s3", "s5", "s6"]; // визитка, мероприятие, лендинг, промо, портал, имиджевый → чипы формы
 for (let i = 1; i <= 6; i++) SERVICES += `
-          <div class="acc__item">
-            <button type="button" class="acc__head" aria-expanded="false">
-              <span class="mono acc__num">${pad(i)}</span>
-              <span class="acc__title" data-i18n="sv${i}.t">${ru[`sv${i}.t`]}</span>
-              <span class="acc__meta"><span data-i18n="sv${i}.price">${ru[`sv${i}.price`]}</span><span class="dim" data-i18n="sv${i}.time">${ru[`sv${i}.time`]}</span></span>
-              <span class="acc__plus" aria-hidden="true"></span>
+          <div class="srow${i === 1 ? " is-active" : ""}" data-srow="${i}">
+            <button type="button" class="srow__head" aria-expanded="${i === 1}">
+              <span class="mono srow__num">${pad(i)}</span>
+              <span class="srow__title" data-i18n="sv${i}.t">${ru[`sv${i}.t`]}</span>
             </button>
-            <div class="acc__body"><div class="acc__body-inner">
-              <p data-i18n="sv${i}.d">${ru[`sv${i}.d`]}</p>
-              <div class="acc__row"><div class="tags" data-i18n-tags="sv${i}.tags">${tags(`sv${i}.tags`)}</div>
-              <button type="button" class="btn btn--white btn--sm acc__order" data-modal="brief" data-service="${["s1","s4","s2","s3","s5","s6"][i - 1]}"><span data-i18n="services.order">${ru["services.order"]}</span> ↗</button></div>
+            <div class="srow__body"><div class="srow__body-in">
+              <p class="mono srow__meta"><span data-i18n="sv${i}.price">${ru[`sv${i}.price`]}</span> · <span data-i18n="sv${i}.time">${ru[`sv${i}.time`]}</span></p>
+              <p class="srow__text" data-i18n="sv${i}.d">${ru[`sv${i}.d`]}</p>
+              <div class="tags" data-i18n-tags="sv${i}.tags">${tags(`sv${i}.tags`)}</div>
             </div></div>
+            <button type="button" class="srow__btn" data-modal="brief" data-service="${SVC_CHIP[i - 1]}" data-i18n-aria="services.order" aria-label="${ru["services.order"]}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
           </div>`;
 
 const SLUGS = ["novapay", "urbn", "metricly", "ember"];
