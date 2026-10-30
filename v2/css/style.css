@@ -1239,3 +1239,6 @@ body.modal-open .fab { opacity: 0; pointer-events: none; }
 .srow__title { font-size: clamp(38px, 5.4vw, 88px); white-space: normal; overflow-wrap: anywhere; }
 .srow__head { align-items: center; }
 @media (max-width: 640px) { .srow__title { font-size: clamp(28px, 8.4vw, 40px); } }
+
+/* без сетки на фоне */
+.bg__grid { display: none; }
