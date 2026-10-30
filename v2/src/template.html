@@ -77,9 +77,9 @@
       </div>
       <ol class="menu__list">
         <li><a href="#services" data-menu-link><span class="mono">01</span><span data-i18n="nav.services">{{nav.services}}</span></a></li>
-        <li><a href="#works" data-menu-link><span class="mono">02</span><span data-i18n="nav.works">{{nav.works}}</span></a></li>
-        <li><a href="#process" data-menu-link><span class="mono">03</span><span data-i18n="nav.process">{{nav.process}}</span></a></li>
-        <li><a href="#advantages" data-menu-link><span class="mono">04</span><span data-i18n="nav.adv">{{nav.adv}}</span></a></li>
+        <li><a href="#advantages" data-menu-link><span class="mono">02</span><span data-i18n="nav.adv">{{nav.adv}}</span></a></li>
+        <li><a href="#works" data-menu-link><span class="mono">03</span><span data-i18n="nav.works">{{nav.works}}</span></a></li>
+        <li><a href="#process" data-menu-link><span class="mono">04</span><span data-i18n="nav.process">{{nav.process}}</span></a></li>
         <li><a href="#reviews" data-menu-link><span class="mono">05</span><span data-i18n="nav.reviews">{{nav.reviews}}</span></a></li>
         <li><a href="#faq" data-menu-link><span class="mono">06</span><span data-i18n="nav.faq">{{nav.faq}}</span></a></li>
       </ol>
@@ -156,12 +156,34 @@
       </div>
     </section>
 
+    <!-- ===== Преимущества ===== -->
+    <section class="section" id="advantages">
+      <div class="container">
+        <div class="head head--center">
+          <p class="mono eyebrow reveal"><span class="eyebrow__num">02</span><span data-i18n="adv.tag">{{adv.tag}}</span></p>
+          <h2 class="title reveal" data-i18n="adv.title">{{adv.title}}</h2>
+        </div>
+        <div class="adv">
+          <div class="adv__list reveal" role="tablist">
+{{ADV_ITEMS}}
+          </div>
+          <div class="adv__panel reveal" id="advPanel" role="tabpanel" aria-live="polite">
+            <div class="adv__inner" id="advInner">
+              <p class="mono dim adv__label" id="advLabel"></p>
+              <p class="adv__text" id="advText"></p>
+              <ul class="adv__bullets" id="advList"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ===== Работы ===== -->
     <section class="section" id="works">
       <div class="container">
         <div class="head head--split">
           <div>
-            <p class="mono eyebrow reveal"><span class="eyebrow__num">02</span><span data-i18n="works.tag">{{works.tag}}</span></p>
+            <p class="mono eyebrow reveal"><span class="eyebrow__num">03</span><span data-i18n="works.tag">{{works.tag}}</span></p>
             <h2 class="title reveal" data-i18n="works.title">{{works.title}}</h2>
           </div>
           <p class="head__text reveal" data-i18n="works.text">{{works.text}}</p>
@@ -176,7 +198,7 @@
     <section class="section" id="process">
       <div class="container">
         <div class="head head--center">
-          <p class="mono eyebrow reveal"><span class="eyebrow__num">03</span><span data-i18n="process.tag">{{process.tag}}</span></p>
+          <p class="mono eyebrow reveal"><span class="eyebrow__num">04</span><span data-i18n="process.tag">{{process.tag}}</span></p>
           <h2 class="title reveal" data-i18n="process.title">{{process.title}}</h2>
         </div>
         <ol class="steps">
@@ -186,28 +208,6 @@
           <a href="#brief" data-modal="brief" class="btn btn--white"><span data-i18n="cta.start">{{cta.start}}</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== Преимущества ===== -->
-    <section class="section" id="advantages">
-      <div class="container">
-        <div class="head head--center">
-          <p class="mono eyebrow reveal"><span class="eyebrow__num">04</span><span data-i18n="adv.tag">{{adv.tag}}</span></p>
-          <h2 class="title reveal" data-i18n="adv.title">{{adv.title}}</h2>
-        </div>
-        <div class="adv">
-          <div class="adv__list reveal" role="tablist">
-{{ADV_ITEMS}}
-          </div>
-          <div class="adv__panel reveal" id="advPanel" role="tabpanel" aria-live="polite">
-            <div class="adv__inner" id="advInner">
-              <p class="mono dim adv__label" id="advLabel"></p>
-              <p class="adv__text" id="advText"></p>
-              <ul class="adv__bullets" id="advList"></ul>
-            </div>
-          </div>
         </div>
       </div>
     </section>

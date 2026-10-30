@@ -16,7 +16,7 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap"></noscript>
 
-  <link rel="stylesheet" href="css/style.css?v=10">
+  <link rel="stylesheet" href="css/style.css?v=11">
 </head>
 <body>
 
@@ -77,9 +77,9 @@
       </div>
       <ol class="menu__list">
         <li><a href="#services" data-menu-link><span class="mono">01</span><span data-i18n="nav.services">Услуги</span></a></li>
-        <li><a href="#works" data-menu-link><span class="mono">02</span><span data-i18n="nav.works">Работы</span></a></li>
-        <li><a href="#process" data-menu-link><span class="mono">03</span><span data-i18n="nav.process">Процесс</span></a></li>
-        <li><a href="#advantages" data-menu-link><span class="mono">04</span><span data-i18n="nav.adv">Преимущества</span></a></li>
+        <li><a href="#advantages" data-menu-link><span class="mono">02</span><span data-i18n="nav.adv">Преимущества</span></a></li>
+        <li><a href="#works" data-menu-link><span class="mono">03</span><span data-i18n="nav.works">Работы</span></a></li>
+        <li><a href="#process" data-menu-link><span class="mono">04</span><span data-i18n="nav.process">Процесс</span></a></li>
         <li><a href="#reviews" data-menu-link><span class="mono">05</span><span data-i18n="nav.reviews">Отзывы</span></a></li>
         <li><a href="#faq" data-menu-link><span class="mono">06</span><span data-i18n="nav.faq">Вопросы</span></a></li>
       </ol>
@@ -234,12 +234,49 @@
       </div>
     </section>
 
+    <!-- ===== Преимущества ===== -->
+    <section class="section" id="advantages">
+      <div class="container">
+        <div class="head head--center">
+          <p class="mono eyebrow reveal"><span class="eyebrow__num">02</span><span data-i18n="adv.tag">Преимущества</span></p>
+          <h2 class="title reveal" data-i18n="adv.title">Преимущества, которые вы почувствуете.</h2>
+        </div>
+        <div class="adv">
+          <div class="adv__list reveal" role="tablist">
+
+            <button type="button" class="adv__item is-active" data-adv="1" role="tab" aria-selected="true" aria-controls="advPanel">
+              <span class="mono adv__num">01</span><span class="adv__name" data-i18n="adv1.t">Ориентир на продажи</span>
+            </button>
+            <button type="button" class="adv__item" data-adv="2" role="tab" aria-selected="false" aria-controls="advPanel">
+              <span class="mono adv__num">02</span><span class="adv__name" data-i18n="adv2.t">Мультиязычность</span>
+            </button>
+            <button type="button" class="adv__item" data-adv="3" role="tab" aria-selected="false" aria-controls="advPanel">
+              <span class="mono adv__num">03</span><span class="adv__name" data-i18n="adv3.t">Обоснованные цены</span>
+            </button>
+            <button type="button" class="adv__item" data-adv="4" role="tab" aria-selected="false" aria-controls="advPanel">
+              <span class="mono adv__num">04</span><span class="adv__name" data-i18n="adv4.t">Любая валюта и география</span>
+            </button>
+            <button type="button" class="adv__item" data-adv="5" role="tab" aria-selected="false" aria-controls="advPanel">
+              <span class="mono adv__num">05</span><span class="adv__name" data-i18n="adv5.t">Гарантия и техподдержка</span>
+            </button>
+          </div>
+          <div class="adv__panel reveal" id="advPanel" role="tabpanel" aria-live="polite">
+            <div class="adv__inner" id="advInner">
+              <p class="mono dim adv__label" id="advLabel"></p>
+              <p class="adv__text" id="advText"></p>
+              <ul class="adv__bullets" id="advList"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ===== Работы ===== -->
     <section class="section" id="works">
       <div class="container">
         <div class="head head--split">
           <div>
-            <p class="mono eyebrow reveal"><span class="eyebrow__num">02</span><span data-i18n="works.tag">Работы</span></p>
+            <p class="mono eyebrow reveal"><span class="eyebrow__num">03</span><span data-i18n="works.tag">Работы</span></p>
             <h2 class="title reveal" data-i18n="works.title">Концепт-проекты.</h2>
           </div>
           <p class="head__text reveal" data-i18n="works.text">Демо-сайты, которые мы сделали сами, чтобы показать, что умеем. Всё живое — можно открыть и потыкать.</p>
@@ -294,7 +331,7 @@
     <section class="section" id="process">
       <div class="container">
         <div class="head head--center">
-          <p class="mono eyebrow reveal"><span class="eyebrow__num">03</span><span data-i18n="process.tag">Процесс</span></p>
+          <p class="mono eyebrow reveal"><span class="eyebrow__num">04</span><span data-i18n="process.tag">Процесс</span></p>
           <h2 class="title reveal" data-i18n="process.title">Пять шагов до запуска.</h2>
         </div>
         <ol class="steps">
@@ -329,43 +366,6 @@
           <a href="#brief" data-modal="brief" class="btn btn--white"><span data-i18n="cta.start">Начать проект</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== Преимущества ===== -->
-    <section class="section" id="advantages">
-      <div class="container">
-        <div class="head head--center">
-          <p class="mono eyebrow reveal"><span class="eyebrow__num">04</span><span data-i18n="adv.tag">Преимущества</span></p>
-          <h2 class="title reveal" data-i18n="adv.title">Преимущества, которые вы почувствуете.</h2>
-        </div>
-        <div class="adv">
-          <div class="adv__list reveal" role="tablist">
-
-            <button type="button" class="adv__item is-active" data-adv="1" role="tab" aria-selected="true" aria-controls="advPanel">
-              <span class="mono adv__num">01</span><span class="adv__name" data-i18n="adv1.t">Ориентир на продажи</span>
-            </button>
-            <button type="button" class="adv__item" data-adv="2" role="tab" aria-selected="false" aria-controls="advPanel">
-              <span class="mono adv__num">02</span><span class="adv__name" data-i18n="adv2.t">Мультиязычность</span>
-            </button>
-            <button type="button" class="adv__item" data-adv="3" role="tab" aria-selected="false" aria-controls="advPanel">
-              <span class="mono adv__num">03</span><span class="adv__name" data-i18n="adv3.t">Обоснованные цены</span>
-            </button>
-            <button type="button" class="adv__item" data-adv="4" role="tab" aria-selected="false" aria-controls="advPanel">
-              <span class="mono adv__num">04</span><span class="adv__name" data-i18n="adv4.t">Любая валюта и география</span>
-            </button>
-            <button type="button" class="adv__item" data-adv="5" role="tab" aria-selected="false" aria-controls="advPanel">
-              <span class="mono adv__num">05</span><span class="adv__name" data-i18n="adv5.t">Гарантия и техподдержка</span>
-            </button>
-          </div>
-          <div class="adv__panel reveal" id="advPanel" role="tabpanel" aria-live="polite">
-            <div class="adv__inner" id="advInner">
-              <p class="mono dim adv__label" id="advLabel"></p>
-              <p class="adv__text" id="advText"></p>
-              <ul class="adv__bullets" id="advList"></ul>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -614,7 +614,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script defer src="js/i18n.js?v=10"></script>
-  <script defer src="js/main.js?v=10"></script>
+  <script defer src="js/i18n.js?v=11"></script>
+  <script defer src="js/main.js?v=11"></script>
 </body>
 </html>
