@@ -19,8 +19,14 @@
       const saved = localStorage.getItem(KEY);
       if (LANGS.includes(saved)) return saved;
     } catch (e) { /* хранилище недоступно */ }
-    const nav = (navigator.language || "").slice(0, 2).toLowerCase();
-    return LANGS.includes(nav) ? nav : "ru";
+    // язык браузера: проходим весь список из настроек по порядку (pl-PL, en-US, ...)
+    const prefs = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ""]);
+    for (const p of prefs) {
+      const code = String(p).slice(0, 2).toLowerCase();
+      if (LANGS.includes(code)) return code;
+    }
+    // никакой из наших языков не подошёл (например, немецкий) — показываем английский
+    return "en";
   }
 
   let lang = detect();
