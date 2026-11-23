@@ -1,162 +1,129 @@
 /* =========================================================
-   NEON PULSE — интерактив портфолио (vanilla JS, без зависимостей)
+   KeyBroski v2 — интерактив (vanilla JS)
    ========================================================= */
 
-/* ---------- Настройки: поменяйте под себя ---------- */
 const CONFIG = {
-  email: "buzukdenis3@gmail.com",                       // куда придёт заявка из формы
-  // тексты и меняющиеся слова в заголовке — в js/i18n.js
+  telegram: "KeyBroski", // ник в Telegram (без @) — сюда открывается чат с брифом
+  instagram: "",         // ник в Instagram (без @). Пусто — на кнопках Instagram показывается «скоро»
 };
-
-const t = (key) => window.i18n.t(key);
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const t = (k) => window.i18n.t(k);
 
-const $ = (sel, root = document) => root.querySelector(sel);
-const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
-const lerp = (a, b, t) => a + (b - a) * t;
-
-/* ---------- Прелоадер ---------- */
-(function preloader() {
-  const el = $("#preloader");
-  const count = $("#preloaderCount");
-  const bar = $("#preloaderBar");
-  const duration = reduceMotion ? 200 : 1500;
-  const start = performance.now();
-
-  function tick(now) {
-    const p = Math.min((now - start) / duration, 1);
-    const eased = 1 - Math.pow(1 - p, 3);
-    const value = Math.round(eased * 100);
-    count.textContent = value;
-    bar.style.width = value + "%";
-    if (p < 1) return requestAnimationFrame(tick);
-
-    setTimeout(() => {
-      el.classList.add("is-done");
-      document.body.classList.remove("is-loading");
-      document.body.classList.add("is-ready");
-      setTimeout(() => el.remove(), 1100);
-    }, 200);
-  }
-  requestAnimationFrame(tick);
-})();
-
-/* ---------- Кастомный курсор ---------- */
-(function cursor() {
-  if (!finePointer) return;
-  const ring = $("#cursor");
-  const dot = $("#cursorDot");
-  let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
-
-  document.body.classList.add("has-cursor");
-
-  addEventListener("mousemove", (e) => {
-    mx = e.clientX;
-    my = e.clientY;
-    dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
-  });
-
-  document.addEventListener("mouseleave", () => document.body.classList.remove("has-cursor"));
-  document.addEventListener("mouseenter", () => document.body.classList.add("has-cursor"));
-
-  document.addEventListener("mouseover", (e) => {
-    const target = e.target.closest("[data-cursor]");
-    ring.classList.toggle("is-hover", target?.dataset.cursor === "hover");
-    ring.classList.toggle("is-view", target?.dataset.cursor === "view");
-  });
-
-  (function loop() {
-    rx = lerp(rx, mx, 0.18);
-    ry = lerp(ry, my, 0.18);
-    ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
-    requestAnimationFrame(loop);
-  })();
-})();
-
-/* ---------- Шапка, прогресс скролла, линия процесса ---------- */
-(function scrollEffects() {
-  const header = $("#header");
-  const progress = $("#scrollProgress");
-  const processList = $("#processList");
-  const processLine = $("#processLine");
-  let lastY = scrollY;
-  let ticking = false;
-
-  function update() {
-    const y = scrollY;
-    const max = document.documentElement.scrollHeight - innerHeight;
-    progress.style.transform = `scaleX(${max > 0 ? y / max : 0})`;
-
-    header.classList.toggle("is-scrolled", y > 40);
-    const menuOpen = $("#nav").classList.contains("is-open");
-    header.classList.toggle("is-hidden", !menuOpen && y > lastY && y > 400);
-    lastY = y;
-
-    if (processList) {
-      const r = processList.getBoundingClientRect();
-      const p = (innerHeight * 0.7 - r.top) / r.height;
-      processLine.style.transform = `scaleY(${Math.max(0, Math.min(1, p))})`;
-    }
-    ticking = false;
-  }
-
-  addEventListener("scroll", () => {
-    if (!ticking) { requestAnimationFrame(update); ticking = true; }
-  }, { passive: true });
-  update();
-})();
-
-/* ---------- Мобильное меню ---------- */
-(function menu() {
-  const burger = $("#burger");
-  const nav = $("#nav");
-
-  function toggle(open) {
-    nav.classList.toggle("is-open", open);
-    burger.classList.toggle("is-open", open);
-    $("#header").classList.toggle("menu-open", open);
-    burger.setAttribute("aria-expanded", String(open));
-    burger.setAttribute("aria-label", t(open ? "aria.menuClose" : "aria.menuOpen"));
-    document.body.style.overflow = open ? "hidden" : "";
-  }
-
-  burger.addEventListener("click", () => toggle(!nav.classList.contains("is-open")));
-  $$(".nav__link").forEach((link) => link.addEventListener("click", () => toggle(false)));
-  addEventListener("keydown", (e) => { if (e.key === "Escape") toggle(false); });
-})();
-
-/* ---------- Активный пункт меню ---------- */
-(function activeNav() {
-  const links = $$(".nav__link[href^='#']");
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      links.forEach((l) => l.classList.toggle("is-active", l.getAttribute("href") === "#" + entry.target.id));
+/* ---------- разбивка текста на слова (сохраняет вложенные теги) ---------- */
+function splitWords(el) {
+  const walk = (node) => {
+    [...node.childNodes].forEach((n) => {
+      if (n.nodeType === 3) {
+        const parts = n.textContent.split(/(\s+)/);
+        const frag = document.createDocumentFragment();
+        parts.forEach((p) => {
+          if (!p) return;
+          if (/^\s+$/.test(p)) frag.appendChild(document.createTextNode(p));
+          else { const s = document.createElement("span"); s.className = "w"; s.textContent = p; frag.appendChild(s); }
+        });
+        n.replaceWith(frag);
+      } else if (n.nodeType === 1 && !n.classList.contains("w")) walk(n);
     });
-  }, { rootMargin: "-45% 0px -50% 0px" });
-  $$("section[id]").forEach((s) => observer.observe(s));
+  };
+  walk(el);
+  return $$(".w", el);
+}
+
+/* ---------- заголовок проявляется из размытия ---------- */
+(function blurIn() {
+  const el = $(".blur-in");
+  if (!el) return;
+  const run = (instant) => {
+    const words = splitWords(el);
+    words.forEach((w, i) => w.style.setProperty("--d", (instant ? 0 : 0.15 + i * 0.09) + "s"));
+    el.classList.remove("is-in");
+    void el.offsetWidth; // фиксируем стартовое состояние — затем запускаем проявление
+    el.classList.add("is-in");
+  };
+  run(reduceMotion);
+  window.i18n.onChange(() => run(true));
 })();
 
-/* ---------- Эффект «расшифровки» слова в заголовке ---------- */
-(function scrambleWord() {
-  const el = $("#heroWord");
-  if (!el) return;
-  // случайные символы берём из алфавита текущего языка
+/* ---------- меняющееся слово в заголовке ----------
+   Компьютер: эффект «расшифровки», как в v1.
+   Телефон: слова прокручиваются вверх в плашке, как барабан.
+   Размер слова один на весь язык — подобран по самому длинному слову, чтобы ничего не прыгало. */
+(function changingWord() {
+  const mobileMQ = window.matchMedia("(max-width: 640px)");
+  const el = () => document.getElementById("heroWord");
   let index = 0;
-  let run = 0; // номер текущей анимации — смена языка обрывает старую
+  let run = 0;      // номер анимации «расшифровки» — новая обрывает старую
+  let timer = null;
 
-  // при смене языка — сразу первое слово на новом языке
-  const syncWord = () => { run++; index = 0; el.textContent = t("hero.words")[0]; };
-  syncWord();
-  window.i18n.onChange(syncWord);
-  if (reduceMotion) return;
+  // один размер для всех слов языка: самое длинное слово должно влезть в строку
+  function fitAll() {
+    const node = el();
+    if (!node) return;
+    const line = node.closest(".hl");
+    node.style.fontSize = "";
+    const probe = document.createElement("span");
+    probe.className = "hero-word__probe";
+    line.appendChild(probe);
+    let max = 0;
+    t("hero.words").forEach((w) => { probe.textContent = w; max = Math.max(max, probe.getBoundingClientRect().width); });
+    probe.remove();
+    const pad = mobileMQ.matches ? 0.5 : 0.12; // плашка на телефоне добавляет внутренние отступы (в em)
+    const fs = parseFloat(getComputedStyle(node).fontSize);
+    // доступная ширина — по всему заголовку (строка при центровке сжимается до ширины слова)
+    const title = node.closest(".hero__title");
+    const avail = title.clientWidth - parseFloat(getComputedStyle(line).paddingLeft) - 6 - pad * fs;
+    const scale = max > avail ? avail / max : 1;
+    if (scale < 1) node.style.fontSize = scale.toFixed(3) + "em";
+    // на компьютере слово по центру — фиксируем ширину по самому длинному, чтобы строка не прыгала
+    node.style.minWidth = mobileMQ.matches ? "" : Math.ceil(max * scale) + "px";
+  }
 
+  /* --- телефон: барабан --- */
+  function buildRoller() {
+    const node = el();
+    if (!node) return;
+    const words = t("hero.words");
+    node.classList.add("is-roll");
+    // в конце — копия первого слова, чтобы круг замыкался без рывка
+    node.innerHTML = `<span class="roll"><span class="roll__track">${words.concat(words[0]).map((w) => `<span class="roll__item">${w}</span>`).join("")}</span></span>`;
+    const roll = node.querySelector(".roll");
+    // ширина плашки — по самому длинному слову, чтобы она не дёргалась
+    let max = 0;
+    node.querySelectorAll(".roll__item").forEach((s) => { max = Math.max(max, s.getBoundingClientRect().width); });
+    roll.style.width = Math.ceil(max) + "px";
+  }
+
+  function stepRoller() {
+    const node = el();
+    const track = node && node.querySelector(".roll__track");
+    if (!track) return;
+    const count = t("hero.words").length;
+    index++;
+    track.style.transition = "";
+    track.style.transform = `translateY(${-index * 100 / (count + 1)}%)`;
+    if (index === count) {
+      // дошли до копии первого слова — незаметно возвращаемся в начало
+      setTimeout(() => {
+        track.style.transition = "none";
+        track.style.transform = "translateY(0)";
+        index = 0;
+        void track.offsetWidth;
+        track.style.transition = "";
+      }, 650);
+    }
+  }
+
+  /* --- компьютер: «расшифровка» --- */
   function scrambleTo(word) {
-    const from = el.textContent;
-    const length = Math.max(from.length, word.length);
+    const node = el();
+    if (!node) return;
     const chars = t("hero.chars");
+    const from = node.textContent;
+    const length = Math.max(from.length, word.length);
     const queue = [];
     for (let i = 0; i < length; i++) {
       const start = Math.floor(Math.random() * 14);
@@ -164,255 +131,239 @@ const lerp = (a, b, t) => a + (b - a) * t;
     }
     let frame = 0;
     const id = ++run;
-
     (function step() {
-      if (id !== run) return;
-      let out = "";
-      let done = 0;
+      if (id !== run || !node.isConnected) return;
+      let out = "", done = 0;
       for (const q of queue) {
         if (frame >= q.end) { out += q.to; done++; }
         else if (frame >= q.start) out += chars[Math.floor(Math.random() * chars.length)].toLowerCase();
         else out += q.from;
       }
-      el.textContent = out;
+      node.textContent = out;
       frame++;
       if (done < queue.length) requestAnimationFrame(step);
     })();
   }
 
-  setInterval(() => {
+  function stepScramble() {
     const words = t("hero.words");
     index = (index + 1) % words.length;
     scrambleTo(words[index]);
-  }, 2800);
-})();
-
-/* ---------- Интерактивные частицы в Hero ---------- */
-(function particles() {
-  const canvas = $("#heroCanvas");
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
-  const dpr = Math.min(devicePixelRatio || 1, 2);
-  const mouse = { x: -9999, y: -9999 };
-  const colors = ["198,255,61", "123,92,255", "255,255,255"];
-  let w, h, points = [], visible = true;
-
-  function resize() {
-    w = canvas.clientWidth;
-    h = canvas.clientHeight;
-    canvas.width = w * dpr;
-    canvas.height = h * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const count = Math.min(130, Math.floor((w * h) / 12000));
-    points = Array.from({ length: count }, () => ({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4,
-      r: Math.random() * 1.6 + 0.6,
-      c: colors[Math.floor(Math.random() * colors.length)],
-    }));
   }
 
-  function draw() {
-    ctx.clearRect(0, 0, w, h);
-
-    for (const p of points) {
-      // лёгкое отталкивание от курсора
-      const dx = p.x - mouse.x, dy = p.y - mouse.y;
-      const dist = Math.hypot(dx, dy);
-      if (dist < 140 && dist > 0) {
-        const f = (140 - dist) / 140;
-        p.x += (dx / dist) * f * 2.2;
-        p.y += (dy / dist) * f * 2.2;
-      }
-      p.x += p.vx;
-      p.y += p.vy;
-      if (p.x < 0 || p.x > w) p.vx *= -1;
-      if (p.y < 0 || p.y > h) p.vy *= -1;
-
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${p.c},0.8)`;
-      ctx.fill();
-    }
-
-    // линии между близкими точками
-    for (let i = 0; i < points.length; i++) {
-      for (let j = i + 1; j < points.length; j++) {
-        const a = points[i], b = points[j];
-        const d = Math.hypot(a.x - b.x, a.y - b.y);
-        if (d < 120) {
-          ctx.strokeStyle = `rgba(198,255,61,${(1 - d / 120) * 0.16})`;
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.stroke();
-        }
-      }
-      // линии к курсору
-      const p = points[i];
-      const dm = Math.hypot(p.x - mouse.x, p.y - mouse.y);
-      if (dm < 200) {
-        ctx.strokeStyle = `rgba(123,92,255,${(1 - dm / 200) * 0.5})`;
-        ctx.beginPath();
-        ctx.moveTo(p.x, p.y);
-        ctx.lineTo(mouse.x, mouse.y);
-        ctx.stroke();
-      }
-    }
-  }
-
-  function loop() {
-    if (visible) draw();
-    requestAnimationFrame(loop);
-  }
-
-  resize();
-  addEventListener("resize", resize);
-  canvas.parentElement.addEventListener("mousemove", (e) => {
-    const r = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - r.left;
-    mouse.y = e.clientY - r.top;
-  });
-  canvas.parentElement.addEventListener("mouseleave", () => { mouse.x = mouse.y = -9999; });
-  new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(canvas);
-
-  if (reduceMotion) draw(); else loop();
-})();
-
-/* ---------- Появление элементов при скролле ---------- */
-(function reveal() {
-  const items = $$(".reveal");
-  // небольшая задержка для соседних элементов — эффект «лесенки»
-  items.forEach((el) => {
-    const siblings = [...el.parentElement.children].filter((c) => c.classList.contains("reveal"));
-    el.style.setProperty("--d", siblings.indexOf(el) * 0.08 + "s");
-  });
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("is-visible");
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.15, rootMargin: "0px 0px -40px 0px" });
-
-  items.forEach((el) => observer.observe(el));
-})();
-
-/* ---------- Счётчики ---------- */
-(function counters() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      const el = entry.target;
-      const target = +el.dataset.target;
-      const duration = reduceMotion ? 1 : 1800;
-      const start = performance.now();
-      (function tick(now) {
-        const p = Math.min((now - start) / duration, 1);
-        el.textContent = Math.round(target * (1 - Math.pow(1 - p, 4)));
-        if (p < 1) requestAnimationFrame(tick);
-      })(start);
-      observer.unobserve(el);
-    });
-  }, { threshold: 0.6 });
-  $$(".counter").forEach((el) => observer.observe(el));
-})();
-
-/* ---------- 3D-наклон карточек ---------- */
-(function tilt() {
-  if (!finePointer || reduceMotion) return;
-  $$(".tilt").forEach((card) => {
-    card.addEventListener("mousemove", (e) => {
-      const r = card.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width - 0.5;
-      const y = (e.clientY - r.top) / r.height - 0.5;
-      card.style.transition = "transform 0.15s ease-out, border-color 0.4s";
-      card.style.transform = `perspective(1000px) rotateX(${-y * 8}deg) rotateY(${x * 10}deg) translateY(-6px)`;
-    });
-    card.addEventListener("mouseleave", () => {
-      card.style.transition = "transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.4s";
-      card.style.transform = "";
-    });
-  });
-})();
-
-/* ---------- Подсветка карточек услуг за курсором ---------- */
-(function spotlight() {
-  $$(".spotlight").forEach((el) => {
-    el.addEventListener("mousemove", (e) => {
-      const r = el.getBoundingClientRect();
-      el.style.setProperty("--mx", e.clientX - r.left + "px");
-      el.style.setProperty("--my", e.clientY - r.top + "px");
-    });
-  });
-})();
-
-/* ---------- Магнитные кнопки ---------- */
-(function magnetic() {
-  if (!finePointer || reduceMotion) return;
-  $$(".magnetic").forEach((el) => {
-    el.addEventListener("mousemove", (e) => {
-      const r = el.getBoundingClientRect();
-      const x = e.clientX - r.left - r.width / 2;
-      const y = e.clientY - r.top - r.height / 2;
-      el.style.transform = `translate(${x * 0.25}px, ${y * 0.35}px)`;
-    });
-    el.addEventListener("mouseleave", () => { el.style.transform = ""; });
-  });
-})();
-
-/* ---------- Слайдер отзывов ---------- */
-(function slider() {
-  const track = $("#sliderTrack");
-  const dotsWrap = $("#sliderDots");
-  const slides = $$(".review", track);
-  let current = 0;
-  let timer;
-
-  slides.forEach((_, i) => {
-    const b = document.createElement("button");
-    b.setAttribute("aria-label", `${t("aria.review")} ${i + 1}`);
-    window.i18n.onChange(() => b.setAttribute("aria-label", `${t("aria.review")} ${i + 1}`));
-    b.dataset.cursor = "hover";
-    b.addEventListener("click", () => { go(i); restart(); });
-    dotsWrap.appendChild(b);
-  });
-  const dots = $$("button", dotsWrap);
-
-  function go(i) {
-    current = (i + slides.length) % slides.length;
-    track.style.transform = `translateX(-${current * 100}%)`;
-    dots.forEach((d, j) => d.classList.toggle("is-active", j === current));
-  }
-
-  function restart() {
+  /* --- запуск / перезапуск (смена языка, поворот экрана) --- */
+  function setup() {
     clearInterval(timer);
-    if (!reduceMotion) timer = setInterval(() => go(current + 1), 6000);
+    run++;
+    index = 0;
+    const node = el();
+    if (!node) return;
+    node.classList.remove("is-roll");
+    node.textContent = t("hero.words")[0];
+    fitAll();
+    if (mobileMQ.matches) buildRoller();
+    if (reduceMotion) return;
+    timer = setInterval(mobileMQ.matches ? stepRoller : stepScramble, mobileMQ.matches ? 2400 : 2800);
   }
 
-  $("#sliderPrev").addEventListener("click", () => { go(current - 1); restart(); });
-  $("#sliderNext").addEventListener("click", () => { go(current + 1); restart(); });
-
-  // свайпы на телефоне
-  let startX = null;
-  track.addEventListener("touchstart", (e) => { startX = e.touches[0].clientX; }, { passive: true });
-  track.addEventListener("touchend", (e) => {
-    if (startX === null) return;
-    const dx = e.changedTouches[0].clientX - startX;
-    if (Math.abs(dx) > 50) { go(current + (dx < 0 ? 1 : -1)); restart(); }
-    startX = null;
+  setTimeout(setup, 1200); // первое слово видно, пока заголовок проявляется
+  if (document.fonts) document.fonts.ready.then(() => setTimeout(setup, 1300));
+  window.i18n.onChange(() => setTimeout(setup, 0));
+  mobileMQ.addEventListener("change", setup);
+  // на телефоне resize срабатывает и при прокрутке (прячется адресная строка) — реагируем только на смену ширины
+  let rt, lastW = innerWidth;
+  addEventListener("resize", () => {
+    if (innerWidth === lastW) return;
+    lastW = innerWidth;
+    clearTimeout(rt);
+    rt = setTimeout(setup, 200);
   });
-
-  go(0);
-  restart();
 })();
 
-/* ---------- Уведомление ---------- */
+/* ---------- заявление: слова загораются при прокрутке ---------- */
+(function statement() {
+  const el = $("#statementTitle");
+  if (!el) return;
+  let words = splitWords(el);
+  let ticking = false;
+  function update() {
+    const r = el.getBoundingClientRect();
+    const start = innerHeight * 0.85, end = innerHeight * 0.35;
+    const p = Math.min(1, Math.max(0, (start - r.top) / (start - end + r.height * 0.5)));
+    const lit = Math.round(p * words.length);
+    words.forEach((w, i) => w.classList.toggle("is-lit", reduceMotion || i < lit));
+    ticking = false;
+  }
+  addEventListener("scroll", () => { if (!ticking) { requestAnimationFrame(update); ticking = true; } }, { passive: true });
+  window.i18n.onChange(() => { words = splitWords(el); update(); });
+  update();
+})();
+
+/* ---------- шапка ---------- */
+(function header() {
+  const h = $("#header");
+  let last = scrollY;
+  addEventListener("scroll", () => {
+    const y = scrollY;
+    h.classList.toggle("is-scrolled", y > 20);
+    h.classList.toggle("is-hidden", y > last && y > 500 && !document.body.classList.contains("menu-open"));
+    last = y;
+  }, { passive: true });
+})();
+
+/* ---------- меню на весь экран ---------- */
+(function menu() {
+  const m = $("#menu"), btn = $("#menuBtn");
+  function open(on) {
+    m.classList.toggle("is-open", on);
+    m.setAttribute("aria-hidden", String(!on));
+    btn.setAttribute("aria-expanded", String(on));
+    document.body.classList.toggle("menu-open", on);
+    document.body.style.overflow = on ? "hidden" : "";
+    if (on) setTimeout(() => $(".menu__close", m).focus(), 300); else btn.focus({ preventScroll: true });
+  }
+  btn.addEventListener("click", () => open(true));
+  $$("[data-menu-close]", m).forEach((el) => el.addEventListener("click", () => open(false)));
+  $$("[data-menu-link]", m).forEach((a) => a.addEventListener("click", () => open(false)));
+  addEventListener("keydown", (e) => { if (e.key === "Escape" && m.classList.contains("is-open")) open(false); });
+})();
+
+/* ---------- аккордеоны: услуги и вопросы ---------- */
+(function accordions() {
+  $$(".acc").forEach((acc) => {
+    $$(".acc__item", acc).forEach((item) => {
+      const head = $(".acc__head", item);
+      head.addEventListener("click", () => {
+        const on = !item.classList.contains("is-open");
+        $$(".acc__item.is-open", acc).forEach((o) => { o.classList.remove("is-open"); $(".acc__head", o).setAttribute("aria-expanded", "false"); });
+        item.classList.toggle("is-open", on);
+        head.setAttribute("aria-expanded", String(on));
+      });
+    });
+  });
+})();
+
+/* ---------- услуги: строки с большими названиями + превью за курсором ---------- */
+(function serviceRows() {
+  const wrap = $("#srows");
+  if (!wrap) return;
+  const rows = $$(".srow", wrap);
+  const preview = $("#spreview");
+  const card = preview && $(".spreview__card", preview);
+  // цвет превью для каждого вида сайта
+  const tints = [
+    "radial-gradient(circle at 30% 20%, #6f6f76, #1a1a1d)",
+    "radial-gradient(circle at 70% 30%, #7b5cff, #1a1238)",
+    "radial-gradient(circle at 30% 30%, #ff5c8a, #2a0a17)",
+    "radial-gradient(circle at 60% 20%, #ff9a3d, #2b1203)",
+    "radial-gradient(circle at 30% 70%, #1fd1a1, #04201b)",
+    "radial-gradient(circle at 50% 30%, #9a9aa3, #141416)",
+  ];
+
+  function activate(row) {
+    rows.forEach((r) => {
+      const on = r === row;
+      r.classList.toggle("is-active", on);
+      $(".srow__head", r).setAttribute("aria-expanded", String(on));
+    });
+    if (card) card.style.setProperty("--pv", tints[(+row.dataset.srow - 1) % tints.length]);
+  }
+
+  rows.forEach((r) => {
+    $(".srow__head", r).addEventListener("click", () => activate(r));
+    if (finePointer) r.addEventListener("mouseenter", () => activate(r));
+  });
+  activate(rows[0]);
+
+  // превью плавно догоняет курсор (только мышь)
+  if (!preview || !finePointer || reduceMotion) return;
+  let x = 0, y = 0, tx = 0, ty = 0, raf = null;
+  const loop = () => {
+    x += (tx - x) * 0.14;
+    y += (ty - y) * 0.14;
+    preview.style.transform = `translate(${x}px, ${y}px)`;
+    raf = Math.abs(tx - x) + Math.abs(ty - y) > 0.5 ? requestAnimationFrame(loop) : null;
+  };
+  wrap.addEventListener("mousemove", (e) => {
+    const r = wrap.getBoundingClientRect();
+    tx = e.clientX - r.left - 150;   // центр карточки под курсором
+    ty = e.clientY - r.top - 110;
+    if (!wrap.classList.contains("is-hover")) { x = tx; y = ty; wrap.classList.add("is-hover"); }
+    if (!raf) raf = requestAnimationFrame(loop);
+  });
+  wrap.addEventListener("mouseleave", () => wrap.classList.remove("is-hover"));
+})();
+
+/* ---------- появление при прокрутке ---------- */
+(function reveal() {
+  const els = $$(".reveal");
+  els.forEach((el) => {
+    const sib = [...el.parentElement.children].filter((c) => c.classList.contains("reveal"));
+    el.style.setProperty("--d", Math.min(sib.indexOf(el), 5) * 0.07 + "s");
+  });
+  if (reduceMotion || !("IntersectionObserver" in window)) { els.forEach((el) => el.classList.add("is-in")); return; }
+  const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
+  }), { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+  els.forEach((el) => io.observe(el));
+})();
+
+/* ---------- преимущества: список + панель фиксированной высоты ---------- */
+(function advantages() {
+  const items = $$(".adv__item"), panel = $("#advPanel"), inner = $("#advInner");
+  if (!items.length) return;
+  let current = 1;
+
+  const fillInto = (root, i) => {
+    $(".adv__label", root).textContent = `${t(`adv${i}.t`)} (${i})`;
+    $(".adv__text", root).textContent = t(`adv${i}.p`);
+    $(".adv__bullets", root).innerHTML = t(`adv${i}.list`);
+  };
+
+  function render(i, animate) {
+    current = i;
+    items.forEach((it) => {
+      const on = +it.dataset.adv === i;
+      it.classList.toggle("is-active", on);
+      it.setAttribute("aria-selected", String(on));
+    });
+    if (!animate || reduceMotion) { fillInto(inner, i); return; }
+    inner.classList.add("is-switching");
+    setTimeout(() => { fillInto(inner, i); inner.classList.remove("is-switching"); }, 170);
+  }
+
+  // высота — по самому длинному пункту, чтобы ниже ничего не прыгало
+  function lockHeight() {
+    const probe = inner.cloneNode(true);
+    probe.removeAttribute("id");
+    $$("[id]", probe).forEach((el) => el.removeAttribute("id"));
+    probe.classList.remove("is-switching");
+    probe.style.cssText = `position:absolute;visibility:hidden;pointer-events:none;left:0;top:0;width:${inner.clientWidth}px;min-height:0`;
+    panel.appendChild(probe);
+    let max = 0;
+    items.forEach((it) => { fillInto(probe, +it.dataset.adv); max = Math.max(max, probe.offsetHeight); });
+    probe.remove();
+    inner.style.minHeight = max + "px";
+  }
+
+  items.forEach((it) => {
+    const i = +it.dataset.adv;
+    it.addEventListener("click", () => {
+      if (i !== current) render(i, true);
+      if (innerWidth <= 900) panel.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest" });
+    });
+    if (finePointer) it.addEventListener("mouseenter", () => { if (i !== current) render(i, true); });
+  });
+
+  let rt;
+  addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(lockHeight, 150); });
+  render(1, false);
+  lockHeight();
+  if (document.fonts) { document.fonts.ready.then(lockHeight); document.fonts.addEventListener("loadingdone", lockHeight); }
+  window.i18n.onChange(() => { render(current, false); lockHeight(); });
+})();
+
+/* ---------- уведомление ---------- */
 function toast(text) {
   const el = $("#toast");
   el.textContent = text;
@@ -421,106 +372,212 @@ function toast(text) {
   toast.t = setTimeout(() => el.classList.remove("is-visible"), 4000);
 }
 
-/* ---------- Форма заявки ---------- */
-(function form() {
-  const formEl = $("#contactForm");
-
-  formEl.addEventListener("submit", (e) => {
+/* ---------- ссылки на Instagram ----------
+   Пока CONFIG.instagram пустой, кнопки Instagram показывают «скоро». Когда аккаунт появится —
+   впишите ник (без @) в CONFIG.instagram вверху файла, и все ссылки заработают сами. */
+const igUrl = () => (CONFIG.instagram ? `https://www.instagram.com/${CONFIG.instagram}/` : "");
+(function instagramLinks() {
+  const apply = () => {
+    $$("[data-ig]").forEach((a) => { if (igUrl()) a.href = igUrl(); });
+    $$("[data-ig-handle]").forEach((s) => { if (CONFIG.instagram) s.textContent = "@" + CONFIG.instagram; });
+  };
+  apply();
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest("[data-ig]");
+    if (!a || igUrl()) return;
     e.preventDefault();
-    const data = new FormData(formEl);
-    let valid = true;
-
-    ["name", "contact"].forEach((field) => {
-      const input = formEl.elements[field];
-      const wrap = input.closest(".form__field");
-      const ok = input.value.trim().length > 1;
-      wrap.classList.remove("is-error");
-      if (!ok) { void wrap.offsetWidth; wrap.classList.add("is-error"); valid = false; }
-    });
-
-    if (!valid) { toast(t("form.error")); return; }
-
-    const subject = `${t("mail.subject")} — ${data.get("name")}`;
-    const body =
-      `${t("mail.name")}: ${data.get("name")}\n` +
-      `${t("mail.contact")}: ${data.get("contact")}\n` +
-      `${t("mail.budget")}: ${t("form.b" + data.get("budget"))}\n\n` +
-      `${data.get("message") || ""}`;
-
-    window.location.href = `mailto:${CONFIG.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    toast(t("form.ok"));
-    formEl.reset();
+    toast(t("ig.soon"));
   });
 })();
 
-/* ---------- Преимущества: список слева, подробности справа ---------- */
-(function advantages() {
-  const items = $$(".adv__item");
-  const panel = $("#advPanel");
-  if (!items.length || !panel) return;
-  const inner = $("#advPanelInner");
-  let current = 1;
+/* ---------- копирование в буфер (с запасным способом для старых браузеров) ---------- */
+function copyText(text) {
+  if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+  fallbackCopy(text);
+  return Promise.resolve();
+}
+function fallbackCopy(text) {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.setAttribute("readonly", "");
+  ta.style.cssText = "position:fixed;left:-9999px;top:0";
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand("copy"); } catch (e) { /* ничего */ }
+  ta.remove();
+}
 
-  function render(i, animate) {
-    current = i;
-    items.forEach((it) => {
-      const active = +it.dataset.adv === i;
-      it.classList.toggle("is-active", active);
-      it.setAttribute("aria-selected", String(active));
+/* ---------- бриф (форма внизу и её копия в окне) ----------
+   Заявка уходит в Telegram (или Instagram): копируем готовый текст брифа и открываем чат. */
+function bindBriefForm(f, onSent) {
+  const collect = () => {
+    let ok = true;
+    ["name", "contact"].forEach((n) => {
+      const input = f.elements[n], wrap = input.closest(".field");
+      const good = input.value.trim().length > 1;
+      wrap.classList.toggle("is-error", !good);
+      if (!good) ok = false;
     });
-    const fill = () => {
-      $("#advLabel").textContent = `${t(`adv${i}.t`)} (${i})`;
-      $("#advText").textContent = t(`adv${i}.p`);
-      $("#advList").innerHTML = t(`adv${i}.list`);
+    if (!ok) { toast(t("form.error")); return null; }
+    const services = $$('input[name="service"]:checked', f).map((c) => t("form." + c.value)).join(", ") || "—";
+    const budget = t("form." + (($('input[name="budget"]:checked', f) || {}).value || "b1"));
+    return `${t("mail.subject")}\n\n` +
+      `${t("mail.name")}: ${f.elements.name.value}\n` +
+      `${t("mail.contact")}: ${f.elements.contact.value}\n` +
+      `${t("mail.service")}: ${services}\n` +
+      `${t("mail.budget")}: ${budget}` +
+      (f.elements.message.value.trim() ? `\n\n${f.elements.message.value.trim()}` : "");
+  };
+
+  const send = (url) => {
+    const text = collect();
+    if (!text) return;
+    window.open(url, "_blank", "noopener");   // открываем сразу — по клику, иначе браузер заблокирует
+    copyText(text).then(() => toast(t("form.ok")));
+    f.reset();
+    if (onSent) onSent();
+  };
+
+  f.addEventListener("submit", (e) => { e.preventDefault(); send(`https://t.me/${CONFIG.telegram}`); });
+  const ig = f.querySelector("#briefIg, #mbriefIg");
+  if (ig) ig.addEventListener("click", () => {
+    if (!igUrl()) { toast(t("ig.soon")); return; }
+    send(igUrl());
+  });
+}
+bindBriefForm($("#briefForm"));
+
+/* =========================================================
+   Всплывающие окна
+   ========================================================= */
+const Modal = (function () {
+  let current = null;
+  let lastFocus = null;
+
+  function open(id) {
+    const m = document.getElementById(id);
+    if (!m) return;
+    if (current && current !== m) close(true);
+    lastFocus = document.activeElement;
+    m.hidden = false;
+    document.body.classList.add("modal-open");
+    document.body.style.overflow = "hidden";
+    void m.offsetWidth; // фиксируем стартовое состояние, чтобы сработала анимация
+    m.classList.add("is-open");
+    current = m;
+    setTimeout(() => {
+      const first = m.querySelector("input, textarea, a.btn, button:not(.modal__close)");
+      if (first) first.focus({ preventScroll: true });
+    }, 120);
+  }
+
+  function close(instant) {
+    if (!current) return;
+    const m = current;
+    current = null;
+    m.classList.remove("is-open");
+    const done = () => {
+      m.hidden = true;
+      if (!current) { document.body.classList.remove("modal-open"); document.body.style.overflow = ""; }
     };
-    if (!animate || reduceMotion) { fill(); return; }
-    inner.classList.add("is-switching");
-    setTimeout(() => { fill(); inner.classList.remove("is-switching"); }, 180);
+    if (instant || reduceMotion) done(); else setTimeout(done, 380);
+    if (lastFocus && !instant) lastFocus.focus({ preventScroll: true });
   }
 
-  items.forEach((it) => {
-    const i = +it.dataset.adv;
-    it.addEventListener("click", () => {
-      if (i !== current) render(i, true);
-      // на телефоне панель под списком — подкручиваем к ней
-      if (innerWidth <= 900) panel.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest" });
-    });
-    if (finePointer) it.addEventListener("mouseenter", () => { if (i !== current) render(i, true); });
+  document.addEventListener("click", (e) => { if (e.target.closest("[data-close]") && current) close(); });
+  addEventListener("keydown", (e) => {
+    if (!current) return;
+    if (e.key === "Escape") close();
+    // фокус не уходит из окна по Tab
+    if (e.key === "Tab") {
+      const f = [...current.querySelectorAll("a[href], button, input, textarea")].filter((el) => el.offsetParent !== null);
+      if (!f.length) return;
+      if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+    }
   });
 
-  /* Высота панели — по самому длинному пункту, чтобы при переключении
-     ничего ниже не прыгало. Меряем в невидимой копии панели. */
-  function lockHeight() {
-    const probe = inner.cloneNode(true);
-    probe.removeAttribute("id");
-    probe.querySelectorAll("[id]").forEach((el) => el.removeAttribute("id"));
-    probe.classList.remove("is-switching");
-    probe.style.cssText = `position:absolute;visibility:hidden;pointer-events:none;left:0;top:0;width:${inner.clientWidth}px;min-height:0`;
-    panel.appendChild(probe);
-    let max = 0;
-    items.forEach((it) => {
-      const i = +it.dataset.adv;
-      probe.querySelector(".adv__label").textContent = `${t(`adv${i}.t`)} (${i})`;
-      probe.querySelector(".adv__text").textContent = t(`adv${i}.p`);
-      probe.querySelector(".adv__bullets").innerHTML = t(`adv${i}.list`);
-      max = Math.max(max, probe.offsetHeight);
-    });
-    probe.remove();
-    inner.style.minHeight = max + "px";
-  }
-
-  let resizeTimer;
-  addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(lockHeight, 150); });
-
-  render(1, false);
-  lockHeight();
-  // после загрузки шрифтов строки становятся другой ширины — перемеряем
-  if (document.fonts) {
-    document.fonts.ready.then(lockHeight);
-    document.fonts.addEventListener("loadingdone", lockHeight);
-  }
-  window.i18n.onChange(() => { render(current, false); lockHeight(); });
+  return { open, close };
 })();
 
-/* ---------- Год в подвале ---------- */
+/* ---------- окно брифа: копия формы снизу ---------- */
+const modalForm = (function () {
+  const src = $("#briefForm");
+  const f = src.cloneNode(true);
+  f.id = "modalBriefForm";
+  f.classList.remove("reveal", "is-in");
+  $$("[id]", f).forEach((el) => { el.id = "m" + el.id; });
+  $$("label[for]", f).forEach((l) => l.setAttribute("for", "m" + l.getAttribute("for")));
+  $("#modalFormSlot").appendChild(f);
+  bindBriefForm(f, () => Modal.close());
+  return f;
+})();
+
+function openBrief({ service, message } = {}) {
+  modalForm.reset();
+  $$(".field", modalForm).forEach((w) => w.classList.remove("is-error"));
+  if (service) { const c = $(`input[name="service"][value="${service}"]`, modalForm); if (c) c.checked = true; }
+  if (message) modalForm.elements.message.value = message;
+  Modal.open("modalBrief");
+}
+
+document.addEventListener("click", (e) => {
+  const trigger = e.target.closest('[data-modal="brief"]');
+  if (!trigger) return;
+  e.preventDefault();
+  closeFab();
+  openBrief({ service: trigger.dataset.service });
+});
+
+/* ---------- окно проекта ---------- */
+(function projects() {
+  const slot = $("#projectSlot"), openLink = $("#projectOpen"), like = $("#projectLike");
+  let currentName = "";
+
+  function show(i) {
+    const card = $(`.work[data-project="${i}"]`);
+    if (!card) return;
+    slot.innerHTML = "";
+    slot.appendChild(card.querySelector(".work__visual").cloneNode(true));
+    const info = document.createElement("div");
+    info.className = "project__info";
+    [".work__meta", ".work__title", ".work__desc", ".tags"].forEach((s) => info.appendChild(card.querySelector(s).cloneNode(true)));
+    slot.appendChild(info);
+    $(".work__title", info).id = "mpTitle";
+    openLink.href = card.getAttribute("href");
+    currentName = card.querySelector(".work__title").textContent;
+    Modal.open("modalProject");
+  }
+
+  document.addEventListener("click", (e) => {
+    const card = e.target.closest("[data-project]");
+    if (!card || e.metaKey || e.ctrlKey || e.shiftKey) return; // Ctrl/⌘+клик — как обычная ссылка
+    e.preventDefault();
+    show(card.dataset.project);
+  });
+
+  like.addEventListener("click", () => {
+    openBrief({ message: t("form.prefill").replace("{name}", currentName) });
+  });
+})();
+
+/* ---------- плавающая кнопка «Связаться» ---------- */
+const fab = $("#fab"), fabBtn = $("#fabBtn"), fabCard = $("#fabCard");
+function closeFab() {
+  if (!fab.classList.contains("is-open")) return;
+  fab.classList.remove("is-open");
+  fabBtn.setAttribute("aria-expanded", "false");
+  setTimeout(() => { if (!fab.classList.contains("is-open")) fabCard.hidden = true; }, 300);
+}
+fabBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  if (fab.classList.contains("is-open")) { closeFab(); return; }
+  fabCard.hidden = false;
+  void fabCard.offsetWidth;
+  fab.classList.add("is-open");
+  fabBtn.setAttribute("aria-expanded", "true");
+});
+document.addEventListener("click", (e) => { if (!fab.contains(e.target)) closeFab(); });
+addEventListener("keydown", (e) => { if (e.key === "Escape") closeFab(); });
+
 $("#year").textContent = new Date().getFullYear();

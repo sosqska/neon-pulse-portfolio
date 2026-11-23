@@ -65,8 +65,8 @@ const workCards = (prefix, withModal) => { let s = ""; for (let i = 1; i <= 4; i
               <span class="work__open"><span data-i18n="works.open">${ru["works.open"]}</span> ↗</span>
             </div>
           </a>`; return s; };
-const WORKS = workCards("../", true);
-const WORKS_PAGE = workCards("../../", false);
+const WORKS = workCards("", true);
+const WORKS_PAGE = workCards("../", false);
 
 let ADV_ITEMS = "";
 for (let i = 1; i <= 5; i++) ADV_ITEMS += `
