@@ -86,7 +86,7 @@
       <div class="menu__bottom">
         <span class="mono dim" data-i18n="menu.contacts">{{menu.contacts}}</span>
         <a href="https://t.me/KeyBroski" target="_blank" rel="noopener">Telegram · @KeyBroski ↗</a>
-        <a href="mailto:buzukdenis3@gmail.com">buzukdenis3@gmail.com ↗</a>
+        <a href="#instagram" data-ig target="_blank" rel="noopener">Instagram · <span data-ig-handle>@keybroski</span> ↗</a>
       </div>
     </nav>
   </div>
@@ -220,7 +220,7 @@
           <p class="mono eyebrow reveal"><span class="eyebrow__num">05</span><span data-i18n="faq.tag">{{faq.tag}}</span></p>
           <h2 class="title reveal" data-i18n="faq.title">{{faq.title}}</h2>
           <p class="head__text reveal" data-i18n="faq.text">{{faq.text}}</p>
-          <a class="faq__mail reveal" href="mailto:buzukdenis3@gmail.com">buzukdenis3@gmail.com ↗</a>
+          <a class="faq__mail reveal" href="https://t.me/KeyBroski" target="_blank" rel="noopener">Telegram · @KeyBroski ↗</a>
         </div>
         <div class="acc acc--faq reveal">
 {{FAQ}}
@@ -256,10 +256,14 @@
             <li data-i18n="brief.b2">{{brief.b2}}</li>
             <li data-i18n="brief.b3">{{brief.b3}}</li>
           </ul>
-          <a class="brief__tg reveal" href="https://t.me/KeyBroski" target="_blank" rel="noopener">
+          <div class="brief__links reveal">
+          <a class="brief__tg" href="https://t.me/KeyBroski" target="_blank" rel="noopener">
             <span class="mono dim" data-i18n="brief.orTg">{{brief.orTg}}</span>
             <b>@KeyBroski ↗</b>
           </a>
+          <a class="brief__tg" href="#instagram" data-ig target="_blank" rel="noopener"><span class="mono dim">Instagram</span>
+            <b><span data-ig-handle>@keybroski</span> ↗</b></a>
+          </div>
         </div>
 
         <form class="form reveal" id="briefForm" novalidate>
@@ -288,6 +292,8 @@
           <button type="submit" class="btn btn--white btn--block"><span data-i18n="form.submit">{{form.submit}}</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
+          <button type="button" class="btn btn--ghost btn--block" id="briefIg"><span data-i18n="form.ig">{{form.ig}}</span></button>
+          <p class="form__hint" data-i18n="form.hint">{{form.hint}}</p>
           <p class="form__note" data-i18n="form.note">{{form.note}}</p>
         </form>
       </div>
@@ -300,7 +306,7 @@
       <div class="footer__top">
         <div class="footer__brand">
           <a href="#top" class="logo"><span class="logo__dot"></span>KeyBroski</a>
-          <a class="footer__mail" href="mailto:buzukdenis3@gmail.com">buzukdenis3@gmail.com</a>
+          <a class="footer__mail" href="https://t.me/KeyBroski" target="_blank" rel="noopener">Telegram · @KeyBroski</a>
         </div>
         <div class="footer__col">
           <p class="mono dim" data-i18n="footer.studio">{{footer.studio}}</p>
@@ -316,7 +322,7 @@
         <div class="footer__col">
           <p class="mono dim" data-i18n="footer.contact">{{footer.contact}}</p>
           <a href="https://t.me/KeyBroski" target="_blank" rel="noopener">Telegram ↗</a>
-          <a href="mailto:buzukdenis3@gmail.com">Email ↗</a>
+          <a href="#instagram" data-ig target="_blank" rel="noopener">Instagram ↗</a>
         </div>
       </div>
       <div class="footer__big" aria-hidden="true">KeyBroski</div>
@@ -359,7 +365,7 @@
       <p class="fab__title" id="fabTitle" data-i18n="fab.title">{{fab.title}}</p>
       <p class="fab__text" data-i18n="fab.text">{{fab.text}}</p>
       <a class="fab__link" href="https://t.me/KeyBroski" target="_blank" rel="noopener"><span>Telegram</span><span class="dim">@KeyBroski ↗</span></a>
-      <a class="fab__link" href="mailto:buzukdenis3@gmail.com"><span>Email</span><span class="dim">buzukdenis3@gmail.com ↗</span></a>
+      <a class="fab__link" href="#instagram" data-ig target="_blank" rel="noopener"><span>Instagram</span><span class="dim"><span data-ig-handle>@keybroski</span> ↗</span></a>
       <button type="button" class="btn btn--white btn--block btn--sm" data-modal="brief"><span data-i18n="fab.brief">{{fab.brief}}</span> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </div>
     <button type="button" class="fab__btn" id="fabBtn" aria-expanded="false" aria-controls="fabCard">

@@ -2,7 +2,10 @@
    KeyBroski v2 — интерактив (vanilla JS)
    ========================================================= */
 
-const CONFIG = { email: "buzukdenis3@gmail.com" };
+const CONFIG = {
+  telegram: "KeyBroski", // ник в Telegram (без @) — сюда открывается чат с брифом
+  instagram: "",         // ник в Instagram (без @). Пусто — на кнопках Instagram показывается «скоро»
+};
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -369,10 +372,45 @@ function toast(text) {
   toast.t = setTimeout(() => el.classList.remove("is-visible"), 4000);
 }
 
-/* ---------- бриф (форма внизу и её копия в окне) ---------- */
-function bindBriefForm(f, onSent) {
-  f.addEventListener("submit", (e) => {
+/* ---------- ссылки на Instagram ----------
+   Пока CONFIG.instagram пустой, кнопки Instagram показывают «скоро». Когда аккаунт появится —
+   впишите ник (без @) в CONFIG.instagram вверху файла, и все ссылки заработают сами. */
+const igUrl = () => (CONFIG.instagram ? `https://www.instagram.com/${CONFIG.instagram}/` : "");
+(function instagramLinks() {
+  const apply = () => {
+    $$("[data-ig]").forEach((a) => { if (igUrl()) a.href = igUrl(); });
+    $$("[data-ig-handle]").forEach((s) => { if (CONFIG.instagram) s.textContent = "@" + CONFIG.instagram; });
+  };
+  apply();
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest("[data-ig]");
+    if (!a || igUrl()) return;
     e.preventDefault();
+    toast(t("ig.soon"));
+  });
+})();
+
+/* ---------- копирование в буфер (с запасным способом для старых браузеров) ---------- */
+function copyText(text) {
+  if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+  fallbackCopy(text);
+  return Promise.resolve();
+}
+function fallbackCopy(text) {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.setAttribute("readonly", "");
+  ta.style.cssText = "position:fixed;left:-9999px;top:0";
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand("copy"); } catch (e) { /* ничего */ }
+  ta.remove();
+}
+
+/* ---------- бриф (форма внизу и её копия в окне) ----------
+   Заявка уходит в Telegram (или Instagram): копируем готовый текст брифа и открываем чат. */
+function bindBriefForm(f, onSent) {
+  const collect = () => {
     let ok = true;
     ["name", "contact"].forEach((n) => {
       const input = f.elements[n], wrap = input.closest(".field");
@@ -380,19 +418,31 @@ function bindBriefForm(f, onSent) {
       wrap.classList.toggle("is-error", !good);
       if (!good) ok = false;
     });
-    if (!ok) { toast(t("form.error")); return; }
-
+    if (!ok) { toast(t("form.error")); return null; }
     const services = $$('input[name="service"]:checked', f).map((c) => t("form." + c.value)).join(", ") || "—";
     const budget = t("form." + (($('input[name="budget"]:checked', f) || {}).value || "b1"));
-    const body =
+    return `${t("mail.subject")}\n\n` +
       `${t("mail.name")}: ${f.elements.name.value}\n` +
       `${t("mail.contact")}: ${f.elements.contact.value}\n` +
       `${t("mail.service")}: ${services}\n` +
-      `${t("mail.budget")}: ${budget}\n\n${f.elements.message.value || ""}`;
-    location.href = `mailto:${CONFIG.email}?subject=${encodeURIComponent(t("mail.subject"))}&body=${encodeURIComponent(body)}`;
-    toast(t("form.ok"));
+      `${t("mail.budget")}: ${budget}` +
+      (f.elements.message.value.trim() ? `\n\n${f.elements.message.value.trim()}` : "");
+  };
+
+  const send = (url) => {
+    const text = collect();
+    if (!text) return;
+    window.open(url, "_blank", "noopener");   // открываем сразу — по клику, иначе браузер заблокирует
+    copyText(text).then(() => toast(t("form.ok")));
     f.reset();
     if (onSent) onSent();
+  };
+
+  f.addEventListener("submit", (e) => { e.preventDefault(); send(`https://t.me/${CONFIG.telegram}`); });
+  const ig = f.querySelector("#briefIg, #mbriefIg");
+  if (ig) ig.addEventListener("click", () => {
+    if (!igUrl()) { toast(t("ig.soon")); return; }
+    send(igUrl());
   });
 }
 bindBriefForm($("#briefForm"));

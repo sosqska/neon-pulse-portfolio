@@ -1242,3 +1242,9 @@ body.modal-open .fab { opacity: 0; pointer-events: none; }
 
 /* без сетки на фоне */
 .bg__grid { display: none; }
+
+/* связь через Telegram / Instagram */
+.form__hint { font-size: 13px; color: var(--muted); text-align: center; }
+.brief__links { display: grid; gap: 18px; }
+.modal__panel--brief .form__hint { font-size: 12px; }
+@media (max-width: 640px) { .modal__panel--brief .form__hint { display: none; } }
